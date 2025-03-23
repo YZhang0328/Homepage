@@ -32,8 +32,5 @@ else:
         img_contact_form = Image.open(output_path)
         st.image(img_contact_form, caption="Page under construction", width=300)
 
-
-        st.title("Crypto Asset Allocation and Portfolio Optimization")
-
         # Display a message
         st.header("This page is under construction 😎")
