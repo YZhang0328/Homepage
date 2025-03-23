@@ -29,7 +29,7 @@ with st.container():
 
         <p style="font-size: 18px;">
             1) Analytical skills, which enable me to extract relevant insights from complex datasets 
-            and identify their significance to specific tasks. Excel and SQL are handy tools for me.
+            and identify their significance to specific tasks. Excel and SQL are handy tools.
         </p>
 
         <p style="font-size: 18px;">
@@ -38,8 +38,7 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            3) Commitment to test-driven development, unit tests, integration tests,
-            behaviour tests, regression tests, etc. 
+            3) Commitment to test-driven development, unit tests, integration tests, behaviour tests, regression tests, etc. 
         </p>
 
         <p style="font-size: 18px;">
