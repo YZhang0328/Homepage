@@ -1,7 +1,13 @@
 import streamlit as st
+import cairosvg
 from PIL import Image
 
 st.set_page_config(layout="wide")
+
+# Function to auto-crop blank areas
+def trim_image(img):
+    """Automatically crop the blank area from the image."""
+    return img.crop(img.getbbox())
 
 # ---- Research introduction ----
 
@@ -77,12 +83,12 @@ st.write("---")
 with st.container():
     st.markdown(
         """
-        <p style="font-size: 22px;"><b>Representative publications:</b></p>
+        <p style="font-size: 20px;"><b>Representative publications:</b></p>
         <ul>
-            <li style="font-size: 20px;"> Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022). </li>
-            <li style="font-size: 20px;"> Yujia Zhang, Hongbiao Zhao, Guang Li, Christopher Edwards, and Mike Belmont. Robust nonlinear model predictive control of an autonomous launch and recovery system. IEEE Transactions on Control Systems Technology (2023). </li>
-            <li style="font-size: 20px;"> Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024). </li>
-            <li style="font-size: 20px;"> Yujia Zhang and Guang Li. Towards Robust and High-performance Operations of Wave Energy Converters: an Adaptive Tube-based Model Predictive Control Approach. IFAC-PapersOnLine, 55(31):339-344, 2022. </li>
+            <li style="font-size: 18px;"> Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022). </li>
+            <li style="font-size: 18px;"> Yujia Zhang, Hongbiao Zhao, Guang Li, Christopher Edwards, and Mike Belmont. Robust nonlinear model predictive control of an autonomous launch and recovery system. IEEE Transactions on Control Systems Technology (2023). </li>
+            <li style="font-size: 18px;"> Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024). </li>
+            <li style="font-size: 18px;"> Yujia Zhang and Guang Li. Towards Robust and High-performance Operations of Wave Energy Converters: an Adaptive Tube-based Model Predictive Control Approach. IFAC-PapersOnLine, 55(31):339-344, 2022. </li>
         </ul>
         """, 
         unsafe_allow_html=True
@@ -94,12 +100,47 @@ st.write("---")
 with st.container():
     image_column, text_column = st.columns((2, 3))
     with image_column:
-        Image.open("images/background_picture.png")
+        # Input & Output Paths
+        st.image("images/ML_remote_sensing_images.png")
+        st.image("images/ML_remote_sensing_images_2.png")
+        # input_svg = "images/ML_remote_sensing_images.svg"
+        # output_png = "images/enlarged_image.png"
+
+        # # Resize with Scaling Factor (e.g., 3x the original size)
+        # scale_factor = 3  
+        # cairosvg.svg2png(url=input_svg, write_to=output_png, scale=scale_factor)
+
+        # # Open PNG with PIL
+        # img = Image.open(output_png)
+
+        # # Crop the blank area
+        # cropped_img = trim_image(img)
+
+        # # Save and display the cropped image
+        # cropped_output = "images/cropped_image.png"
+        # cropped_img.save(cropped_output)
+
+        # # Display in Streamlit
+        # st.image(cropped_output, caption="Cropped & Enlarged SVG as PNG", use_column_width=True)
+
+        # # Display the original SVG with a specified size
+        # svg_path_2 = "images/ML_remote_sensing_images_2.svg"
+        # with open(svg_path_2, "r") as f_2:
+        #     svg_content_2 = f_2.read()
+
+        # st.markdown(
+        #     f'<div style="text-align: center;">'
+        #     f'<svg width="500px" height="auto">{svg_content_2}</svg>'
+        #     f'</div>',
+        #     unsafe_allow_html=True
+        # )
+
     with text_column:
         st.markdown(
             """
             <ul>
-                <p style="font-size: 20px;"><b>-&nbsp;&nbsp;Machine learning research experience:</b></p>
+                <p style="font-size: 20px;"><b>-&nbsp;&nbsp;Machine learning research experience (2019):</b></p>
+                This project
                 <li style="font-size: 18px;"><b>Worked on deep Learning for Weakly Supervised Target Detection in Remote Sensing images.<b></li>
                 <li style="font-size: 18px;">Developed a target detection framework using few image samples, which is achieved by feeding the samples to multiple neural networks (NNs) in an easy-to-difficult order, known as the self-paced learning strategy.</li>
                 <li style="font-size: 18px;">The framework can generate more pseudo bounding boxes and improved the accuracy of the bounding boxes by updating each NN during the training process, till the convergence of a defined loss function.</li>
