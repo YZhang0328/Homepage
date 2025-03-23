@@ -28,22 +28,26 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            1) Strong analytical skills, which enable me to extract relevant insights from complex datasets 
+            1) Analytical skills, which enable me to extract relevant insights from complex datasets 
             and identify their significance to specific tasks. Excel and SQL are handy tools for me.
         </p>
 
         <p style="font-size: 18px;">
-            2) Advanced programming proficiency in Python, MATLAB, AWS, and Git (5+ years Python experience, 
-            familiar with object-oriented programming), which allow me to process and model data efficiently. 
-            I have a strong commitment to test-driven development, unit tests, contract tests, integration tests, behaviour tests, etc.
+            2) Programming proficiency in Python, MATLAB, AWS, and Git (5+ years Python experience, 
+            familiar with object-oriented programming),to process and model data efficiently. 
         </p>
 
         <p style="font-size: 18px;">
-            3) A commitment to continuous learning has led me to actively pursue the CFA designation and deepen my understanding of finance.
+            3) Commitment to test-driven development, unit tests, integration tests,
+            behaviour tests, regression tests, etc. 
         </p>
 
         <p style="font-size: 18px;">
-            4) Current role in a modeling and development team sharpened the ability to approach challenges methodically and find the best solutions. 
+            4) Continuous learning, which has led me to actively pursue the CFA designation and deepen my understanding of finance.
+        </p>
+
+        <p style="font-size: 18px;">
+            5) Current role in a modeling and development team sharpened the ability to approach challenges methodically and find the best solutions. 
         </p>
 
         <p style="font-size: 20px;">
@@ -51,9 +55,9 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            1) Strong expertise in time-series algorithm design, having developed many mature linear and nonlinear prediction models. 
+            1) Expertise in time-series algorithm design, developed many mature linear and nonlinear prediction models. 
             These models, strategically designed and not publicly available, leverage fundamental linear regression techniques for forecasting 
-            and incorporate machine learning strategies for nonlinear data prediction, achieving superior accuracy.
+            and incorporate machine learning strategies for nonlinear data prediction.
         </p>
 
         <p style="font-size: 18px;">
@@ -63,7 +67,7 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            3) My expertise extends to translating complex client requirements such as regulatory requirements into optimization frameworks, 
+            3) Translating complex client requirements such as regulatory requirements into optimization frameworks, 
             ensuring compliance while achieving portfolio objectives.
         </p>
         """,
