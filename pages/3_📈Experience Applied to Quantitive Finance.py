@@ -1,5 +1,7 @@
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
 with st.container():
 
     st.markdown(
@@ -26,12 +28,12 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            1) I have strong analytical skills, which enable me to extract relevant insights from complex datasets 
+            1) Strong analytical skills, which enable me to extract relevant insights from complex datasets 
             and identify their significance to specific tasks. Excel and SQL are handy tools for me.
         </p>
 
         <p style="font-size: 18px;">
-            2) I have advanced programming proficiency in Python, MATLAB, AWS, and Git (5+ years Python experience, 
+            2) Advanced programming proficiency in Python, MATLAB, AWS, and Git (5+ years Python experience, 
             familiar with object-oriented programming), which allow me to process and model data efficiently. 
             I have a strong commitment to test-driven development, unit tests, contract tests, integration tests, behaviour tests, etc.
         </p>
@@ -41,8 +43,7 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            4) My current role in a modeling and development team has sharpened my ability to approach challenges methodically and find the best solutions. 
-            I am always sensible about what I am doing and how to do it effectively.
+            4) Current role in a modeling and development team sharpened the ability to approach challenges methodically and find the best solutions. 
         </p>
 
         <p style="font-size: 20px;">
@@ -50,7 +51,7 @@ with st.container():
         </p>
 
         <p style="font-size: 18px;">
-            1) I have strong expertise in time-series algorithm design, having developed many mature linear and nonlinear prediction models. 
+            1) Strong expertise in time-series algorithm design, having developed many mature linear and nonlinear prediction models. 
             These models, strategically designed and not publicly available, leverage fundamental linear regression techniques for forecasting 
             and incorporate machine learning strategies for nonlinear data prediction, achieving superior accuracy.
         </p>
