@@ -31,7 +31,7 @@ else:
 
         # Display the image
         img_contact_form = Image.open(output_path)
-        st.image(img_contact_form, caption="Page under construction", width=300)
+        st.image(img_contact_form, width=300)
 
         # Display a message
-        st.header("This page is under construction 😎")
+        st.header("This page is a work in progress 😎. I appreciate your patience and understanding!")
