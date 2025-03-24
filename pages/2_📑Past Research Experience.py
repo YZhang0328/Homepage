@@ -97,55 +97,40 @@ st.write("---")
 
 
 with st.container():
-    image_column, text_column = st.columns((2, 3))
+    image_column, text_column = st.columns((3, 2))
     with image_column:
         # Input & Output Paths
         st.image("images/ML_remote_sensing_images.png")
         st.image("images/ML_remote_sensing_images_2.png")
-        # input_svg = "images/ML_remote_sensing_images.svg"
-        # output_png = "images/enlarged_image.png"
-
-        # # Resize with Scaling Factor (e.g., 3x the original size)
-        # scale_factor = 3  
-        # cairosvg.svg2png(url=input_svg, write_to=output_png, scale=scale_factor)
-
-        # # Open PNG with PIL
-        # img = Image.open(output_png)
-
-        # # Crop the blank area
-        # cropped_img = trim_image(img)
-
-        # # Save and display the cropped image
-        # cropped_output = "images/cropped_image.png"
-        # cropped_img.save(cropped_output)
-
-        # # Display in Streamlit
-        # st.image(cropped_output, caption="Cropped & Enlarged SVG as PNG", use_column_width=True)
-
-        # # Display the original SVG with a specified size
-        # svg_path_2 = "images/ML_remote_sensing_images_2.svg"
-        # with open(svg_path_2, "r") as f_2:
-        #     svg_content_2 = f_2.read()
-
-        # st.markdown(
-        #     f'<div style="text-align: center;">'
-        #     f'<svg width="500px" height="auto">{svg_content_2}</svg>'
-        #     f'</div>',
-        #     unsafe_allow_html=True
-        # )
 
     with text_column:
         st.markdown(
             """
+            <p style="font-size: 20px;"><b> Machine Learning Research Experience (2019):</b></p>
             <ul>
-                <p style="font-size: 20px;"><b>-&nbsp;&nbsp;Machine learning research experience (2019):</b></p>
-                This project
-                <li style="font-size: 18px;"><b>Worked on deep Learning for Weakly Supervised Target Detection in Remote Sensing images.<b></li>
-                <li style="font-size: 18px;">Developed a target detection framework using few image samples, which is achieved by feeding the samples to multiple neural networks (NNs) in an easy-to-difficult order, known as the self-paced learning strategy.</li>
-                <li style="font-size: 18px;">The framework can generate more pseudo bounding boxes and improved the accuracy of the bounding boxes by updating each NN during the training process, till the convergence of a defined loss function.</li>
+                <li style="font-size: 18px;"><b>Objective:</b> Improve remote sensing object detection via multi-model fusion.</li>
+                <li style="font-size: 18px;"><b>Few-Shot Learning:</b> Trained with minimal bounding box annotations.</li>
             </ul>
-
-            """, 
+            
+            <p style="font-size: 20px;"><b>Methodology:</b></p>
+            <ul>
+                <li style="font-size: 18px;"><b>Multi-Model Fusion:</b></li>
+                <ul>
+                    <li>Combines Fast R-CNN & R-FCN to enhance accuracy.</li>
+                    <li>Leverages model complementarities to enhance detection accuracy.</li>
+                    <li>Uses minimal bounding box information for initialization and refinement.</li>
+                    <li>Alternates between improving model reliability and generating additional pseudo-labels.</li>
+                </ul>
+                <li style="font-size: 18px;"><b>Self-Paced Learning for Precision Enhancement:</b></li>
+                <ul>
+                    <li>Mimics human learning by progressing from simple to complex tasks.</li>
+                    <li>Starts training with simpler samples (fewer object categories, less background noise).</li>
+                    <li>Gradually incorporates more diverse and complex samples.</li>
+                    <li>Selects candidate samples based on lower loss and higher confidence scores.</li>
+                    <li>Enhances test sample accuracy compared to random sample selection.</li>
+                </ul>
+            </ul>
+            """,
             unsafe_allow_html=True
         )
 
