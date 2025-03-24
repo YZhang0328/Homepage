@@ -80,5 +80,5 @@ with st.container():
 
 
     with image_column:
-        st.image("images/quant_finance.jpg", caption="Yujia in a Chatworth House")
+        st.image("images/quantitative_finance.png")
         
