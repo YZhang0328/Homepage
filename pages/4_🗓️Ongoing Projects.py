@@ -19,11 +19,12 @@ else:
         st.error(f"Failed to load the image from {image_path}")
     else:
         # Convert from BGR to RGB for PIL compatibility
-        bgra = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        # Save the image as PNG
-        output_path = "images/under_construction.png"
-        cv2.imwrite(output_path, bgra)
+        # Save the image as PNG using PIL (directly save in RGB format)
+        output_path = "images/under_construction_rgb.png"
+        pil_image = Image.fromarray(rgb_image)
+        pil_image.save(output_path)
 
         # ---- HEADER SECTION ----
         st.title("Data Tools for Volatility Modeling and Forecasting")
