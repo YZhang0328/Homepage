@@ -29,7 +29,7 @@ with st.container():
             </p> 
 
             <p style="font-size: 20px;"> 
-                1. Financial data analysis and preparation: 
+                <b>1. Financial data analysis and preparation:</b> 
             </p> 
 
             <p style="font-size: 18px;">
@@ -55,7 +55,7 @@ with st.container():
             </p> 
 
             <p style="font-size: 20px;"> 
-                2. Price forecasting and mathematical optimization for finance decisions: 
+                <b>2. Price forecasting and mathematical optimization for finance decisions: </b>
             </p> 
 
             <p style="font-size: 18px;"> 
@@ -80,5 +80,5 @@ with st.container():
 
 
     with image_column:
-        st.image("images/yujia_qipao.jpg", caption="Yujia in a Chatworth House")
+        st.image("images/quant_finance.jpg", caption="Yujia in a Chatworth House")
         

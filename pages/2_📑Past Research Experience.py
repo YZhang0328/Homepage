@@ -97,7 +97,7 @@ st.write("---")
 
 
 with st.container():
-    image_column, text_column = st.columns((1, 1))
+    image_column, text_column = st.columns((5, 3))
     with image_column:
         # Input & Output Paths
         st.image("images/ML_remote_sensing_images.png")
