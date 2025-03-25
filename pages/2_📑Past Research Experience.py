@@ -98,8 +98,8 @@ with st.container():
             <ul>
                 <li style="font-size: 18px;"><b>Objective:</b> Develop a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</li>
                 <li style="font-size: 18px;"><b>Modeling approach:</b> </li>
-                <li style="font-size: 18px;"><b>1.</b> </li> Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.</li>
-                <li style="font-size: 18px;"><b>2.</b> </li> Used a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.</li>
+                <li style="font-size: 18px;"><b>1.</b> Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.</li>
+                <li style="font-size: 18px;"><b>2.</b> Used a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.</li>
             </ul>
         </ul>
         """, 
