@@ -112,7 +112,7 @@ with st.container():
     with text_column:
         st.markdown(
             """
-                <li style="font-size: 20px;">Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</li>
+                <p style="font-size: 20px;">- Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</p>
                 <ul>
                     <p style="font-size: 18px;"><b>Objective:</b> Develop a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</p>
                 </ul>
@@ -127,6 +127,16 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
+        st.markdown(
+            """
+            # Key Contributions:
+
+            - **Improved MPC performance** by addressing system uncertainties with adaptive learning techniques.
+            - **Demonstrated enhanced energy extraction efficiency and safety** through numerical simulations.
+            """,
+            unsafe_allow_html=True
+        )
+	
 
 st.write("---")
 
