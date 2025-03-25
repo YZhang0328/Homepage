@@ -106,7 +106,7 @@ with st.container():
     )
 
 with st.container():
-    image_column, text_column = st.columns((1, 1))
+    image_column, text_column = st.columns((5, 4))
     with image_column:
         st.image("images/paper_3.png")
     with text_column:
@@ -122,6 +122,7 @@ with st.container():
         )
         st.markdown(
             """
+            #### Methodology:
             - Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
             - Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
             """,
@@ -130,7 +131,6 @@ with st.container():
         st.markdown(
             """
             #### Key Contributions:
-
             - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
             - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
             """,
