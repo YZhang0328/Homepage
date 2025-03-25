@@ -122,7 +122,7 @@ with st.container():
         )
         st.markdown(
             """
-            #### Methodology:
+            ##### Methodology:
             - Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
             - Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
             """,
@@ -130,7 +130,7 @@ with st.container():
         )
         st.markdown(
             """
-            #### Key Contributions:
+            ##### Key Contributions:
             - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
             - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
             """,
