@@ -122,17 +122,17 @@ with st.container():
         )
         st.markdown(
             """
-            - 1: Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
-            - 2: Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
+            - Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
+            - Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
             """,
             unsafe_allow_html=True
         )
         st.markdown(
             """
-            # Key Contributions:
+            ### Key Contributions:
 
-            - **Improved MPC performance** by addressing system uncertainties with adaptive learning techniques.
-            - **Demonstrated enhanced energy extraction efficiency and safety** through numerical simulations.
+            - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
+            - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
             """,
             unsafe_allow_html=True
         )
