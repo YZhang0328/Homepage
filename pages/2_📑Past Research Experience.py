@@ -129,7 +129,7 @@ with st.container():
         )
         st.markdown(
             """
-            ### Key Contributions:
+            #### Key Contributions:
 
             - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
             - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
