@@ -97,8 +97,9 @@ with st.container():
             <li style="font-size: 18px;">Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</li>
             <ul>
                 <li style="font-size: 18px;"><b>Objective:</b> Develop a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</li>
-                <li style="font-size: 18px;"><b>Quantitative Modeling:</b> 1. Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion. </li>
-                <li style="font-size: 18px;"> <br> <br> <br> 2. Used a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time. </li>
+                <li style="font-size: 18px;"><b>Quantitative Modeling:</b> </li>
+                - Item 1. Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion. 
+                - Item 2. Used a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time. 
             </ul>
         </ul>
         """, 
