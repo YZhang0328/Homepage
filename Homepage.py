@@ -52,7 +52,7 @@ with st.container():
         st.image(img_contact_form)
     with text_column:
         st.title("Hi, I am Yujia Zhang :wave:")
-        st.subheader("An industrial mathematician with an interest and experience in the mathematical modelling of real-world problems.")
+        st.subheader("An industrial mathematician with a problem-solving mindset.")
         
         # Use st.markdown separately
         st.markdown(
