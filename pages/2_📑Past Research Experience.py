@@ -112,26 +112,19 @@ with st.container():
     with text_column:
         st.markdown(
             """
-            <p style="font-size: 20px;"><b>Representative publications:</b></p>
-            <ul>
-                <li style="font-size: 18px;"> Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022).</li>
-                <ul>
-                    <li style="font-size: 18px;"><b>Objective:</b> Develop a robust tube-based Model Predictive Control (RTMPC) strategy for energy maximization in Wave Energy Converters (WECs), addressing constraints and model uncertainties.</li>
-                    <li style="font-size: 18px;"><b>Modelling approach:</b> Integrate disturbance invariant sets into the MPC framework to explicitly handle uncertainties and ensure robustness without increasing computational complexity.</li>
-                </ul>
-                <li style="font-size: 18px;">Yujia Zhang, Hongbiao Zhao, Guang Li, Christopher Edwards, and Mike Belmont. Robust nonlinear model predictive control of an autonomous launch and recovery system. IEEE Transactions on Control Systems Technology (2023).</li>
-                <ul>
-                    <li style="font-size: 18px;"><b>Objective:</b> Develop an autonomous optimization-based control system for lifeboat launch and recovery in high sea states.</li>
-                    <li style="font-size: 18px;"><b>Modeling approach:</b> Use Tube-based Model Predictive Control (TMPC) to assess risk and optimize control. Model uncertainties and constraints are incorporated to ensure robust performance despite inaccurate predictions. </li>
-                </ul>
                 <li style="font-size: 18px;">Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</li>
                 <ul>
                     <li style="font-size: 18px;"><b>Objective:</b> Develop a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</li>
-                    <li style="font-size: 18px;"><b>Modeling approach:</b> 1. Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.</li>
-                    <li style="font-size: 18px;">2. Used a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.</li>
                 </ul>
             </ul>
             """, 
+            unsafe_allow_html=True
+        )
+        st.markdown(
+            """
+            - Item 1: Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
+            - Item 2: Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
+            """,
             unsafe_allow_html=True
         )
 
