@@ -106,13 +106,13 @@ with st.container():
     )
 
 with st.container():
-    image_column, text_column = st.columns((3, 5))
+    image_column, text_column = st.columns((1, 1))
     with image_column:
         st.image("images/paper_3.png")
     with text_column:
         st.markdown(
             """
-                <p style="font-size: 20px;">Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</p>
+                <li style="font-size: 20px;">Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</li>
                 <ul>
                     <p style="font-size: 18px;"><b>Objective:</b> Develop a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</p>
                 </ul>
@@ -122,8 +122,8 @@ with st.container():
         )
         st.markdown(
             """
-            - Item 1: Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
-            - Item 2: Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
+            - 1: Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
+            - 2: Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
             """,
             unsafe_allow_html=True
         )
