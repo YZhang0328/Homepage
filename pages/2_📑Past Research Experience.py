@@ -86,7 +86,7 @@ with st.container():
     with text_column:
         st.markdown(
             """
-            #### Representative Publications:
+            ##### Representative Publications:
 
             <p style="font-size: 20px;">
                 - Yujia Zhang and Guang Li.
