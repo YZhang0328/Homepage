@@ -80,7 +80,7 @@ with st.container():
 
 st.write("---")
 with st.container():
-    image_column, text_column = st.columns((5, 4))
+    image_column, text_column = st.columns((1, 1))
     with image_column:
         st.image("images/paper_3.png")
     with text_column:
@@ -121,7 +121,7 @@ with st.container():
 
 
 with st.container():
-    image_column, text_column = st.columns((5, 4))
+    image_column, text_column = st.columns((1, 1))
     with image_column:
         st.image("images/paper_2.png")
     with text_column:
@@ -155,7 +155,7 @@ with st.container():
 
 
 with st.container():
-    image_column, text_column = st.columns((5, 4))
+    image_column, text_column = st.columns((1, 1))
     with image_column:
         st.image("images/paper_3.png")
     with text_column:
@@ -191,7 +191,7 @@ st.write("---")
 
 
 with st.container():
-    image_column, text_column = st.columns((5, 3))
+    image_column, text_column = st.columns((5, 4))
     with image_column:
         # Input & Output Paths
         st.image("images/ML_remote_sensing_images.png")
