@@ -82,7 +82,7 @@ st.write("---")
 with st.container():
     image_column, text_column = st.columns((1, 1))
     with image_column:
-        st.image("images/paper_3.png")
+        st.image("images/paper_1.png")
     with text_column:
         st.markdown(
             """
