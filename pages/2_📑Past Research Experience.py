@@ -34,7 +34,7 @@ with st.container():
 
         # Use st.markdown separately
         st.markdown(
-            '<p style="font-size: 18px;"> In most of my research, I <b>worked extensively with mathematics</b>, focusing on an algorithm called <b>model predictive control<\b>, a powerful approach that integrates <b>optimization</b> and <b>prediction</b> to enhance decision-making in dynamic systems.  </p>',
+            '<p style="font-size: 18px;"> In most of my research, I <b>worked extensively with mathematics</b>, focusing on an algorithm called <b>model predictive control</b>, a powerful approach that integrates <b>optimization</b> and <b>prediction</b> to enhance decision-making in dynamic systems.  </p>',
             unsafe_allow_html=True
         )
         
