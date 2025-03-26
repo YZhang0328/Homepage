@@ -87,14 +87,16 @@ with st.container():
         st.markdown(
             """
             #### Representative publications:
-                <p style="font-size: 20px;">- Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022).</p>
+                - Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022).</p>
+                <ul>
+                <p style="font-size: 18px;"> This paper developed a robust tube-based Model Predictive Control (RTMPC) strategy for energy maximization in Wave Energy Converters (WECs), addressing constraints and model uncertainties.</p>
+                </ul>
             """, 
             unsafe_allow_html=True
         )
         st.markdown(
             """
             ##### Modelling methodology:
-            - Develop a robust tube-based Model Predictive Control (RTMPC) strategy for energy maximization in Wave Energy Converters (WECs), addressing constraints and model uncertainties.
             -  Integrate disturbance invariant sets into the MPC framework to explicitly handle uncertainties and ensure robustness without increasing computational complexity.
             """,
             unsafe_allow_html=True
@@ -135,7 +137,7 @@ with st.container():
         st.markdown(
             """
             ##### Key Contributions:
-            - Model mother ship’s hydrodynamics using quantitative methods for mission safety.
+            - Model mother ship’s hydrodynamics using quantitative methods.
             - Apply TMPC for real-time, optimal control with improved safety.
             - Enhances mission success, reduces human error, and supports higher sea state operations.
             """,
@@ -152,7 +154,7 @@ with st.container():
             """
                 <p style="font-size: 20px;">- Yujia Zhang, Guang Li and Mustafa Al-Ani. Robust Learning-based Model Predictive Control for Wave Energy Converters. IEEE Transactions on Sustainable Energy (2024).</p>
                 <ul>
-                    <p style="font-size: 18px;"> This paper developed a robust MPC strategy for Wave Energy Converters (WECs) to maximize energy extraction and ensure safety.</p>
+                    <p style="font-size: 18px;"> This paper developed a machine learning based MPC strategy for WECs to balancing the objectives of maximizing energy extraction and ensuring safety.</p>
                 </ul>
             </ul>
             """, 
