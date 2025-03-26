@@ -89,7 +89,7 @@ with st.container():
             #### Representative Publications:
 
             <p style="font-size: 20px;">
-                <strong>Yujia Zhang and Guang Li.</strong> 
+                - Yujia Zhang and Guang Li.
                 Robust tube-based model predictive control for wave energy converters. 
                 <em>IEEE Transactions on Sustainable Energy</em> (2022).
             </p>
