@@ -34,7 +34,7 @@ with st.container():
 
         # Use st.markdown separately
         st.markdown(
-            '<p style="font-size: 18px;"> In most of my research, I <b>worked extensively with mathematics</b>, focusing on an algorithm called model predictive control, a powerful approach that integrates <b>optimization</b> and <b>prediction</b> to enhance decision-making in dynamic systems.  </p>',
+            '<p style="font-size: 18px;"> In most of my research, I <b>worked extensively with mathematics</b>, focusing on an algorithm called <b>model predictive control<\b>, a powerful approach that integrates <b>optimization</b> and <b>prediction</b> to enhance decision-making in dynamic systems.  </p>',
             unsafe_allow_html=True
         )
         
@@ -104,7 +104,7 @@ with st.container():
         st.markdown(
             """
             ##### Modelling methodology:
-            -  Integrate disturbance invariant sets into the MPC framework to explicitly handle uncertainties and ensure robustness without increasing computational complexity.
+            -  Integrated disturbance invariant sets into the MPC framework to explicitly handle uncertainties and ensure robustness without increasing computational complexity.
             """,
             unsafe_allow_html=True
         )
@@ -123,7 +123,7 @@ with st.container():
 with st.container():
     image_column, text_column = st.columns((5, 4))
     with image_column:
-        st.image("images/paper_3.png")
+        st.image("images/paper_2.png")
     with text_column:
         st.markdown(
             """
@@ -138,7 +138,7 @@ with st.container():
         st.markdown(
             """
             ##### Modelling methodology:
-            - Use Tube-based Model Predictive Control (TMPC) to assess risk and optimize control. Model uncertainties and constraints are incorporated to ensure robust performance despite inaccurate environmental disturbance predictions.
+            - Adopted Tube-based Model Predictive Control (TMPC) to assess risk and optimize control. Model uncertainties and constraints are incorporated to ensure robust performance despite inaccurate environmental disturbance predictions.
             """,
             unsafe_allow_html=True
         )
@@ -172,7 +172,7 @@ with st.container():
         st.markdown(
             """
             ##### Modelling methodology:
-            - Integrated machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
+            - Used machine learning to dynamically adjust uncertainty sets in MPC for improved energy conversion.
             - Adopted a quantile-regression-based LSTM network to predict and optimize uncertainty bounds in real-time.
             """,
             unsafe_allow_html=True
