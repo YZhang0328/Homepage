@@ -108,15 +108,15 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
-        st.markdown(
-            """
-            ##### Key Contributions:
-            - Energy Optimization: RTMPC directly maximizes energy conversion, incorporating real-time wave predictions.
-            - Robustness: The strategy reduces power loss by addressing model uncertainties and nonlinearities.
-            - Efficiency: Disturbance invariant sets are precomputed, keeping online computational costs comparable to traditional MPC.
-            """,
-            unsafe_allow_html=True
-        )
+        # st.markdown(
+        #     """
+        #     ##### Key Contributions:
+        #     - Energy Optimization: RTMPC directly maximizes energy conversion, incorporating real-time wave predictions.
+        #     - Robustness: The strategy reduces power loss by addressing model uncertainties and nonlinearities.
+        #     - Efficiency: Disturbance invariant sets are precomputed, keeping online computational costs comparable to traditional MPC.
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
 
 with st.container():
@@ -141,15 +141,15 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
-        st.markdown(
-            """
-            ##### Key Contributions:
-            - Model mother ship’s hydrodynamics using quantitative methods.
-            - Apply TMPC for real-time, optimal control with improved safety.
-            - Enhances mission success, reduces human error, and supports higher sea state operations.
-            """,
-            unsafe_allow_html=True
-        )
+        # st.markdown(
+        #     """
+        #     ##### Key Contributions:
+        #     - Model mother ship’s hydrodynamics using quantitative methods.
+        #     - Apply TMPC for real-time, optimal control with improved safety.
+        #     - Enhances mission success, reduces human error, and supports higher sea state operations.
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 
 
 with st.container():
@@ -175,14 +175,14 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
-        st.markdown(
-            """
-            ##### Key Contributions:
-            - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
-            - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
-            """,
-            unsafe_allow_html=True
-        )
+        # st.markdown(
+        #     """
+        #     ##### Key Contributions:
+        #     - Improved MPC performance by addressing system uncertainties with adaptive learning techniques.
+        #     - Demonstrated enhanced energy extraction efficiency and safety through numerical simulations.
+        #     """,
+        #     unsafe_allow_html=True
+        # )
 	
 
 st.write("---")
