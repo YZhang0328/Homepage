@@ -108,6 +108,7 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
+        st.empty()
         # st.markdown(
         #     """
         #     ##### Key Contributions:
@@ -141,6 +142,7 @@ with st.container():
             """,
             unsafe_allow_html=True
         )
+        st.empty()
         # st.markdown(
         #     """
         #     ##### Key Contributions:
