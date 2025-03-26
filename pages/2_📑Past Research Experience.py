@@ -206,7 +206,7 @@ with st.container():
                 <li style="font-size: 18px;"><b>Few-Shot Learning:</b> Trained with minimal bounding box annotations.</li>
             </ul>
             
-            <p style="font-size: 20px;"><b>Methodology:</b></p>
+            <p style="font-size: 20px;"><b>Modelling methodology:</b></p>
             <ul>
                 <li style="font-size: 18px;"><b>Multi-Model Fusion:</b></li>
                 <ul>
