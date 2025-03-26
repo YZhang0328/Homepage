@@ -87,7 +87,7 @@ with st.container():
         st.markdown(
             """
             #### Representative publications:
-                - Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022).</p>
+                <p style="font-size: 20px;">- Yujia Zhang and Guang Li. Robust tube-based model predictive control for wave energy converters. IEEE Transactions on Sustainable Energy (2022).</p>
                 <ul>
                 <p style="font-size: 18px;"> This paper developed a robust tube-based Model Predictive Control (RTMPC) strategy for energy maximization in Wave Energy Converters (WECs), addressing constraints and model uncertainties.</p>
                 </ul>
