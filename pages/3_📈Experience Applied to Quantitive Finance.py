@@ -25,7 +25,7 @@ with st.container():
             </p> 
 
             <p style="font-size: 20px;"> 
-                My background provides expertise in two core areas essential to this process: 
+                I specialize in two critical areas essential to a successful financial decision-making process: 
             </p> 
 
             <p style="font-size: 20px;"> 
@@ -34,12 +34,11 @@ with st.container():
 
             <p style="font-size: 18px;">
                 1) Analytical skills, to extract relevant insights from complex datasets 
-                and identify their significance to specific tasks. Excel and SQL are handy tools.
+                and identify their significance to specific tasks. Tools like Excel and SQL are intergral to this process.
             </p>
 
             <p style="font-size: 18px;">
-                2) Programming proficiency in Python, MATLAB, AWS, and Git (5+ years Python experience, 
-                familiar with object-oriented programming), to process and model data efficiently. 
+                2) Programming proficiency in Python, MATLAB, AWS, and Git, I can proficiently process data and do the mathematical modelling. 
             </p>
 
             <p style="font-size: 18px;">
