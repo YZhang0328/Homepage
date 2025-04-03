@@ -74,9 +74,9 @@ with st.container():
         # Regular st.write for text
         file_path = 'CV/CV_YUJIA.pdf'
 
-        st.markdown( '<p style="font-size: 20px;"> Current role: Energy Modeller, to optimize energy market models </p>', unsafe_allow_html=True)
+        st.markdown( '<p style="font-size: 20px;"> <b>Current role</b>: Energy Modeller, to optimize energy market models </p>', unsafe_allow_html=True)
 
-        st.markdown( '<p style="font-size: 20px;"> Certification: CFA Program Level I, passed </p>', unsafe_allow_html=True)
+        st.markdown( '<p style="font-size: 20px;"> <b>Certification</b>: CFA Program Level I, passed </p>', unsafe_allow_html=True)
 
         st.write("Get in touch with me: yujia.zhang.uom@gmail.com")
         
