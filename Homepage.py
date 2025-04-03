@@ -74,6 +74,9 @@ with st.container():
         # Regular st.write for text
         file_path = 'CV/CV_YUJIA.pdf'
 
+        st.write("Current role: Energy Modeller to optimize energy market models")
+
+        st.write("Certification: CFA Program Level I, passed")
 
         st.write("Get in touch with me: yujia.zhang.uom@gmail.com")
         
