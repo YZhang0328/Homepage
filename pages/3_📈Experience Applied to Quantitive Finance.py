@@ -46,7 +46,7 @@ with st.container():
             </p>
 
             <p style="font-size: 18px;">
-                4) Continuous learning, which has led me to actively pursue the CFA designation and deepen the understanding of finance.
+                4) Continuous learning, which has led me to actively pursue the CFA designation and deepen the understanding of finance.  I have successfully passed <b>CFA Level I</b> and am committed to further advancing my expertise.
             </p>
 
             <p style="font-size: 18px;"> 
