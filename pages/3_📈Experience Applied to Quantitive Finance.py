@@ -1,75 +1,92 @@
 import streamlit as st
 
+st.set_page_config(layout="wide")
+
+# ---- Trading and Asset Allocation Section ----
+
 with st.container():
-    st.markdown(
-        """
-        <style>
-        .content-container {
-            font-size: 18px;
-            line-height: 1.75;
-            max-width: 900px;
-            margin: auto;
-        }
-        .content-container ul {
-            margin-top: 0.5em;
-            margin-bottom: 1em;
-            padding-left: 1.5em;
-        }
-        .content-container li {
-            margin-bottom: 0.5em;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 2em 0;
-        }
-        </style>
+    text_column, image_column = st.columns((10, 7))
+    with text_column:
+        st.markdown(
+            """
+            <div style="text-align: left; font-size: 20px; font-style: italic; font-weight: bold;">
+                "In investing, what is comfortable is rarely profitable."
+            </div>
+            <div style="text-align: right; font-size: 18px;">
+                – Robert Arnott
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        <div class="content-container">
-            <p>
-                Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
-                rather than traditional experience-based approaches.
-            </p>    
+        st.markdown(
+            """
+            <p style="font-size: 18px;">
+                Modern trading and asset allocation increasingly rely on <b>scientific and quantitative methodologies</b>, 
+                replacing traditional experience-based approaches.
+            </p>
+            """, 
+            unsafe_allow_html=True
+        )
 
-            <p> 
-                In trading and asset allocation, data-driven forecasting and mathematical formulation are pivotal. 
-                These offer a structured and efficient way to predict price trends, assist decision-making, 
-                optimize portfolios, and manage risks while adhering to regulatory requirements. 
-            </p> 
+        st.markdown(
+            """
+            <p style="font-size: 18px;">
+                Data-driven forecasting and mathematical formulation provide a structured, efficient foundation 
+                to predict price trends, guide decision-making, optimize portfolios, and manage risk under regulatory constraints.
+            </p>
+            """, 
+            unsafe_allow_html=True
+        )
 
-            <p> 
-                Developing effective investment strategies requires analyzing financial data, making predictions, and 
-                formulating optimization problems to balance competing objectives—maximizing returns and minimizing 
-                risk within specified constraints. 
-            </p> 
+        st.markdown(
+            """
+            <p style="font-size: 18px;">
+                Creating effective investment strategies demands the ability to <b>analyze financial data</b>, make informed 
+                predictions, and formulate optimization models that balance return maximization and risk minimization.
+            </p>
+            """, 
+            unsafe_allow_html=True
+        )
 
-            <hr />
+        st.markdown("---", unsafe_allow_html=True)
 
-            <h4>1. Financial Data Analysis and Preparation</h4>
-            <ul>
-                <li>Extract insights from complex datasets using Excel and SQL.</li>
-                <li>Proficient in Python, MATLAB, AWS, and Git for data processing and modeling.</li>
-                <li>Apply test-driven development: unit, integration, behavioral, and regression testing.</li>
-                <li>Passed <strong>CFA Level I</strong>; actively pursuing further financial qualifications.</li>
-                <li>Currently work in a modeling and development team, solving problems methodically.</li>
+        st.markdown("<h5><b>1. Financial Data Analysis and Preparation</b></h5>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            <ul style="font-size: 18px;">
+                <li>Extract insights from complex datasets using <b>Excel</b> and <b>SQL</b>.</li>
+                <li>Proficient in <b>Python</b>, <b>MATLAB</b>, <b>AWS</b>, and <b>Git</b> for data modeling and processing.</li>
+                <li>Apply <b>test-driven development</b>: unit, integration, behavioral, and regression testing.</li>
+                <li>Passed <b>CFA Level I</b>; actively pursuing further financial certifications.</li>
+                <li>Work in a modeling and development team, solving technical problems with precision and structure.</li>
             </ul>
+            """,
+            unsafe_allow_html=True
+        )
 
-            <hr />
+        st.markdown("---", unsafe_allow_html=True)
 
-            <h4>2. Price Forecasting and Mathematical Optimization</h4>
-            <ul>
-                <li>Design both linear and nonlinear time-series forecasting models.</li>
+        st.markdown("<h5><b>2. Price Forecasting and Mathematical Optimization</b></h5>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            <ul style="font-size: 18px;">
+                <li>Develop linear and nonlinear <b>time-series forecasting models</b>.</li>
                 <li>Build financial models with assumptions, back-testing, and sensitivity analysis.</li>
-                <li>Ph.D. in optimization theory and applications, with deep expertise in:
+                <li>Ph.D. in optimization theory and applications with deep expertise in:
                     <ul>
                         <li>Multi-asset portfolio optimization balancing risk and return.</li>
                         <li>Embedding regulatory requirements into optimization frameworks.</li>
-                        <li>Strategies for hedging interest rate and duration risk.</li>
-                        <li>Analyzing market signals and detecting anomalies for risk management.</li>
+                        <li>Hedging strategies for interest rate and duration risk.</li>
+                        <li>Analyzing market signals and anomaly detection for risk mitigation.</li>
                     </ul>
                 </li>
             </ul>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            """,
+            unsafe_allow_html=True
+        )
+
+    with image_column:
+        st.image("images/trading_allocation_banner.png")  # Replace with your relevant image path
+
+st.write("---")
