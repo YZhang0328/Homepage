@@ -2,14 +2,14 @@ name: Keep Streamlit App Awake
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # Every 10 hours
+    - cron: '0 */0.2 * * *'  # Every 10 hours
   workflow_dispatch:
 
 jobs:
   keepalive:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # ✅ Required to allow pushing code
+      contents: write  # Required to allow pushing code
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
