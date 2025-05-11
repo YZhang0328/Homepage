@@ -8,7 +8,7 @@ with st.container():
     with text_column:
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p>
                     Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
                     rather than traditional experience-based approaches.
@@ -20,7 +20,7 @@ with st.container():
 
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p> 
                     In trading and asset allocation, data-driven forecasting and mathematical formulation are pivotal. 
                     These offer a structured and efficient way to predict price trends, assist decision-making, 
@@ -33,7 +33,7 @@ with st.container():
 
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p> 
                     Developing effective investment strategies requires analyzing financial data, making predictions, and formulating optimization problems 
                     to balance competing objectives—maximizing returns and minimizing risk within specified constraints. 
@@ -45,7 +45,7 @@ with st.container():
 
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p> 
                     I specialize in two critical areas essential to successful financial decision-making:
                 </p> 
@@ -56,7 +56,7 @@ with st.container():
 
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p><b>1. Financial data analysis and preparation:</b></p>
                 <ul>
                     <li>Analytical skills to extract insights from complex datasets and assess their relevance to specific tasks. Tools like Excel and SQL are integral to this process.</li>
@@ -72,7 +72,7 @@ with st.container():
 
         st.markdown(
             """
-            <div style="font-size: 18px; line-height: 1.75;">
+            <div style="font-size: 20px; line-height: 1.75;">
                 <p><b>2. Price forecasting and mathematical optimization for financial decisions:</b></p>
                 <ul>
                     <li>Expertise in time-series algorithm design—developed both linear prediction algorithms and nonlinear models using machine learning.</li>
