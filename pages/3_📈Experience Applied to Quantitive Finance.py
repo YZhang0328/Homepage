@@ -8,84 +8,59 @@ with st.container():
     with text_column:
         st.markdown(
             """ 
-            <p style="font-size: 20px;"> 
-                Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
-                rather than traditional experience-based approaches. 
-            </p>    
-            
-            <p style="font-size: 18px;"> 
-                In trading and asset allocation, data-based forecasting and mathematical formulation are pivotal, 
-                offering a structured and efficient way to predict the future price trend assisting the decision-making process, 
-                optimize portfolios, and manage risks while adhering to regulatory requirements. 
-            </p> 
-            
-            <p style="font-size: 18px;"> 
-                Developing effective investment strategies requires analyzing financial data, making predictions, formulating optimization problems to balance competing objectives— 
-                maximizing returns and minimizing risk within specified constraints. 
-            </p> 
+            <div style="font-size: 18px; line-height: 1.6">
+                <p>
+                    Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
+                    rather than traditional experience-based approaches.
+                </p>    
 
-            <p style="font-size: 20px;"> 
-                I specialize in two critical areas essential to a successful financial decision-making process: 
-            </p> 
+                <p> 
+                    In trading and asset allocation, data-driven forecasting and mathematical formulation are pivotal. 
+                    These offer a structured and efficient way to predict price trends, assist decision-making, 
+                    optimize portfolios, and manage risks while adhering to regulatory requirements. 
+                </p> 
 
-            <p style="font-size: 20px;"> 
-                <b>1. Financial data analysis and preparation:</b> 
-            </p> 
+                <p> 
+                    Developing effective investment strategies requires analyzing financial data, making predictions, and formulating optimization problems 
+                    to balance competing objectives—maximizing returns and minimizing risk within specified constraints. 
+                </p> 
 
-            <p style="font-size: 18px;">
-                1) Analytical skills, to extract relevant insights from complex datasets 
-                and identify their significance to specific tasks. Tools like Excel and SQL are intergral to this process.
-            </p>
+                <p> 
+                    I specialize in two critical areas essential to successful financial decision-making:
+                </p> 
 
-            <p style="font-size: 18px;">
-                2) Programming proficiency in Python, MATLAB, AWS, and Git, I can proficiently process data and do the mathematical modelling. 
-            </p>
+                <p> 
+                    <b>1. Financial data analysis and preparation:</b>
+                </p> 
 
-            <p style="font-size: 18px;">
-                3) Commitment to test-driven development, unit tests, integration tests, behaviour tests, regression tests, etc. 
-            </p>
+                <ul>
+                    <li>Analytical skills to extract insights from complex datasets and assess their relevance to specific tasks. Tools like Excel and SQL are integral to this process.</li>
+                    <li>Proficiency in Python, MATLAB, AWS, and Git for data processing and mathematical modeling.</li>
+                    <li>Commitment to test-driven development, including unit, integration, behavioral, and regression tests.</li>
+                    <li>Continuous learning: I have passed <b>CFA Level I</b> and am actively pursuing further expertise in finance.</li>
+                    <li>In my current role in a modeling and development team, I approach challenges methodically to identify the best solutions.</li>
+                </ul>
 
-            <p style="font-size: 18px;">
-                4) Continuous learning, which has led me to actively pursue the CFA designation and deepen the understanding of finance.  I have successfully passed <b>CFA Level I</b> and am committed to further advancing my expertise.
-            </p>
+                <p> 
+                    <b>2. Price forecasting and mathematical optimization for financial decisions:</b>
+                </p> 
 
-            <p style="font-size: 18px;"> 
-                5) Current role in a modeling and development team sharpened the ability to approach challenges methodically and find the best solutions. 
-            </p> 
-
-            <p style="font-size: 20px;"> 
-                <b>2. Price forecasting and mathematical optimization for finance decisions: </b>
-            </p> 
-
-            <p style="font-size: 18px;"> 
-                1) Expertise in time-series algorithm design, developed many mature linear prediction algorithms and nonlinear prediction models. 
-                These models, strategically designed, leverage fundamental linear regression techniques for forecasting 
-                and incorporate machine learning strategies in nonlinear data prediction.
-            </p>
-
-            <p style="font-size: 18px;"> 
-                2) Skills in complex financial modeling, including setting initial assumptions, model development, back-testing, scenario analysis, and sensitivity analysis; 
-            </p>
-
-
-            <p style="font-size: 18px;">
-                3) With a Doctorate in optimization theory and applications from the UK, I bring a deep understanding of advanced optimization techniques.
-                I have knowledge in
-			
-			- multi-asset portfolio construction using advanced optimization techniques to balance risk and return; 
-
-            - incorporating complex regulatory requirements for financial institutions such as banks, insurance companies, and investment firms into optimization frameworks, ensuring compliance while achieving portfolio objectives;
-			
-			- robust optimization strategy development for hedging interest rate and duration risks;
-
-            - effective risk management by interpreting complex market signals and detecting market anomalies. 
-            </p>
-
+                <ul>
+                    <li>Expertise in time-series algorithm design—developed both linear prediction algorithms and nonlinear models using machine learning.</li>
+                    <li>Experience in complex financial modeling, including assumption setting, model development, back-testing, scenario, and sensitivity analysis.</li>
+                    <li>With a Ph.D. in optimization theory and applications from the UK, I have deep expertise in:
+                        <ul>
+                            <li>Multi-asset portfolio construction using advanced optimization techniques to balance risk and return.</li>
+                            <li>Incorporating regulatory requirements for financial institutions into optimization frameworks.</li>
+                            <li>Developing robust optimization strategies for hedging interest rate and duration risks.</li>
+                            <li>Interpreting complex market signals and detecting market anomalies for effective risk management.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
             """,
             unsafe_allow_html=True
         )
 
-
     with image_column:
         st.image("images/quantitative_finance.png")
-        
