@@ -1,3 +1,5 @@
+import streamlit as st
+
 st.markdown(
     """ 
     <div style="font-size: 18px; line-height: 1.6">
