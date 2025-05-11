@@ -1,66 +1,50 @@
-import streamlit as st
+st.markdown(
+    """ 
+    <div style="font-size: 18px; line-height: 1.6">
+        <p>
+            Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
+            rather than traditional experience-based approaches.
+        </p>    
 
-st.set_page_config(page_icon="📈", layout="wide")
+        <p> 
+            In trading and asset allocation, data-driven forecasting and mathematical formulation are pivotal. 
+            These offer a structured and efficient way to predict price trends, assist decision-making, 
+            optimize portfolios, and manage risks while adhering to regulatory requirements. 
+        </p> 
 
-with st.container():
-    text_column, image_column = st.columns((2, 1))
+        <p> 
+            Developing effective investment strategies requires analyzing financial data, making predictions, and 
+            formulating optimization problems to balance competing objectives—maximizing returns and minimizing 
+            risk within specified constraints. 
+        </p> 
 
-    with text_column:
-        st.markdown(
-            """ 
-            <div style="font-size: 18px; line-height: 1.6">
-                <p>
-                    Modern trading and asset allocation increasingly rely on scientific and quantitative methodologies, 
-                    rather than traditional experience-based approaches.
-                </p>    
+        <p> 
+            I specialize in two critical areas essential to successful financial decision-making:
+        </p> 
 
-                <p> 
-                    In trading and asset allocation, data-driven forecasting and mathematical formulation are pivotal. 
-                    These offer a structured and efficient way to predict price trends, assist decision-making, 
-                    optimize portfolios, and manage risks while adhering to regulatory requirements. 
-                </p> 
+        <p><strong>1. Financial data analysis and preparation:</strong></p>
+        <ul>
+            <li>Extracting insights from complex datasets using tools like Excel and SQL.</li>
+            <li>Proficient in Python, MATLAB, AWS, and Git for data processing and modeling.</li>
+            <li>Applying test-driven development: unit, integration, behavioral, and regression testing.</li>
+            <li>Passed <strong>CFA Level I</strong> and actively pursuing further financial qualifications.</li>
+            <li>Current role in a modeling and development team, solving problems methodically.</li>
+        </ul>
 
-                <p> 
-                    Developing effective investment strategies requires analyzing financial data, making predictions, and formulating optimization problems 
-                    to balance competing objectives—maximizing returns and minimizing risk within specified constraints. 
-                </p> 
-
-                <p> 
-                    I specialize in two critical areas essential to successful financial decision-making:
-                </p> 
-
-                <p> 
-                    <b>1. Financial data analysis and preparation:</b>
-                </p> 
-
-                <ul>
-                    <li>Analytical skills to extract insights from complex datasets and assess their relevance to specific tasks. Tools like Excel and SQL are integral to this process.</li>
-                    <li>Proficiency in Python, MATLAB, AWS, and Git for data processing and mathematical modeling.</li>
-                    <li>Commitment to test-driven development, including unit, integration, behavioral, and regression tests.</li>
-                    <li>Continuous learning: I have passed <b>CFA Level I</b> and am actively pursuing further expertise in finance.</li>
-                    <li>In my current role in a modeling and development team, I approach challenges methodically to identify the best solutions.</li>
+        <p><strong>2. Price forecasting and mathematical optimization:</strong></p>
+        <ul>
+            <li>Designed both linear and nonlinear time-series forecasting models.</li>
+            <li>Built financial models with assumptions, back-testing, and sensitivity analysis.</li>
+            <li>Ph.D. in optimization theory and applications with deep expertise in:
+                <ul style="margin-top: 0.5em;">
+                    <li>Multi-asset portfolio optimization balancing risk and return.</li>
+                    <li>Embedding regulatory requirements into optimization frameworks.</li>
+                    <li>Strategies for hedging interest rate and duration risk.</li>
+                    <li>Analyzing market signals and detecting anomalies for risk management.</li>
                 </ul>
-
-                <p> 
-                    <b>2. Price forecasting and mathematical optimization for financial decisions:</b>
-                </p> 
-
-                <ul>
-                    <li>Expertise in time-series algorithm design—developed both linear prediction algorithms and nonlinear models using machine learning.</li>
-                    <li>Experience in complex financial modeling, including assumption setting, model development, back-testing, scenario, and sensitivity analysis.</li>
-                    <li>With a Ph.D. in optimization theory and applications from the UK, I have deep expertise in:
-                        <ul>
-                            <li>Multi-asset portfolio construction using advanced optimization techniques to balance risk and return.</li>
-                            <li>Incorporating regulatory requirements for financial institutions into optimization frameworks.</li>
-                            <li>Developing robust optimization strategies for hedging interest rate and duration risks.</li>
-                            <li>Interpreting complex market signals and detecting market anomalies for effective risk management.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with image_column:
-        st.image("images/quantitative_finance.png")
+            </li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
