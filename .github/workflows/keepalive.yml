@@ -2,22 +2,23 @@ name: Keep Streamlit App Awake
 
 on:
   schedule:
-    - cron: '0 */0.2 * * *'  # Every 10 hours UTC
-  workflow_dispatch:        # Optional: manual trigger via GitHub UI
+    - cron: '0 */1 * * *'  # Every 10 hours
+  workflow_dispatch:
 
 jobs:
   keepalive:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write  # ✅ Required to allow pushing code
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub's built-in token for authentication
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create and push empty commit
+      - name: Create empty commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit --allow-empty -m "chore: keep alive" || echo "Nothing to commit"
+          git commit --allow-empty -m "chore: keep alive"
           git push origin HEAD
