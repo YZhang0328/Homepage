@@ -58,21 +58,29 @@ with st.container():
             </p> 
 
             <p style="font-size: 18px;"> 
-                1) Expertise in time-series algorithm design, developed many mature linear and nonlinear prediction models. 
-                These models, strategically designed and not publicly available, leverage fundamental linear regression techniques for forecasting 
-                and incorporate machine learning strategies for nonlinear data prediction.
+                1) Expertise in time-series algorithm design, developed many mature linear prediction algorithms and nonlinear prediction models. 
+                These models, strategically designed, leverage fundamental linear regression techniques for forecasting 
+                and incorporate machine learning strategies in nonlinear data prediction.
             </p>
 
-            <p style="font-size: 18px;">
-                2) With a Doctorate in optimization theory and applications from the UK, I bring a deep understanding of advanced optimization techniques.
-                I have knowledge in framing return expectations as objectives to maximize and incorporating risk—via variance/covariance, 
-                or deviation—either as constraints or factors to minimize.
+            <p style="font-size: 18px;"> 
+                2) Skills in complex financial modeling, including setting initial assumptions, model development, back-testing, scenario analysis, and sensitivity analysis; 
             </p>
 
+
             <p style="font-size: 18px;">
-                3) Translating complex client requirements such as regulatory requirements into optimization frameworks, 
-                ensuring compliance while achieving portfolio objectives.
+                3) With a Doctorate in optimization theory and applications from the UK, I bring a deep understanding of advanced optimization techniques.
+                I have knowledge in
+			
+			- multi-asset portfolio construction using advanced optimization techniques to balance risk and return; 
+
+            - incorporating complex regulatory requirements for financial institutions such as banks, insurance companies, and investment firms into optimization frameworks, ensuring compliance while achieving portfolio objectives;
+			
+			- robust optimization strategy development for hedging interest rate and duration risks;
+
+            - effective risk management by interpreting complex market signals and detecting market anomalies. 
             </p>
+
             """,
             unsafe_allow_html=True
         )
