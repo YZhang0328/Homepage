@@ -128,9 +128,10 @@ with st.container():
         """
         <p style="font-size: 22px;"><b>My daily responsibilities include:</b></p>
         <ul>
-            <li style="font-size: 20px;">Working with Excel and Python, especially Pandas, to analyze and process large energy market datasets—including demand, supply, plant, region, and interflow data. I develop models that optimize electricity distribution across various sources such as gas, coal, solar, wind, hydro, and interconnectors. These models generate price forecasts and market trends to support financial decision-making in energy portfolios.</li>
-            <li style="font-size: 20px;">Add features to the market model, identify input and modelling anomalies for robust considerations. Features include capacity market features, renewable energy certificate (REC) features, as well as foundational elements such as time granularity features, and data warehouse integration. </li>
-            <li style="font-size: 20px;">Ensuring reliability of new features through testing, including unit, integration, behavioural, and regression tests. </li>
+            <li style="font-size: 20px;">Developing software packages to analyze and process large-scale energy market datasets, including demand, supply, plant-level, time-resolution, and interconnection flow data.</li>
+            <li style="font-size: 20px;">Developing an optimization model of electricity distribution across multiple sources (gas, coal, solar, wind, etc), which generates long-term price forecasts and market insights to support energy portfolio decisions. </li>
+            <li style="font-size: 20px;">Adding features to the market model, identify input and modelling anomalies for robust considerations. Features include capacity market features, renewable energy certificate (REC) features, as well as foundational elements such as time granularity features, and data warehouse integration.</li>
+            <li style="font-size: 20px;">Reliability check of new features through testing, including unit, integration, behavioural, and regression tests. </li>
             <li style="font-size: 20px;">Running scenario analyses in multiple regional markets such as ERCOT, European, and GB markets to evaluate the impact of technological advancements, policy shifts, and economic trends on energy prices.</li>
             <li style="font-size: 20px;">Continuously enhancing models and optimizing platform data structures, as I'm always seeking more efficient solutions: "There has to be a better way".</li>
         </ul>
