@@ -82,13 +82,13 @@ with st.container():
         
         # Create a markdown link
         st.write("[Learn more about me>](https://www.linkedin.com/in/yujia-zhang-94417a295/)")
-        with open(file_path, "rb") as pdf_file:
-            btn = st.download_button(
-                label="Download My CV",
-                data=pdf_file,
-                file_name="CV_YUJIA.pdf",
-                mime="CV_for_application/pdf"
-            )
+        # with open(file_path, "rb") as pdf_file:
+        #     btn = st.download_button(
+        #         label="Download My CV",
+        #         data=pdf_file,
+        #         file_name="CV_YUJIA.pdf",
+        #         mime="CV_for_application/pdf"
+        #     )
 
 # ---- WHAT I DO ----
 with st.container():
