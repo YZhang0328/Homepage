@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_icon="📈", layout="wide")
+st.set_page_config(layout="wide")
 
 with st.container():
     text_column, image_column = st.columns((2, 1))
