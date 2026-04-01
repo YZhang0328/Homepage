@@ -1,0 +1,435 @@
+import { useEffect, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Calendar,
+  ExternalLink,
+  MapPin,
+} from "lucide-react";
+import { useSearchParams } from "react-router-dom";
+
+import {
+  aiFinanceEvents,
+  desks,
+  type DeskId,
+  type EventListing,
+  type FeaturePanelData,
+  type NewsDesk,
+  type NewsStory,
+} from "@/data/newsDesk";
+import { cn } from "@/lib/utils";
+
+type SectionId = "events" | DeskId;
+
+const defaultSectionId: SectionId = "events";
+const sectionIds: SectionId[] = ["finance", "ai", "markets", "events"];
+
+function isSectionId(value: string | null): value is SectionId {
+  return value !== null && sectionIds.includes(value as SectionId);
+}
+
+function EventCard({ event }: { event: EventListing }) {
+  return (
+    <a
+      href={event.link}
+      target="_blank"
+      rel="noreferrer"
+      className="group block rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1">
+          <div className="mb-2 flex items-center gap-2">
+            <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium">
+              {event.type}
+            </span>
+            <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted">
+              {event.price}
+            </span>
+          </div>
+          <h3 className="font-semibold leading-snug group-hover:underline">
+            {event.title}
+          </h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            {event.description}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted">
+            <span className="inline-flex items-center gap-1">
+              <Calendar size={12} /> {event.date}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <MapPin size={12} /> {event.venue}
+            </span>
+          </div>
+        </div>
+        <ExternalLink
+          size={16}
+          className="mt-1 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100"
+        />
+      </div>
+    </a>
+  );
+}
+
+function FeaturePanel({ feature }: { feature: FeaturePanelData }) {
+  return (
+    <div className="overflow-hidden rounded-3xl border border-border bg-card">
+      <div className="grid md:grid-cols-[1.28fr_0.72fr]">
+        <div className="p-6 md:p-8 lg:p-10">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">
+            {feature.label}
+          </p>
+          <h2 className="mt-3 max-w-[18ch] font-serif text-2xl font-bold leading-tight md:text-3xl">
+            {feature.title}
+          </h2>
+          <p className="mt-4 max-w-[38rem] text-sm leading-relaxed text-muted md:text-[0.98rem]">
+            {feature.summary}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {feature.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-border bg-accent px-3 py-1 text-xs font-mono text-muted"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-border md:border-l md:border-t-0 md:p-5">
+          <div className="mx-auto w-full max-w-[18rem] overflow-hidden rounded-2xl md:max-w-[12.5rem] lg:max-w-[13.25rem]">
+            <div className="aspect-[4/5]">
+              <img
+                src={feature.image}
+                alt={feature.imageAlt}
+                className={cn(
+                  "h-full w-full object-cover",
+                  feature.imageClassName ?? "object-center"
+                )}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BriefCard({
+  story,
+  onOpen,
+  featured = false,
+  showCta = false,
+  ctaLabel = "Read full article",
+  showArrow = true,
+}: {
+  story: NewsStory;
+  onOpen: () => void;
+  featured?: boolean;
+  showCta?: boolean;
+  ctaLabel?: string;
+  showArrow?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className={cn(
+        "w-full overflow-hidden rounded-3xl border border-border bg-card text-left transition-all hover:-translate-y-0.5 hover:shadow-md",
+        featured ? "md:grid md:grid-cols-[1.02fr_0.98fr]" : ""
+      )}
+    >
+      <div
+        className={cn(
+          "overflow-hidden bg-neutral-100",
+          featured ? "border-b border-border md:border-r md:border-b-0" : "border-b border-border"
+        )}
+      >
+        <div className={cn(featured ? "aspect-[16/10] md:h-full md:aspect-auto" : "aspect-[16/10]")}>
+          <img
+            src={story.image}
+            alt={story.imageAlt}
+            className={cn("h-full w-full object-cover", story.imageClassName ?? "object-center")}
+          />
+        </div>
+      </div>
+
+      <div className="p-5 md:p-6">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs uppercase tracking-[0.16em] text-muted">
+          <span>{story.kicker}</span>
+          <span className="h-1 w-1 rounded-full bg-border" />
+          <span>{story.date}</span>
+        </div>
+        <h3
+          className={cn(
+            "mt-3 font-serif font-bold leading-tight",
+            featured ? "max-w-[18ch] text-3xl md:text-[2.15rem]" : "max-w-[24ch] text-2xl"
+          )}
+        >
+          {story.headline}
+        </h3>
+        <p className="mt-3 max-w-[42rem] text-[1rem] leading-relaxed text-muted">
+          {story.dek}
+        </p>
+        {showCta && (
+          <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
+            {ctaLabel}
+            {showArrow && <ArrowRight size={16} />}
+          </span>
+        )}
+      </div>
+    </button>
+  );
+}
+
+function ArticleView({
+  story,
+  onBack,
+}: {
+  story: NewsStory;
+  onBack: () => void;
+}) {
+  return (
+    <article className="rounded-3xl border border-border bg-card p-6 md:p-8 lg:p-10">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+      >
+        <ArrowLeft size={16} />
+        Back to briefs
+      </button>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-[17rem_minmax(0,1fr)] lg:items-start">
+        <div className="overflow-hidden rounded-2xl border border-border bg-neutral-100">
+          <div className="aspect-[4/5]">
+            <img
+              src={story.image}
+              alt={story.imageAlt}
+              className={cn("h-full w-full object-cover", story.imageClassName ?? "object-center")}
+            />
+          </div>
+        </div>
+
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">
+            Full Article
+          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs uppercase tracking-[0.16em] text-muted">
+            <span>{story.kicker}</span>
+            <span className="h-1 w-1 rounded-full bg-border" />
+            <span>{story.date}</span>
+          </div>
+          <h3 className="mt-3 max-w-[34ch] font-serif text-2xl font-bold leading-tight">
+            {story.headline}
+          </h3>
+          <p className="mt-3 max-w-[56rem] text-[1rem] leading-relaxed text-muted">
+            {story.dek}
+          </p>
+          <div className="mt-5 space-y-4">
+            {story.paragraphs.map((paragraph) => (
+              <p key={paragraph} className="max-w-[56rem] text-sm leading-relaxed md:text-[0.98rem]">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 rounded-2xl bg-accent p-5">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">Model View</p>
+        <p className="mt-2 text-sm leading-relaxed">{story.modelView}</p>
+      </div>
+      <div className="mt-5 border-l-2 border-border pl-4">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">Bottom Line</p>
+        <p className="mt-2 text-sm leading-relaxed">{story.bottomLine}</p>
+      </div>
+    </article>
+  );
+}
+
+export default function News() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const articleAnchorRef = useRef<HTMLDivElement | null>(null);
+
+  const activeSectionId = isSectionId(searchParams.get("desk"))
+    ? (searchParams.get("desk") as SectionId)
+    : defaultSectionId;
+  const activeDesk =
+    activeSectionId === "events"
+      ? null
+      : desks.find((desk) => desk.id === activeSectionId) ?? desks[0];
+  const selectedSlug = searchParams.get("story");
+  const selectedStory =
+    activeDesk?.stories.find((story) => story.slug === selectedSlug) ?? null;
+
+  useEffect(() => {
+    if (selectedStory && articleAnchorRef.current) {
+      articleAnchorRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, [selectedStory]);
+
+  const updateRoute = (sectionId: SectionId, storySlug?: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set("desk", sectionId);
+
+    if (sectionId !== "events" && storySlug) {
+      nextParams.set("story", storySlug);
+    } else {
+      nextParams.delete("story");
+    }
+
+    setSearchParams(nextParams);
+  };
+
+  const renderDesk = (desk: NewsDesk) => {
+    if (selectedStory) {
+      return (
+        <div className="space-y-8">
+          <ArticleView story={selectedStory} onBack={() => updateRoute(desk.id)} />
+
+          <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+            <p className="text-xs uppercase tracking-[0.18em] text-muted">More Briefs</p>
+            <p className="mt-2 max-w-[42rem] text-sm leading-relaxed text-muted">
+              The note above is the full article. The briefs below open their own
+              full articles.
+            </p>
+            <div className="mt-5 grid gap-5 md:grid-cols-2">
+              {desk.stories
+                .filter((story) => story.slug !== selectedStory.slug)
+                .map((story) => (
+                  <BriefCard
+                    key={story.slug}
+                    story={story}
+                    onOpen={() => updateRoute(desk.id, story.slug)}
+                    showCta
+                    ctaLabel="Click to display full article above"
+                    showArrow={false}
+                  />
+                ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <p className="max-w-[58rem] text-sm leading-relaxed text-muted md:text-[0.98rem]">
+          {desk.intro}
+        </p>
+        <FeaturePanel feature={desk.feature} />
+        <BriefCard
+          story={desk.stories[0]}
+          featured
+          onOpen={() => updateRoute(desk.id, desk.stories[0].slug)}
+          showCta
+        />
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">More Briefs</p>
+        </div>
+        <div className="grid gap-5 md:grid-cols-2">
+          {desk.stories.slice(1).map((story) => (
+            <BriefCard
+              key={story.slug}
+              story={story}
+              onOpen={() => updateRoute(desk.id, story.slug)}
+              showCta
+              ctaLabel="Click to display full article above"
+              showArrow={false}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderEvents = () => {
+    return (
+      <div className="space-y-4">
+        <p className="mb-6 max-w-[58rem] text-sm leading-relaxed text-muted md:text-[0.98rem]">
+          Practical AI sessions and finance-focused gatherings worth tracking,
+          from Microsoft agent workshops to London payments and capital-markets
+          conferences.
+        </p>
+        {aiFinanceEvents.map((event) => (
+          <EventCard key={event.title} event={event} />
+        ))}
+      </div>
+    );
+  };
+
+  const tabs: Array<{ id: SectionId; label: string }> = [
+    { id: "events", label: "AI & Finance Events" },
+    ...desks.map((desk) => ({ id: desk.id, label: desk.label })),
+  ];
+
+  return (
+    <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-12"
+      >
+        <p className="mb-3 text-sm uppercase tracking-wide text-muted">Signal Board</p>
+        <h1 className="max-w-[60rem] font-sans text-[1.35rem] font-semibold leading-[1.15] md:text-[1.85rem]">
+          Finance, AI &amp; Market Briefings
+        </h1>
+        <p className="mt-4 max-w-[56rem] text-[1.02rem] leading-relaxed text-muted md:text-[1.1rem]">
+          A live board for financial infrastructure, consequential AI, market
+          transmission, and the events worth showing up for. Start with the
+          short brief, then open the lead note for the longer analytical version.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {["financial infrastructure", "agent infrastructure", "energy transmission", "London events"].map(
+            (pill) => (
+              <span
+                key={pill}
+                className="rounded-full border border-border bg-card px-3 py-1 text-xs font-mono text-muted"
+              >
+                {pill}
+              </span>
+            )
+          )}
+        </div>
+      </motion.div>
+
+      <div className="mb-10 flex w-fit items-center gap-1 rounded-full bg-accent p-1">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => updateRoute(tab.id)}
+            className={cn(
+              "rounded-full px-5 py-2 text-sm font-medium transition-all",
+              activeSectionId === tab.id
+                ? "bg-foreground text-white shadow-sm"
+                : "text-muted hover:text-foreground"
+            )}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div ref={articleAnchorRef} className="scroll-mt-28">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${activeSectionId}:${selectedStory?.slug ?? "briefs"}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25 }}
+          >
+            {activeSectionId === "events" || !activeDesk
+              ? renderEvents()
+              : renderDesk(activeDesk)}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}

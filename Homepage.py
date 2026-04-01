@@ -1,186 +1,63 @@
-import requests
 import streamlit as st
-from PIL import Image
-import cv2
-import numpy as np
-import base64
 
-# Find more emojis here: https://www.webfx.com/tools/emoji-cheat-sheet/
-st.set_page_config(page_title="Yujia's homepage", page_icon=":house_with_garden:", layout="wide")
+NEW_SITE_URL = "https://yzhang0328.github.io/Homepage_streamlit/"
 
+st.set_page_config(
+    page_title="Yujia Zhang",
+    page_icon=":link:",
+    layout="centered",
+)
 
-def load_lottieurl(url):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-
-# Use local CSS
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-
-local_css("style/style.css")
-
-
-image = cv2.imread("images/Photo_Yujia.jpg")
-
-height, width = image.shape[:2]
-mask = np.zeros((height, width), dtype=np.uint8)
-# create a circle mask
-cv2.circle(mask, (width//2, height//2), min(width, height)//2, 255, -1)
-# apply the mask
-result = cv2.bitwise_and(image, image, mask=mask)
-
-# make the background transparent
-bgra = cv2.cvtColor(result, cv2.COLOR_BGR2BGRA)
-bgra[:, :, 3] = mask  
-
-# save the image
-cv2.imwrite("images/Yujia_Photo.png", bgra)
-
-# ---- LOAD ASSETS ----
-img_contact_form = Image.open("images/Yujia_Photo.png")
-
-# ---- HEADER SECTION ----
-
-with st.container():
-    image_column, text_column = st.columns((1, 2))
-    with image_column:
-        st.image(img_contact_form)
-    with text_column:
-        st.title("Hi, I am Yujia Zhang :wave:")
-        st.subheader("An industrial mathematician with a problem-solving mindset.")
-        
-        # Use st.markdown separately
-        st.markdown(
-            '<p style="font-size: 20px;"> I am passionate about applying quantitative methods and statistical modeling to capture the volatility of capital markets, with a strong intellectual curiosity to explore the mathematics behind data patterns. </p>',
-            unsafe_allow_html=True
-        )
-
-        st.markdown(
-            """
-            <p style="font-size: 22px;"><b>My expertise lies in optimization and prediction.</b></p>
-            <ul>
-                <li style="font-size: 20px;"><b>Optimization:</b> I specialize in transforming intricate financial and regulatory constraints into structured, solvable frameworks. Whether ensuring compliance with evolving market regulations or optimizing resource allocation, I build solutions that balance efficiency and robustness.</li>
-                <li style="font-size: 20px;"><b>Prediction:</b> I analyze trends and anomalies within data series using both linear and nonlinear models. I help businesses anticipate market movements, optimize strategies, and make informed financial decisions.</li>
-            </ul>
-            """, 
-            unsafe_allow_html=True
-        )
-
-        # Regular st.write for text
-        file_path = 'CV/CV_YUJIA.pdf'
-
-        st.markdown( '<p style="font-size: 20px;"> <b>Current role</b>: Energy Modeller, to optimize energy market models </p>', unsafe_allow_html=True)
-
-        st.markdown( '<p style="font-size: 20px;"> <b>Certification</b>: CFA Program Level I, passed </p>', unsafe_allow_html=True)
-
-        st.write("Get in touch with me: yujia.zhang.uom@gmail.com")
-        
-        # Create a markdown link
-        st.write("[Learn more about me>](https://www.linkedin.com/in/yujia-zhang-94417a295/)")
-        # with open(file_path, "rb") as pdf_file:
-        #     btn = st.download_button(
-        #         label="Download My CV",
-        #         data=pdf_file,
-        #         file_name="CV_YUJIA.pdf",
-        #         mime="CV_for_application/pdf"
-        #     )
-
-# ---- WHAT I DO ----
-with st.container():
-    st.write("---")
-    st.header("What I do")
-    st.write("##")
-    st.markdown(
-        '<p style="font-size: 20px;"> I have a PhD in engineering. I subsequently worked as a postdoctoral research scientist from the University of Manchester. I am also a dedicated ambassador for women in engineering.  </p>',
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        '<p style="font-size: 20px;"> After transitioning from academia, I now work as an energy modeller specializing in energy market optimization.  </p>',
-        unsafe_allow_html=True
-    )
-
-    def get_base64_of_file(file_path):
-        with open(file_path, "rb") as file:
-            return base64.b64encode(file.read()).decode()
-
-    gif_path = "images/Aurora_refined.gif"
-    gif_base64 = get_base64_of_file(gif_path)
-    
-
-    st.markdown(
-        f"""
-        <div style="overflow-x: auto; white-space: nowrap; width: 100%;">
-            <img src="data:image/gif;base64,{gif_base64}" alt="GIF" style="width: 750px; height: auto; display: block; margin: 0 auto;">
-        </div>
-
-        """,
-        unsafe_allow_html=True
-    )
-    
-    st.write("")
-
-    st.markdown(
-        """
-        <p style="font-size: 22px;"><b>My daily responsibilities include:</b></p>
-        <ul>
-            <li style="font-size: 20px;">Developing software packages to analyze and process large-scale energy market datasets, including demand, supply, plant-level, time-resolution, and interconnection flow data.</li>
-            <li style="font-size: 20px;">Developing an optimization model of electricity distribution across multiple sources (gas, coal, solar, wind, etc), which generates long-term price forecasts and market insights to support energy portfolio decisions. </li>
-            <li style="font-size: 20px;">Adding features to the market model, identify input and modelling anomalies for robust considerations. Features include capacity market features, renewable energy certificate (REC) features, as well as foundational elements such as time granularity features, and data warehouse integration.</li>
-            <li style="font-size: 20px;">Reliability check of new features through testing, including unit, integration, behavioural, and regression tests. </li>
-            <li style="font-size: 20px;">Running scenario analyses in multiple regional markets such as ERCOT, European, and GB markets to evaluate the impact of technological advancements, policy shifts, and economic trends on energy prices.</li>
-            <li style="font-size: 20px;">Continuously enhancing models and optimizing platform data structures, as I'm always seeking more efficient solutions: "There has to be a better way".</li>
-        </ul>
-        """, 
-        unsafe_allow_html=True
-    )
-    st.markdown(
-        '<p style="font-size: 22px;"> If this sounds interesting to you, feel free to contact me, and stay tuned for more content!  </p>',
-        unsafe_allow_html=True
-    )
-
-
-# # ---- CONTACT ----
-# with st.container():
-#     st.write("---")
-#     st.header("Get In Touch With Me!")
-#     st.write("##")
-
-#     left_column, right_column = st.columns([0.9, 0.1])
-
-#     with left_column:
-#         with st.form(key="contact_form"):
-#             name = st.text_input("Your Name")
-#             email = st.text_input("Your Email")
-#             message = st.text_area("Your Message")
-
-#             submit_button = st.form_submit_button("Send")
-
-#             if submit_button:
-#                 if name and email and message:
-#                     submit_url = "https://formsubmit.co/yujia.zhang.uom@gmail.com"
-#                     payload = {
-#                         "name": name,
-#                         "email": email,
-#                         "message": message,
-#                         "_replyto": email,  
-#                         "_captcha": "false",
-#                         "_next": "thank_you.html"
-#                     }
-#                     response = requests.post(submit_url, data=payload)
-
-#                     if response.status_code == 200:
-#                         st.success("Message sent successfully!")
-#                     else:
-#                         st.error("Something went wrong. Please try again.")
-#                 else:
-#                     st.warning("Please fill in all fields before submitting.")
-
-#             st.write("Or send to the email address: yujia.zhang.uom@gmail.com")
-
-#    with right_column:
-#        st.empty()
+st.markdown(
+    f"""
+    <meta http-equiv="refresh" content="0; url={NEW_SITE_URL}">
+    <script>
+      window.location.replace("{NEW_SITE_URL}");
+    </script>
+    <style>
+      .stApp {{
+        background: #f7f5f0;
+      }}
+      .redirect-shell {{
+        max-width: 720px;
+        margin: 8vh auto;
+        padding: 2.5rem;
+        border: 1px solid #d9d4c8;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+      }}
+      .redirect-shell h1 {{
+        margin: 0 0 1rem 0;
+        font-size: 2rem;
+        line-height: 1.05;
+      }}
+      .redirect-shell p {{
+        margin: 0 0 1rem 0;
+        font-size: 1rem;
+        line-height: 1.7;
+        color: #4b5563;
+      }}
+      .redirect-shell a {{
+        display: inline-block;
+        margin-top: 0.5rem;
+        padding: 0.85rem 1.2rem;
+        border-radius: 999px;
+        background: #111827;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+      }}
+    </style>
+    <div class="redirect-shell">
+      <p>Portfolio Update</p>
+      <h1>This site has moved.</h1>
+      <p>
+        You are being redirected to Yujia Zhang's new public website.
+        If the new page does not open automatically, use the button below.
+      </p>
+      <a href="{NEW_SITE_URL}">Open the new website</a>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
