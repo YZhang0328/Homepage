@@ -24,11 +24,9 @@ streamlit run Homepage.py
 
 ## Public deployment
 
-The main site is prepared for GitHub Pages via `.github/workflows/deploy-portfolio.yml`.
+The main public site is now deployed on Netlify:
 
-- Production URL: `https://yzhang0328.github.io/Homepage_streamlit/`
+- Production URL: `https://yujiazhanghomepage.netlify.app/`
 - Legacy URL: `https://yujiazhang.streamlit.app/`
 
-Set the repository's GitHub Pages source to `GitHub Actions`, then push to `main` to publish the new site.
-
-The Streamlit app at the legacy URL now acts only as a redirect entry point.
+The Streamlit app at the legacy URL acts as a redirect entry point to the Netlify site.
