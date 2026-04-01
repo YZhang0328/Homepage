@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cdn.dribbble.com)",
+      "Bash(npm create:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
