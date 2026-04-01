@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
 type SectionId = "events" | DeskId;
 
 const defaultSectionId: SectionId = "events";
-const sectionIds: SectionId[] = ["finance", "ai", "markets", "events"];
+const sectionIds: SectionId[] = ["events", "ai", "markets", "finance"];
 
 function isSectionId(value: string | null): value is SectionId {
   return value !== null && sectionIds.includes(value as SectionId);
@@ -98,8 +98,8 @@ function FeaturePanel({ feature }: { feature: FeaturePanelData }) {
         </div>
 
         <div className="border-t border-border md:border-l md:border-t-0 md:p-5">
-          <div className="mx-auto w-full max-w-[18rem] overflow-hidden rounded-2xl md:max-w-[12.5rem] lg:max-w-[13.25rem]">
-            <div className="aspect-[4/5]">
+          <div className="h-full w-full overflow-hidden rounded-2xl">
+            <div className="aspect-[4/5] md:h-full md:aspect-auto">
               <img
                 src={feature.image}
                 alt={feature.imageAlt}
@@ -365,7 +365,9 @@ export default function News() {
 
   const tabs: Array<{ id: SectionId; label: string }> = [
     { id: "events", label: "AI & Finance Events" },
-    ...desks.map((desk) => ({ id: desk.id, label: desk.label })),
+    { id: "ai", label: "AI News" },
+    { id: "markets", label: "Markets & Power" },
+    { id: "finance", label: "Financial Infrastructure" },
   ];
 
   return (
