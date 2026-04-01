@@ -1,6 +1,6 @@
 import streamlit as st
 
-NEW_SITE_URL = "https://yzhang0328.github.io/Homepage_streamlit/"
+NEW_SITE_URL = "https://www.yujiazhanghomepage.com/"
 
 st.set_page_config(
     page_title="Yujia Zhang",
