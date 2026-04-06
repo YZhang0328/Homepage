@@ -1,6 +1,6 @@
 import streamlit as st
 
-NEW_SITE_URL = "https://yujiazhanghomepage.netlify.app/"
+NEW_SITE_URL = "https://yujiazhang.co.uk/"
 
 st.set_page_config(
     page_title="Yujia Zhang",

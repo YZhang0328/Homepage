@@ -587,17 +587,3 @@ export const desks: NewsDesk[] = [
     ],
   },
 ];
-
-export const arvowBriefings = desks.flatMap((desk) =>
-  desk.stories.map((story) => ({
-    desk: desk.label,
-    slug: story.slug,
-    headline: story.headline,
-    briefingDek: story.dek,
-    image: story.image,
-    imageAlt: story.imageAlt,
-    modelView: story.modelView,
-    bottomLine: story.bottomLine,
-    packet: story.packet,
-  }))
-);

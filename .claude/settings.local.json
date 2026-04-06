@@ -3,7 +3,9 @@
     "allow": [
       "WebFetch(domain:cdn.dribbble.com)",
       "Bash(npm create:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(cat D:/Homepage_streamlit/portfolio-next/public/*)",
+      "Bash(sort find:*)"
     ]
   }
 }
