@@ -243,6 +243,9 @@ function ArticleView({
       </div>
       <div className="mt-5 border-l-2 border-border pl-4">
         <p className="text-xs uppercase tracking-[0.18em] text-muted">Bottom Line</p>
+        <p className="mt-0.5 text-xs text-muted italic">
+          The one thing to remember — the strategic implication in its most compressed form.
+        </p>
         <p className="mt-2 text-sm leading-relaxed">{story.bottomLine}</p>
       </div>
     </article>

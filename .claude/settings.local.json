@@ -5,7 +5,15 @@
       "Bash(npm create:*)",
       "Bash(npm install:*)",
       "Bash(cat D:/Homepage_streamlit/portfolio-next/public/*)",
-      "Bash(sort find:*)"
+      "Bash(sort find:*)",
+      "Bash(gh api:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "Bash(npm run:*)",
+      "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run dev -- --port 5173)",
+      "Bash(npx tsx:*)",
+      "Bash(DEV_API_KEY=test npx tsx scripts/publish.ts --desk ai --story openai-promptfoo-evals-infrastructure --platforms dev --dry-run)"
     ]
   }
 }

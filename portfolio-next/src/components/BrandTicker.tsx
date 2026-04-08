@@ -6,6 +6,7 @@ const brands = [
   "Git",
   "AWS",
   "Advanced Mathematics",
+  "Optimization",
   "Probability Theory",
   "Statistics",
   "Mathematical Modelling",
