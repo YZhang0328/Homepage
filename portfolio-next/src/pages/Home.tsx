@@ -55,7 +55,7 @@ export default function Home() {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              className="max-w-[9ch] font-serif text-[2.75rem] md:text-[3.1rem] lg:text-[3.6rem] font-bold leading-[0.93] tracking-tight"
+              className="max-w-[9ch] font-serif text-[1.9rem] md:text-[2.2rem] lg:text-[2.6rem] font-bold leading-[0.93] tracking-tight"
             >
               Industrial
               <br />
