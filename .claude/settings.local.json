@@ -14,7 +14,9 @@
       "Bash(NODE_OPTIONS=\"--max-old-space-size=4096\" npm run dev -- --port 5173)",
       "Bash(npx tsx:*)",
       "Bash(DEV_API_KEY=test npx tsx scripts/publish.ts --desk ai --story openai-promptfoo-evals-infrastructure --platforms dev --dry-run)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(curl:*)",
+      "Skill(schedule)"
     ]
   }
 }

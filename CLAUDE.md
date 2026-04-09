@@ -112,12 +112,11 @@ To find a photo ID: search [unsplash.com](https://unsplash.com), open a photo, a
 
 **Image consistency rules:**
 - Always use `?w=1080&q=80&auto=format&fit=crop` — this keeps all images the same resolution and file size (~100–200 KB).
-- Always set `imageClassName` to control cropping. Default: `"object-center"`. For images where the subject is high or low, use `"object-[center_40%]"` etc.
+- Always set `imageClassName: "object-center"` on every story and feature panel. Do not use custom vertical offsets. Consistent centering keeps all cards visually aligned across the grid.
 - Do **not** use portrait-orientation photos (taller than wide) — they break the `aspect-[16/10]` card layout.
 - Prefer landscape or square photos.
 - Test the URL in a browser before adding it to confirm the photo ID is valid.
 - Do not reuse the same photo ID across two stories in the same desk.
-- **Always use `imageClassName: "object-center"`** on every story and feature panel. Do not use custom vertical offsets (e.g. `object-[center_42%]`). Consistent centering keeps all cards visually aligned across the grid.
 
 ---
 
@@ -159,6 +158,25 @@ npm run publish -- --all
 ```
 Already-published articles are skipped automatically (422 = duplicate). DEV rate-limits at ~5 posts/5 min — the script waits 6 seconds between articles and auto-retries on 429.
 
+### Auto-publish pipeline (GitHub Actions)
+
+`.github/workflows/publish-articles.yml` publishes to DEV + Hashnode on demand or biweekly.
+
+**Workflow:**
+1. Review and update `newsDesk.ts`, merge to `main`
+2. Check content looks correct on the live site
+3. Go to **GitHub → Actions → "Publish Articles" → Run workflow**
+4. Choose platforms (default: `dev,hashnode`) and run
+
+**GitHub Secrets required** (Settings → Secrets → Actions):
+| Secret | Value |
+|--------|-------|
+| `DEV_API_KEY` | dev.to API key |
+| `HASHNODE_TOKEN` | Hashnode personal access token |
+| `HASHNODE_PUB_ID` | Hashnode publication ID |
+
+The workflow also runs automatically on the 1st and 15th of each month at 9am UTC, but will skip already-published articles safely.
+
 ### Article Formatting Rules for External Platforms
 
 **What external articles include (different from the website):**
@@ -172,10 +190,6 @@ Already-published articles are skipped automatically (422 = duplicate). DEV rate
 - **Two backlinks** to `yujiazhang.co.uk` and `yujiazhang.co.uk/news` in the bio
 - **DEV**: YAML front matter sets cover image and tags automatically
 - **WordPress**: inline CSS for font-size 15px / line-height 1.8, styled blockquotes, flexbox author card
-
-**What stays on the website only:**
-- Model View (analytical framing box)
-- Bottom Line (single-sentence strategic takeaway)
 
 **Font size on the personal website (News.tsx ArticleView):**
 - Dek: `text-[0.95rem] leading-[1.75]`

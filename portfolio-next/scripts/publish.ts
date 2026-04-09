@@ -1,30 +1,20 @@
 /**
  * publish.ts — Cross-platform article publisher
  *
- * Publishes any story from newsDesk.ts to up to 6 platforms simultaneously:
- *   DEV Community, Hashnode, Write.as, Ghost, Tumblr, WordPress.com
- *
- * Note: Medium removed — they stopped issuing API tokens as of Jan 2025.
+ * Publishes stories from newsDesk.ts to DEV Community, Hashnode, and WordPress.com.
+ * Medium: manual import only (API closed Jan 2025). Write.as/Ghost/Tumblr: removed.
  *
  * Usage:
  *   npm run publish -- --desk ai --story openai-promptfoo-evals-infrastructure
  *   npm run publish -- --desk markets --story pjm-capacity-auction --platforms dev,hashnode
  *   npm run publish -- --desk ai --story openai-promptfoo-evals-infrastructure --dry-run
  *   npm run publish -- --list          (show all available desk/story slugs)
+ *   npm run publish -- --all           (publish every story, skipping duplicates)
  *
  * Required env vars (fill in portfolio-next/.env.publish):
  *   DEV_API_KEY           dev.to/settings/account → DEV API Key
  *   HASHNODE_TOKEN        hashnode.com/settings/developer → Personal Access Token
  *   HASHNODE_PUB_ID       Hashnode publication ID (from your blog dashboard URL)
- *   WRITEAS_TOKEN         write.as/me/settings → API tokens
- *   WRITEAS_COLLECTION    your write.as blog alias (e.g. "yujia" for yujia.writeas.com)
- *   GHOST_URL             https://yourblog.ghost.io  (trailing slash omitted)
- *   GHOST_ADMIN_KEY       Ghost Admin API key in format  id:secret
- *   TUMBLR_CONSUMER_KEY   From apps.tumblr.com
- *   TUMBLR_CONSUMER_SEC   From apps.tumblr.com
- *   TUMBLR_OAUTH_TOKEN    OAuth access token (one-time browser auth)
- *   TUMBLR_OAUTH_SECRET   OAuth access token secret
- *   TUMBLR_BLOG           yourblog.tumblr.com
  *   WORDPRESS_SITE        yourblog.wordpress.com (no https://)
  *   WORDPRESS_USER        Your WordPress.com username
  *   WORDPRESS_APP_PASS    Application password from WordPress.com profile
@@ -61,7 +51,7 @@ function loadEnv() {
 
 // ── CLI args ──────────────────────────────────────────────────────────────────
 
-const ALL_PLATFORMS = ["dev", "hashnode", "wordpress"];
+const ALL_PLATFORMS = ["dev", "hashnode"];
 
 function parseArgs() {
   const args = process.argv.slice(2);
@@ -358,10 +348,66 @@ async function publishToWriteAs(story: NewsStory, desk: NewsDesk, markdown: stri
 
 // ── Hashnode ──────────────────────────────────────────────────────────────────
 
+/**
+ * Returns the set of canonical URLs already published to this Hashnode publication.
+ * Paginates through up to 500 posts (enough for any personal blog).
+ */
+async function hashnodePublishedUrls(token: string, pubId: string): Promise<Set<string>> {
+  const urls = new Set<string>();
+  let cursor: string | null = null;
+
+  for (let page = 0; page < 10; page++) {
+    const afterArg = cursor ? `, after: "${cursor}"` : "";
+    const res = await fetch("https://gql.hashnode.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: token },
+      body: JSON.stringify({
+        query: `query GetPosts($id: ObjectId!) {
+          publication(id: $id) {
+            posts(first: 50${afterArg}) {
+              edges { node { canonicalUrl } cursor }
+              pageInfo { hasNextPage endCursor }
+            }
+          }
+        }`,
+        variables: { id: pubId },
+      }),
+    });
+    if (!res.ok) break;
+    const json = (await res.json()) as {
+      data?: {
+        publication?: {
+          posts?: {
+            edges?: Array<{ node: { canonicalUrl?: string }; cursor: string }>;
+            pageInfo?: { hasNextPage: boolean; endCursor?: string };
+          };
+        };
+      };
+    };
+    const posts = json.data?.publication?.posts;
+    for (const edge of posts?.edges ?? []) {
+      if (edge.node.canonicalUrl) urls.add(edge.node.canonicalUrl);
+    }
+    if (!posts?.pageInfo?.hasNextPage) break;
+    cursor = posts?.pageInfo?.endCursor ?? null;
+    if (!cursor) break;
+  }
+  return urls;
+}
+
 async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const token = process.env.HASHNODE_TOKEN;
   const pubId = process.env.HASHNODE_PUB_ID;
   if (!token || !pubId) { console.warn("  ⚠  HASHNODE_TOKEN/HASHNODE_PUB_ID not set — skipping Hashnode"); return; }
+
+  if (dryRun) { console.log("  [Hashnode dry-run]", story.headline); return; }
+
+  // Pre-check: skip if already published (avoids relying on error message wording)
+  const published = await hashnodePublishedUrls(token, pubId);
+  if (published.has(canonicalUrl(story, desk))) {
+    console.log("  ↩  Hashnode       →  already published (skipped)");
+    return;
+  }
 
   const variables = {
     input: {
@@ -373,8 +419,6 @@ async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: st
       coverImageOptions: { coverImageURL: story.image },
     },
   };
-
-  if (dryRun) { console.log("  [Hashnode dry-run]", story.headline); return; }
 
   const res = await fetch("https://gql.hashnode.com", {
     method: "POST",
@@ -388,13 +432,7 @@ async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: st
   });
   if (!res.ok) throw new Error(`Hashnode ${res.status}: ${await res.text()}`);
   const json = (await res.json()) as { data?: { publishPost?: { post?: { url: string } } }; errors?: unknown[] };
-  if (json.errors) {
-    const msg = JSON.stringify(json.errors);
-    if (msg.includes("already published") || msg.includes("duplicate")) {
-      console.log("  ↩  Hashnode       →  already published (skipped)"); return;
-    }
-    throw new Error(`Hashnode GraphQL: ${msg}`);
-  }
+  if (json.errors) throw new Error(`Hashnode GraphQL: ${JSON.stringify(json.errors)}`);
   console.log(`  ✓ Hashnode       →  ${json.data?.publishPost?.post?.url}`);
 }
 
@@ -546,7 +584,8 @@ async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: s
   }
 
   const html = toHtmlWordPress(story, desk);
-  const endpoint = `https://${site}/wp-json/wp/v2/posts`;
+  // WordPress.com hosted sites require the public-api.wordpress.com proxy endpoint
+  const endpoint = `https://public-api.wordpress.com/wp/v2/sites/${site}/posts`;
   const credentials = Buffer.from(`${user}:${appPass}`).toString("base64");
 
   const payload = {
@@ -567,8 +606,11 @@ async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: s
     },
     body: JSON.stringify(payload),
   });
-  if (!res.ok) throw new Error(`WordPress ${res.status}: ${await res.text()}`);
-  const json = (await res.json()) as { link: string };
+  const body = await res.text();
+  if (!res.ok) throw new Error(`WordPress ${res.status}: ${body.slice(0, 300)}`);
+  let json: { link: string };
+  try { json = JSON.parse(body) as { link: string }; }
+  catch { throw new Error(`WordPress returned non-JSON (${res.status}): ${body.slice(0, 200)}`); }
   console.log(`  ✓ WordPress.com  →  ${json.link}`);
 }
 

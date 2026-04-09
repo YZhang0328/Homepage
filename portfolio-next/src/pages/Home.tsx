@@ -115,7 +115,7 @@ export default function Home() {
             About Me
           </p>
           <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug">
-            Rigor in analysis. Clarity in decision-making. That's what drives me.
+            Rigor in analysis. Clarity in decision-making.
           </h2>
           <p className="mt-6 max-w-[56rem] text-[1.02rem] text-muted leading-relaxed md:text-[1.1rem]">
             I am passionate about applying quantitative methods and statistical
