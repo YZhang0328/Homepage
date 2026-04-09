@@ -126,22 +126,50 @@ To find a photo ID: search [unsplash.com](https://unsplash.com), open a photo, a
 ### Article Generation
 Use **Claude Code** (this tool) directly to generate full articles from the `packet.briefing` field in each story. The briefing field contains the word count target, tone, key points, and source anchors — pass these to Claude and refine the output.
 
-Free publication targets (already defined in `publicationTargets`):
-- **Medium** — free, good SEO, large professional audience
-- **dev.to** — free, strong reach for technical/AI content
-- **Hashnode** — free, maps to a custom domain if desired
-- **LinkedIn Articles** — free, directly reaches the target audience (energy modelling, quant, finance)
+### Publishing Script
+`portfolio-next/scripts/publish.ts` publishes any story to 6 platforms in one command:
+```bash
+cd portfolio-next
+npm run publish -- --desk ai --story <slug>
+npm run publish -- --list    # show all available slugs
+```
+Credentials live in `portfolio-next/.env.publish` (git-ignored).
+
+**Platforms and status:**
+| Platform | Method | Status |
+|----------|--------|--------|
+| DEV Community (dev.to) | API key | ✅ Active |
+| Hashnode | API token + pub ID | ✅ Active |
+| Write.as | API token + collection alias | ✅ Active |
+| Ghost | Admin API key (JWT) | ✅ Active |
+| Tumblr | OAuth 1.0a (4 credentials) | ✅ Active |
+| WordPress.com | Application password | ✅ Active |
+| **Medium** | **Manual import only** | ⚠ API closed Jan 2025 |
+
+**Medium workflow (manual, ~2 min per article):**
+1. Publish to DEV first via the script
+2. Go to medium.com → Write a story → `···` menu → **Import a story**
+3. Paste the DEV article URL
+4. Medium imports the full article with formatting preserved
+5. Review → Publish
+The canonical URL from DEV (`yujiazhang.co.uk/news`) carries through automatically.
+
+### Article Formatting for External Platforms
+When publishing via the script, articles are formatted for maximum readability:
+- **Dek** rendered as a blockquote (`>`) — visually distinct from body text
+- **First sentence of each paragraph bolded** — aids scannability on long-form platforms
+- **Model View and Bottom Line** rendered as labelled blockquotes with emoji headers
+- **Image caption** added below the cover image
+- **Author bio section** at the end with two backlinks to `yujiazhang.co.uk`
+- **DEV Community** uses YAML front matter to auto-set cover image and tags
+
+When generating or updating formatting in `publish.ts`, maintain these conventions. The goal is that the article looks polished on DEV, Hashnode, Write.as, Ghost, Tumblr, and WordPress without manual reformatting.
 
 ### Social Media Distribution
-Use **Buffer** (free tier: up to 3 channels, 10 scheduled posts) or post directly on LinkedIn. The `packet` field in each story contains the `targetKeyword`, `briefing`, and `keyPoints` — these can be used as the basis for a LinkedIn post caption.
-
-LinkedIn caption structure (free, no tool needed):
-1. One hook sentence (lead from `dek`)
-2. 3 key points as short bullets (from `packet.keyPoints`)
-3. CTA linking to the article on the website or Medium
+Post directly on LinkedIn. Use the `dek` as the hook sentence, then 3 bullet points from `packet.keyPoints`, then link to the DEV or Hashnode article.
 
 ### Visual Assets
-No external tool required. Use the Unsplash image already attached to each story. For LinkedIn, Unsplash images can be downloaded and uploaded directly (check Unsplash licence: most photos are free for commercial use under the Unsplash Licence).
+No external tool required. Use the Unsplash image already attached to each story. For LinkedIn, Unsplash images can be downloaded and uploaded directly (Unsplash Licence permits commercial use).
 
 ---
 
