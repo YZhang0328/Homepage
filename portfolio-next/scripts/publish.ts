@@ -61,31 +61,37 @@ function loadEnv() {
 
 // ── CLI args ──────────────────────────────────────────────────────────────────
 
-const ALL_PLATFORMS = ["dev", "hashnode", "writeas", "ghost", "tumblr", "wordpress"];
+const ALL_PLATFORMS = ["dev", "hashnode", "wordpress"];
 
 function parseArgs() {
   const args = process.argv.slice(2);
-  if (args.includes("--list")) return { list: true, hashnodePubId: false } as const;
-  if (args.includes("--hashnode-pubid")) return { list: false, hashnodePubId: true } as const;
+  if (args.includes("--list")) return { mode: "list" } as const;
+  if (args.includes("--hashnode-pubid")) return { mode: "hashnode-pubid" } as const;
 
   const get = (flag: string) => {
     const i = args.indexOf(flag);
     return i !== -1 ? args[i + 1] : undefined;
   };
-  const desk = get("--desk");
-  const story = get("--story");
   const platforms = (get("--platforms") ?? get("--platform") ?? ALL_PLATFORMS.join(",")).split(",").map((s) => s.trim());
   const dryRun = args.includes("--dry-run");
+
+  if (args.includes("--all")) {
+    return { mode: "all", platforms, dryRun } as const;
+  }
+
+  const desk = get("--desk");
+  const story = get("--story");
 
   if (!desk || !story) {
     console.error(
       "Usage:\n" +
-      "  npm run publish -- --desk <id> --story <slug> [--platforms dev,medium,...] [--dry-run]\n" +
+      "  npm run publish -- --desk <id> --story <slug> [--platforms dev,hashnode,...] [--dry-run]\n" +
+      "  npm run publish -- --all [--platforms dev,hashnode,...] [--dry-run]\n" +
       "  npm run publish -- --list"
     );
     process.exit(1);
   }
-  return { list: false, hashnodePubId: false, desk, story, platforms, dryRun } as const;
+  return { mode: "one", desk, story, platforms, dryRun } as const;
 }
 
 // ── Formatters ────────────────────────────────────────────────────────────────
@@ -94,49 +100,142 @@ function canonicalUrl(story: NewsStory, desk: NewsDesk) {
   return `${HOMEPAGE}/news?desk=${desk.id}&story=${story.slug}`;
 }
 
-function toMarkdown(story: NewsStory, desk: NewsDesk): string {
-  // Numbered paragraphs with a visual drop-cap feel via bold lead sentence
-  const formattedParagraphs = story.paragraphs.map((p) => {
-    // Bold the first sentence of each paragraph for scannability
-    const firstStop = p.search(/(?<=[^A-Z])\. /);
-    if (firstStop > 0 && firstStop < 120) {
-      return `**${p.slice(0, firstStop + 1)}**${p.slice(firstStop + 1)}`;
-    }
+/** Bold the first sentence of each paragraph for scannability. */
+function boldLeads(paragraphs: string[]): string[] {
+  return paragraphs.map((p) => {
+    const stop = p.search(/(?<=[^A-Z])\. /);
+    if (stop > 0 && stop < 120) return `**${p.slice(0, stop + 1)}**${p.slice(stop + 1)}`;
     return p;
   });
+}
 
+
+const AUTHOR_PHOTO = "https://yujiazhang.co.uk/images/Photo_Yujia.jpg";
+
+/**
+ * DEV Community — technical audience, front matter for cover/tags,
+ * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ */
+function toMarkdownDev(story: NewsStory, desk: NewsDesk): string {
+  const paras = boldLeads(story.paragraphs);
+  const tags = deskTags(desk.id);
+  const frontMatter = [
+    "---",
+    `title: ${story.headline}`,
+    "published: true",
+    `tags: ${tags.join(", ")}`,
+    `canonical_url: ${canonicalUrl(story, desk)}`,
+    `cover_image: ${story.image}`,
+    "---",
+    "",
+  ].join("\n");
+
+  const body = [
+    `> ${story.dek}`,
+    "",
+    `*${story.kicker} · ${story.date}*`,
+    "",
+    "---",
+    "",
+    paras.join("\n\n"),
+    "",
+    "---",
+    "",
+    "### About the Author",
+    "",
+    `![Yujia Zhang](${AUTHOR_PHOTO})`,
+    "",
+    "**Yujia Zhang** is an energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She builds optimisation and forecasting models at the intersection of power markets, AI infrastructure, and financial systems. Her work spans electricity market modelling across ERCOT, European, and GB markets, LLM application development, and quantitative research in capital markets. CFA Level I passed.",
+    "",
+    `*Read the full Signal Board — live analytical briefs on AI, energy, and financial markets — at **[yujiazhang.co.uk/news](${HOMEPAGE}/news)**.*`,
+  ].join("\n");
+
+  return frontMatter + body;
+}
+
+/**
+ * Hashnode — developer/startup audience, clean markdown,
+ * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ */
+function toMarkdownHashnode(story: NewsStory, desk: NewsDesk): string {
+  const paras = boldLeads(story.paragraphs);
   return [
     `# ${story.headline}`,
     "",
-    `> ${story.dek}`,           // blockquote makes the dek visually distinct
+    `> ${story.dek}`,
     "",
     `![${story.imageAlt}](${story.image})`,
-    `*${story.imageAlt}*`,      // image caption
-    "",
-    `**${story.kicker} · ${story.date}**`,
+    `*${story.imageAlt} — ${story.date}*`,
     "",
     "---",
     "",
-    formattedParagraphs.join("\n\n"),
+    paras.join("\n\n"),
     "",
     "---",
     "",
-    "## 📊 Model View",
+    "## About the Author",
     "",
-    `> ${story.modelView}`,     // blockquote for analytical aside
+    `![Yujia Zhang](${AUTHOR_PHOTO})`,
     "",
-    "## ⬛ Bottom Line",
+    "**Yujia Zhang** is an energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She specialises in power market optimisation, forecasting models for electricity markets (ERCOT, European, GB), AI infrastructure, and quantitative methods in capital markets. CFA Level I passed.",
     "",
-    `> **${story.bottomLine}**`,
-    "",
-    "---",
-    "",
-    "### About the author",
-    "",
-    "**Yujia Zhang** is an energy modeller and quantitative researcher specialising in power market optimisation and AI in finance. This brief is part of the [Signal Board](https://yujiazhang.co.uk/news) — a live market intelligence board at **[yujiazhang.co.uk](https://yujiazhang.co.uk)**.",
-    "",
-    `*Desk: ${desk.label} · Tags: ${[desk.id, "finance", "AI", "markets"].join(", ")}*`,
+    `Follow her analytical work on the **[Signal Board](${HOMEPAGE}/news)** — live market intelligence at the intersection of AI, energy, and financial infrastructure — at [yujiazhang.co.uk](${HOMEPAGE}).`,
   ].join("\n");
+}
+
+/**
+ * WordPress.com — professional/general audience, clean HTML,
+ * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ */
+function toHtmlWordPress(story: NewsStory, desk: NewsDesk): string {
+  const inline = (t: string) =>
+    t
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>');
+
+  const paras = story.paragraphs
+    .map((p) => {
+      const stop = p.search(/(?<=[^A-Z])\. /);
+      const formatted =
+        stop > 0 && stop < 120
+          ? `<strong>${p.slice(0, stop + 1)}</strong>${p.slice(stop + 1)}`
+          : p;
+      return `<p style="font-size:15px;line-height:1.8;margin-bottom:1.2em;">${inline(formatted)}</p>`;
+    })
+    .join("\n");
+
+  return [
+    `<figure><img src="${story.image}" alt="${story.imageAlt}" style="max-width:100%;border-radius:8px;margin-bottom:0.5em;"></figure>`,
+    `<p style="font-size:13px;color:#888;text-align:center;margin-bottom:1.5em;">${inline(story.imageAlt)}</p>`,
+    "",
+    `<blockquote style="border-left:3px solid #ccc;padding:0.8em 1.2em;margin:1.5em 0;font-style:italic;color:#555;"><p>${inline(story.dek)}</p></blockquote>`,
+    "",
+    `<p style="font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#999;"><strong>${story.kicker}</strong> · ${story.date}</p>`,
+    "",
+    "<hr>",
+    "",
+    paras,
+    "",
+    "<hr>",
+    "",
+    "<h3>About the Author</h3>",
+    `<div style="display:flex;align-items:flex-start;gap:16px;margin-top:1em;">`,
+    `<img src="${AUTHOR_PHOTO}" alt="Yujia Zhang" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;">`,
+    `<div>`,
+    `<p style="margin:0 0 0.5em;font-size:15px;"><strong>Yujia Zhang</strong></p>`,
+    `<p style="margin:0 0 0.8em;font-size:14px;line-height:1.7;color:#444;">Energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She builds optimisation and forecasting models for power markets (ERCOT, European, GB), works on AI infrastructure and LLM applications, and conducts quantitative research in capital markets. CFA Level I passed.</p>`,
+    `<p style="margin:0;font-size:14px;"><a href="${HOMEPAGE}/news" style="color:#1a73e8;font-weight:600;">Read the Signal Board →</a> — live market intelligence at the intersection of AI, energy, and financial markets.</p>`,
+    `</div>`,
+    `</div>`,
+  ].join("\n");
+}
+
+function deskTags(deskId: string): string[] {
+  const base = ["finance", "markets", "analytics"];
+  if (deskId === "ai") return ["ai", "machinelearning", ...base].slice(0, 4);
+  if (deskId === "markets") return ["energy", "markets", ...base].slice(0, 4);
+  return ["fintech", "finance", ...base].slice(0, 4);
 }
 
 /** Converts the subset of markdown produced by toMarkdown() into HTML. */
@@ -182,39 +281,34 @@ function markdownToHtml(md: string): string {
 
 // ── DEV Community ─────────────────────────────────────────────────────────────
 
-async function publishToDev(story: NewsStory, desk: NewsDesk, markdown: string, dryRun: boolean) {
+async function publishToDev(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const apiKey = process.env.DEV_API_KEY;
   if (!apiKey) { console.warn("  ⚠  DEV_API_KEY not set — skipping DEV Community"); return; }
 
-  const tags = [desk.id === "ai" ? "ai" : desk.id, "finance", "analytics", "markets"].slice(0, 4);
-  // DEV supports YAML front matter inside body_markdown for cover image
-  const frontMatter = [
-    "---",
-    `title: ${story.headline}`,
-    `published: true`,
-    `tags: ${tags.join(", ")}`,
-    `canonical_url: ${canonicalUrl(story, desk)}`,
-    `cover_image: ${story.image}`,
-    "---",
-    "",
-  ].join("\n");
+  const tags = deskTags(desk.id);
   const payload = {
     article: {
       title: story.headline,
-      body_markdown: frontMatter + markdown,
+      body_markdown: toMarkdownDev(story, desk),
       published: true,
       tags,
       canonical_url: canonicalUrl(story, desk),
     },
   };
 
-  if (dryRun) { console.log("  [DEV dry-run]", JSON.stringify(payload.article.title)); return; }
+  if (dryRun) { console.log("  [DEV dry-run]", story.headline); return; }
 
   const res = await fetch("https://dev.to/api/articles", {
     method: "POST",
     headers: { "Content-Type": "application/json", "api-key": apiKey },
     body: JSON.stringify(payload),
   });
+  if (res.status === 422) { console.log("  ↩  DEV Community  →  already published (skipped)"); return; }
+  if (res.status === 429) {
+    console.log("  ⏳ DEV rate limited — waiting 5 min then retrying...");
+    await new Promise((r) => setTimeout(r, 310_000));
+    return publishToDev(story, desk, _markdown, dryRun);
+  }
   if (!res.ok) throw new Error(`DEV ${res.status}: ${await res.text()}`);
   const data = (await res.json()) as { url: string };
   console.log(`  ✓ DEV Community  →  ${data.url}`);
@@ -264,7 +358,7 @@ async function publishToWriteAs(story: NewsStory, desk: NewsDesk, markdown: stri
 
 // ── Hashnode ──────────────────────────────────────────────────────────────────
 
-async function publishToHashnode(story: NewsStory, desk: NewsDesk, markdown: string, dryRun: boolean) {
+async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const token = process.env.HASHNODE_TOKEN;
   const pubId = process.env.HASHNODE_PUB_ID;
   if (!token || !pubId) { console.warn("  ⚠  HASHNODE_TOKEN/HASHNODE_PUB_ID not set — skipping Hashnode"); return; }
@@ -272,7 +366,7 @@ async function publishToHashnode(story: NewsStory, desk: NewsDesk, markdown: str
   const variables = {
     input: {
       title: story.headline,
-      contentMarkdown: markdown,
+      contentMarkdown: toMarkdownHashnode(story, desk),
       publicationId: pubId,
       tags: [],
       originalArticleURL: canonicalUrl(story, desk),
@@ -294,7 +388,13 @@ async function publishToHashnode(story: NewsStory, desk: NewsDesk, markdown: str
   });
   if (!res.ok) throw new Error(`Hashnode ${res.status}: ${await res.text()}`);
   const json = (await res.json()) as { data?: { publishPost?: { post?: { url: string } } }; errors?: unknown[] };
-  if (json.errors) throw new Error(`Hashnode GraphQL: ${JSON.stringify(json.errors)}`);
+  if (json.errors) {
+    const msg = JSON.stringify(json.errors);
+    if (msg.includes("already published") || msg.includes("duplicate")) {
+      console.log("  ↩  Hashnode       →  already published (skipped)"); return;
+    }
+    throw new Error(`Hashnode GraphQL: ${msg}`);
+  }
   console.log(`  ✓ Hashnode       →  ${json.data?.publishPost?.post?.url}`);
 }
 
@@ -435,7 +535,7 @@ async function publishToTumblr(story: NewsStory, desk: NewsDesk, markdown: strin
 
 // ── WordPress.com ─────────────────────────────────────────────────────────────
 
-async function publishToWordPress(story: NewsStory, desk: NewsDesk, markdown: string, dryRun: boolean) {
+async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const site = process.env.WORDPRESS_SITE;
   const user = process.env.WORDPRESS_USER;
   const appPass = process.env.WORDPRESS_APP_PASS;
@@ -445,7 +545,7 @@ async function publishToWordPress(story: NewsStory, desk: NewsDesk, markdown: st
     return;
   }
 
-  const html = markdownToHtml(markdown);
+  const html = toHtmlWordPress(story, desk);
   const endpoint = `https://${site}/wp-json/wp/v2/posts`;
   const credentials = Buffer.from(`${user}:${appPass}`).toString("base64");
 
@@ -518,51 +618,57 @@ function listSlugs() {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-async function main() {
-  loadEnv();
-  const args = parseArgs();
-
-  if (args.list) { listSlugs(); return; }
-  if (args.hashnodePubId) { await lookupHashnodePubId(); return; }
-
-  const { desk: deskId, story: slug, platforms, dryRun } = args;
-
-  const desk = desks.find((d) => d.id === deskId);
-  if (!desk) {
-    console.error(`Desk "${deskId}" not found. Run --list to see options.`);
-    process.exit(1);
-  }
-  const story = desk.stories.find((s) => s.slug === slug);
-  if (!story) {
-    console.error(`Story "${slug}" not found. Run --list to see options.`);
-    process.exit(1);
-  }
-
+async function publishOne(story: NewsStory, desk: NewsDesk, platforms: string[], dryRun: boolean) {
   console.log(`\n${"─".repeat(60)}`);
-  console.log(`  Publishing: "${story.headline}"`);
-  console.log(`  Desk: ${desk.label}`);
-  console.log(`  Canonical URL: ${canonicalUrl(story, desk)}`);
-  console.log(`  Platforms: ${platforms.join(", ")}${dryRun ? "  [DRY RUN]" : ""}`);
-  console.log(`${"─".repeat(60)}\n`);
-
-  const markdown = toMarkdown(story, desk);
+  console.log(`  "${story.headline}"`);
+  console.log(`  ${desk.label}`);
+  console.log(`${"─".repeat(60)}`);
 
   const tasks: Promise<void>[] = [];
-  if (platforms.includes("dev"))       tasks.push(publishToDev(story, desk, markdown, dryRun));
-  if (platforms.includes("hashnode"))  tasks.push(publishToHashnode(story, desk, markdown, dryRun));
-  if (platforms.includes("writeas"))   tasks.push(publishToWriteAs(story, desk, markdown, dryRun));
-  if (platforms.includes("ghost"))     tasks.push(publishToGhost(story, desk, markdown, dryRun));
-  if (platforms.includes("tumblr"))    tasks.push(publishToTumblr(story, desk, markdown, dryRun));
-  if (platforms.includes("wordpress")) tasks.push(publishToWordPress(story, desk, markdown, dryRun));
+  if (platforms.includes("dev"))       tasks.push(publishToDev(story, desk, "", dryRun));
+  if (platforms.includes("hashnode"))  tasks.push(publishToHashnode(story, desk, "", dryRun));
+  if (platforms.includes("writeas"))   tasks.push(publishToWriteAs(story, desk, "", dryRun));
+  if (platforms.includes("ghost"))     tasks.push(publishToGhost(story, desk, "", dryRun));
+  if (platforms.includes("tumblr"))    tasks.push(publishToTumblr(story, desk, "", dryRun));
+  if (platforms.includes("wordpress")) tasks.push(publishToWordPress(story, desk, "", dryRun));
 
   const results = await Promise.allSettled(tasks);
   for (const r of results) {
     if (r.status === "rejected") console.error(`  ✗ ${String(r.reason)}`);
   }
+}
 
-  console.log(`\n${"─".repeat(60)}`);
-  console.log("  Done. Click any link above to verify the backlink.");
-  console.log(`${"─".repeat(60)}\n`);
+async function main() {
+  loadEnv();
+  const args = parseArgs();
+
+  if (args.mode === "list") { listSlugs(); return; }
+  if (args.mode === "hashnode-pubid") { await lookupHashnodePubId(); return; }
+
+  if (args.mode === "all") {
+    const { platforms, dryRun } = args;
+    console.log(`\nPublishing ALL ${desks.reduce((n, d) => n + d.stories.length, 0)} stories → ${platforms.join(", ")}${dryRun ? "  [DRY RUN]" : ""}`);
+    for (const desk of desks) {
+      for (const story of desk.stories) {
+        await publishOne(story, desk, platforms, dryRun);
+        if (!dryRun) await new Promise((r) => setTimeout(r, 6000));
+      }
+    }
+    console.log(`\n${"─".repeat(60)}`);
+    console.log("  All done. Import each DEV article into Medium manually.");
+    console.log(`${"─".repeat(60)}\n`);
+    return;
+  }
+
+  // mode === "one"
+  const { desk: deskId, story: slug, platforms, dryRun } = args;
+  const desk = desks.find((d) => d.id === deskId);
+  if (!desk) { console.error(`Desk "${deskId}" not found. Run --list to see options.`); process.exit(1); }
+  const story = desk.stories.find((s) => s.slug === slug);
+  if (!story) { console.error(`Story "${slug}" not found. Run --list to see options.`); process.exit(1); }
+
+  await publishOne(story, desk, platforms, dryRun);
+  console.log(`\n  Done. Click any link above to verify the backlinks.\n`);
 }
 
 main();

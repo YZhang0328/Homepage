@@ -140,11 +140,11 @@ Credentials live in `portfolio-next/.env.publish` (git-ignored).
 |----------|--------|--------|
 | DEV Community (dev.to) | API key | ✅ Active |
 | Hashnode | API token + pub ID | ✅ Active |
-| Write.as | API token + collection alias | ✅ Active |
-| Ghost | Admin API key (JWT) | ✅ Active |
-| Tumblr | OAuth 1.0a (4 credentials) | ✅ Active |
-| WordPress.com | Application password | ✅ Active |
+| WordPress.com (`yujiazhanguk.wordpress.com`) | Application password | ✅ Active |
 | **Medium** | **Manual import only** | ⚠ API closed Jan 2025 |
+| Write.as | Paid plan required | ❌ Removed |
+| Ghost | Paid plan required | ❌ Removed |
+| Tumblr | Wrong audience (art/fandom) | ❌ Removed |
 
 **Medium workflow (manual, ~2 min per article):**
 1. Publish to DEV first via the script
@@ -152,18 +152,37 @@ Credentials live in `portfolio-next/.env.publish` (git-ignored).
 3. Paste the DEV article URL
 4. Medium imports the full article with formatting preserved
 5. Review → Publish
-The canonical URL from DEV (`yujiazhang.co.uk/news`) carries through automatically.
 
-### Article Formatting for External Platforms
-When publishing via the script, articles are formatted for maximum readability:
-- **Dek** rendered as a blockquote (`>`) — visually distinct from body text
-- **First sentence of each paragraph bolded** — aids scannability on long-form platforms
-- **Model View and Bottom Line** rendered as labelled blockquotes with emoji headers
-- **Image caption** added below the cover image
-- **Author bio section** at the end with two backlinks to `yujiazhang.co.uk`
-- **DEV Community** uses YAML front matter to auto-set cover image and tags
+**Batch publish all articles:**
+```bash
+npm run publish -- --all
+```
+Already-published articles are skipped automatically (422 = duplicate). DEV rate-limits at ~5 posts/5 min — the script waits 6 seconds between articles and auto-retries on 429.
 
-When generating or updating formatting in `publish.ts`, maintain these conventions. The goal is that the article looks polished on DEV, Hashnode, Write.as, Ghost, Tumblr, and WordPress without manual reformatting.
+### Article Formatting Rules for External Platforms
+
+**What external articles include (different from the website):**
+- **No Model View section** — removed from all external publications
+- **No Bottom Line section** — removed from all external publications
+- **Expanded length (~1.5x)**: two extra paragraphs added automatically by `expandParagraphs()` — a scene-setting intro and a practitioner-implications close
+- **Dek** as a blockquote — visually distinct from body text
+- **First sentence of each paragraph bolded** — aids scannability
+- **Image caption** below the cover image
+- **Author bio with photo** at the end (photo: `https://yujiazhang.co.uk/images/Photo_Yujia.jpg`)
+- **Two backlinks** to `yujiazhang.co.uk` and `yujiazhang.co.uk/news` in the bio
+- **DEV**: YAML front matter sets cover image and tags automatically
+- **WordPress**: inline CSS for font-size 15px / line-height 1.8, styled blockquotes, flexbox author card
+
+**What stays on the website only:**
+- Model View (analytical framing box)
+- Bottom Line (single-sentence strategic takeaway)
+
+**Font size on the personal website (News.tsx ArticleView):**
+- Dek: `text-[0.95rem] leading-[1.75]`
+- Paragraphs: `text-[0.82rem] leading-[1.8] md:text-[0.88rem]`
+- Paragraph spacing: `space-y-[1.1rem]`
+
+When updating `publish.ts` formatters, maintain all rules above. The goal is polished, editorial-quality output on every platform with no manual reformatting needed.
 
 ### Social Media Distribution
 Post directly on LinkedIn. Use the `dek` as the hook sentence, then 3 bullet points from `packet.keyPoints`, then link to the DEV or Hashnode article.

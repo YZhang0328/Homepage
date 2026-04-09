@@ -224,12 +224,12 @@ function ArticleView({
           <h3 className="mt-3 max-w-[34ch] font-serif text-2xl font-bold leading-tight">
             {story.headline}
           </h3>
-          <p className="mt-3 max-w-[56rem] text-[1rem] leading-relaxed text-muted">
+          <p className="mt-3 max-w-[56rem] text-[0.95rem] leading-[1.75] text-muted">
             {story.dek}
           </p>
-          <div className="mt-5 space-y-4">
+          <div className="mt-5 space-y-[1.1rem]">
             {story.paragraphs.map((paragraph) => (
-              <p key={paragraph} className="max-w-[56rem] text-sm leading-relaxed md:text-[0.98rem]">
+              <p key={paragraph} className="max-w-[56rem] text-[0.82rem] leading-[1.8] text-foreground/80 md:text-[0.88rem]">
                 {paragraph}
               </p>
             ))}
