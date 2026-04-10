@@ -1,4 +1,4 @@
-# Homepage_streamlit
+# Homepage
 
 This repository now contains two pieces:
 
