@@ -1,12 +1,8 @@
 [build]
-  base = "portfolio-next"
-  command = "npm run build"
-  publish = "dist"
-
-[build.environment]
-  NODE_VERSION = "22"
+  publish = "netlify-redirect"
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
-  status = 200
+  to = "https://yujiazhang.co.uk/:splat"
+  status = 301
+  force = true
