@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import { desks } from "../src/data/newsDesk.ts";
 import { getStoryTopics, getTopicsWithCounts } from "../src/data/newsTopics.ts";
+import { getStoriesForHub, getTopicHubs } from "../src/data/topicHubs.ts";
 
 const SITE_URL = (
   process.env.SITE_URL ?? process.env.VITE_SITE_URL ?? "https://yujiazhang.co.uk"
@@ -315,6 +316,8 @@ routeLastMods.set("/", LASTMOD_ISO);
 routeLastMods.set("/research", LASTMOD_ISO);
 routeLastMods.set("/news", LASTMOD_ISO);
 routeLastMods.set("/news/archive", LASTMOD_ISO);
+routes.add("/news/hub");
+routeLastMods.set("/news/hub", LASTMOD_ISO);
 
 for (const desk of desks) {
   routes.add(`/news/${desk.id}`);
@@ -349,6 +352,18 @@ for (const topic of getTopicsWithCounts()) {
   const route = `/news/tag/${topic.slug}`;
   routes.add(route);
   routeLastMods.set(route, tagLastMods.get(topic.slug) ?? LASTMOD_ISO);
+}
+
+for (const hub of getTopicHubs()) {
+  const route = `/news/hub/${hub.slug}`;
+  routes.add(route);
+
+  const latestHubStory = getStoriesForHub(hub.slug).reduce((latest, story) => {
+    const storyIso = parseLastMod(story.date);
+    return storyIso > latest ? storyIso : latest;
+  }, LASTMOD_ISO);
+
+  routeLastMods.set(route, latestHubStory);
 }
 
 const urls = Array.from(routes).sort((a, b) => a.localeCompare(b));
@@ -424,6 +439,8 @@ ${feedItems}
 function getSitemapMeta(route: string): { changefreq: string; priority: string } {
   if (route === "/" || route === "/news") return { changefreq: "weekly", priority: "1.0" };
   if (route === "/research" || route === "/news/archive") return { changefreq: "monthly", priority: "0.8" };
+  if (route === "/news/hub") return { changefreq: "weekly", priority: "0.9" };
+  if (/^\/news\/hub\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.8" };
   if (/^\/news\/[^/]+\/[^/]+$/.test(route)) return { changefreq: "monthly", priority: "0.8" };
   if (/^\/news\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.7" };
   if (/^\/news\/tag\//.test(route)) return { changefreq: "weekly", priority: "0.5" };

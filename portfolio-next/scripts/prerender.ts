@@ -13,6 +13,11 @@ import {
   getStoryTopics,
   getTopicDefinition,
 } from "../src/data/newsTopics.ts";
+import {
+  getStoriesForHub,
+  getTopicHubDefinition,
+  getTopicHubs,
+} from "../src/data/topicHubs.ts";
 import { SITE_URL, absoluteUrl, storyOgImagePath } from "../src/lib/site.ts";
 
 type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
@@ -172,6 +177,73 @@ function getSeoForPath(pathname: string): SeoSpec {
           })),
         },
       },
+    };
+  }
+
+  if (pathname === "/news/hub") {
+    const hubs = getTopicHubs();
+    return {
+      title: "Topic Hubs | Signal Board",
+      description:
+        "Three reading hubs that turn Signal Board into a stronger internal link graph: stablecoins and payments, agents and governance, and power markets and data centres.",
+      canonicalPath: "/news/hub",
+      imagePath: "/images/background_picture.png",
+      imageAlt: "Signal Board topic hubs",
+      type: "website",
+      jsonLd: {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Topic Hubs | Signal Board",
+        description:
+          "Three reading hubs that turn Signal Board into a stronger internal link graph: stablecoins and payments, agents and governance, and power markets and data centres.",
+        url: absoluteUrl("/news/hub"),
+        mainEntity: {
+          "@type": "ItemList",
+          numberOfItems: hubs.length,
+          itemListElement: hubs.map((hub, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            url: absoluteUrl(`/news/hub/${hub.slug}`),
+            name: hub.title,
+          })),
+        },
+      },
+    };
+  }
+
+  const hubMatch = pathname.match(/^\/news\/hub\/([^/]+)$/);
+  if (hubMatch) {
+    const hub = getTopicHubDefinition(hubMatch[1]);
+    const stories = hub ? getStoriesForHub(hub.slug) : getAllStories();
+    return {
+      title: hub ? `${hub.title} | Signal Board` : "Topic Hubs | Signal Board",
+      description: hub
+        ? hub.summary
+        : "Three reading hubs that turn Signal Board into a stronger internal link graph: stablecoins and payments, agents and governance, and power markets and data centres.",
+      canonicalPath: hub ? `/news/hub/${hub.slug}` : "/news/hub",
+      imagePath: stories[0]?.image ?? "/images/background_picture.png",
+      imageAlt: stories[0]?.imageAlt ?? "Signal Board topic hub",
+      type: "website",
+      robots: hub ? "index,follow" : "noindex,follow",
+      jsonLd: hub
+        ? {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: `${hub.title} | Signal Board`,
+            description: hub.summary,
+            url: absoluteUrl(`/news/hub/${hub.slug}`),
+            mainEntity: {
+              "@type": "ItemList",
+              numberOfItems: stories.length,
+              itemListElement: stories.map((story, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                url: absoluteUrl(story.packet.backlinkPath),
+                name: story.headline,
+              })),
+            },
+          }
+        : undefined,
     };
   }
 

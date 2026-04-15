@@ -10,6 +10,7 @@ import {
   getStoryTopics,
   type StoryIndexItem,
 } from "@/data/newsTopics";
+import { getTopicHubs } from "@/data/topicHubs";
 import { absoluteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -77,6 +78,7 @@ export default function Archive() {
   const params = useParams<ArchiveParams>();
   const allStories = getAllStories();
   const topics = getTopicsWithCounts();
+  const topicHubs = getTopicHubs();
   const topic = params.tag ? getTopicDefinition(params.tag) : null;
   const shouldIndex = !params.tag || Boolean(topic);
   const stories = topic ? getStoriesForTopic(topic.slug) : allStories;
@@ -181,6 +183,56 @@ export default function Archive() {
             >
               {topicItem.label}
               <span className="ml-2 opacity-70">({topicItem.count})</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mb-12 rounded-3xl border border-border bg-card p-6 md:p-8">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-muted">
+              Topic hubs
+            </p>
+            <h2 className="mt-2 font-serif text-2xl font-bold">
+              Three high-value reading paths
+            </h2>
+            <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted">
+              These hubs concentrate internal links around the themes most likely
+              to earn repeat visits and long-tail discovery.
+            </p>
+          </div>
+          <Link
+            to="/news/hub"
+            className="rounded-full border border-border bg-accent px-4 py-2 text-sm font-medium hover:bg-white transition-colors"
+          >
+            View hub index
+          </Link>
+        </div>
+        <div className="mt-5 grid gap-5 md:grid-cols-3">
+          {topicHubs.map((hub) => (
+            <Link
+              key={hub.slug}
+              to={`/news/hub/${hub.slug}`}
+              className="rounded-2xl border border-border bg-accent p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <p className="text-xs uppercase tracking-[0.18em] text-muted">
+                {hub.label}
+              </p>
+              <h3 className="mt-3 font-serif text-xl font-bold leading-tight">
+                {hub.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                {hub.description}
+              </p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full bg-foreground px-3 py-1 text-xs font-medium text-white">
+                  {hub.stories.length} stories
+                </span>
+                <span className="rounded-full border border-border bg-white px-3 py-1 text-xs text-muted">
+                  {hub.topics.length} topics
+                </span>
+              </div>
             </Link>
           ))}
         </div>

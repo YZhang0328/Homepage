@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
 import BrandTicker from "@/components/BrandTicker";
 import Seo from "@/components/Seo";
+import { getTopicHubs } from "@/data/topicHubs";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -20,6 +21,8 @@ const stats = [
 ];
 
 export default function Home() {
+  const topicHubs = getTopicHubs();
+
   return (
     <>
       <Seo
@@ -176,6 +179,52 @@ export default function Home() {
               <p className="text-sm text-muted mt-1">{s.label}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-20 md:pb-28">
+        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="mb-3 text-sm uppercase tracking-wide text-muted">
+                Topic Hubs
+              </p>
+              <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug">
+                Start with the three clusters that carry the most weight.
+              </h2>
+            </div>
+            <Link
+              to="/news/hub"
+              className="inline-flex items-center gap-2 rounded-full border border-foreground px-5 py-2 text-sm font-medium transition-colors hover:bg-foreground hover:text-white w-fit"
+            >
+              Explore all hubs <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="mt-6 grid gap-5 md:grid-cols-3">
+            {topicHubs.map((hub) => (
+              <Link
+                key={hub.slug}
+                to={`/news/hub/${hub.slug}`}
+                className="rounded-2xl border border-border bg-accent p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <p className="text-xs uppercase tracking-[0.18em] text-muted">
+                  {hub.label}
+                </p>
+                <h3 className="mt-3 font-serif text-xl font-bold leading-tight">
+                  {hub.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  {hub.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-full bg-foreground px-3 py-1 text-xs font-medium text-white">
+                    {hub.stories.length} stories
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
