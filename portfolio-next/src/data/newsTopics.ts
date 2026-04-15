@@ -31,6 +31,18 @@ export const topicDefinitions: Record<string, TopicDefinition> = {
     description:
       "Stories about financial technology firms, banking strategy, platform economics, and balance-sheet control.",
   },
+  treasury: {
+    slug: "treasury",
+    label: "Treasury",
+    description:
+      "Coverage of cash management, liquidity, settlement operations, and how finance teams move money internally and across borders.",
+  },
+  "agentic-commerce": {
+    slug: "agentic-commerce",
+    label: "Agentic Commerce",
+    description:
+      "Articles on AI-initiated payments, purchase authorization, liability, and the trust layers around agent-led transactions.",
+  },
   mcp: {
     slug: "mcp",
     label: "MCP",
@@ -125,6 +137,18 @@ export const storyTopicSlugs: Record<string, string[]> = {
     "regulation",
   ],
   "revolut-us-bank-charter": ["fintech", "regulation", "payments"],
+  "stablecoin-treasury-management-2026": [
+    "stablecoins",
+    "payments",
+    "treasury",
+    "fintech",
+  ],
+  "agentic-commerce-liability-stack-2026": [
+    "agentic-commerce",
+    "payments",
+    "regulation",
+    "fintech",
+  ],
   "mcp-97-million-installs-standard": ["mcp", "agents", "enterprise-ai"],
   "anthropic-enterprise-dominance-2026": [
     "enterprise-ai",
