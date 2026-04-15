@@ -227,6 +227,7 @@ function BriefCard({
   ctaLabel = "Read full article",
   showArrow = true,
   eyebrow,
+  showDek = true,
 }: {
   story: NewsStory;
   onOpen: () => void;
@@ -235,23 +236,20 @@ function BriefCard({
   ctaLabel?: string;
   showArrow?: boolean;
   eyebrow?: string;
+  showDek?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onOpen}
       className={cn(
-        "w-full overflow-hidden rounded-3xl border border-border bg-card text-left transition-all hover:-translate-y-0.5 hover:shadow-md",
-        featured ? "md:grid md:grid-cols-[1.02fr_0.98fr]" : ""
+        "flex h-full w-full flex-col overflow-hidden rounded-3xl border border-border bg-card text-left transition-all hover:-translate-y-0.5 hover:shadow-lg"
       )}
     >
       <div
-        className={cn(
-          "overflow-hidden bg-neutral-100",
-          featured ? "border-b border-border md:border-r md:border-b-0" : "border-b border-border"
-        )}
+        className="overflow-hidden border-b border-border bg-neutral-100"
       >
-        <div className={cn(featured ? "aspect-[16/10] md:h-full md:aspect-auto" : "aspect-[16/10]")}>
+        <div className={cn(featured ? "aspect-[16/10] lg:aspect-[16/9]" : "aspect-[16/10]")}>
           <img
             src={story.image}
             alt={story.imageAlt}
@@ -260,7 +258,7 @@ function BriefCard({
         </div>
       </div>
 
-      <div className="p-5 md:p-6">
+      <div className={cn("flex flex-1 flex-col p-5 md:p-6", featured ? "md:p-7 lg:p-8" : "")}>
         {eyebrow && (
           <p className="text-xs uppercase tracking-[0.18em] text-muted">
             {eyebrow}
@@ -274,14 +272,20 @@ function BriefCard({
         <h3
           className={cn(
             "mt-3 font-serif font-bold leading-tight",
-            featured ? "max-w-[18ch] text-3xl md:text-[2.15rem]" : "max-w-[24ch] text-2xl"
+            featured
+              ? "max-w-none text-[2rem] leading-[1.02] md:text-[2.35rem]"
+              : showDek
+                ? "max-w-[24ch] text-2xl"
+                : "max-w-[20ch] text-xl leading-snug"
           )}
         >
           {story.headline}
         </h3>
-        <p className="mt-3 max-w-[42rem] text-[1rem] leading-relaxed text-muted">
-          {story.dek}
-        </p>
+        {showDek && (
+          <p className="mt-3 max-w-[42rem] text-[1rem] leading-relaxed text-muted">
+            {story.dek}
+          </p>
+        )}
         <div className="mt-4 flex flex-wrap gap-2">
           {getStoryTopics(story.slug).map((topic) => (
             <span
@@ -370,6 +374,7 @@ function MarketsGuidePanel({
                 ctaLabel="Open related brief"
                 showArrow={false}
                 eyebrow="Related"
+                showDek={false}
               />
             ))}
           </div>
@@ -447,6 +452,7 @@ function FinanceGuidePanel({
                 ctaLabel="Open related brief"
                 showArrow={false}
                 eyebrow="Related"
+                showDek={false}
               />
             ))}
           </div>
@@ -486,16 +492,17 @@ function RelatedBriefsPanel({
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
         {relatedStories.slice(0, 2).map((story) => (
-          <BriefCard
-            key={story.slug}
-            story={story}
-            onOpen={() => onOpenStory(story.slug)}
-            showCta
-            ctaLabel="Open related brief"
-            showArrow={false}
-            eyebrow="Related"
-          />
-        ))}
+                <BriefCard
+                  key={story.slug}
+                  story={story}
+                  onOpen={() => onOpenStory(story.slug)}
+                  showCta
+                  ctaLabel="Open related brief"
+                  showArrow={false}
+                  eyebrow="Related"
+                  showDek={false}
+                />
+              ))}
       </div>
     </section>
   );
@@ -720,6 +727,7 @@ export default function News() {
                       showCta
                       ctaLabel="Click to display full article above"
                       showArrow={false}
+                      showDek={false}
                     />
                 ))}
               </div>
