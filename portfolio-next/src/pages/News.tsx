@@ -341,7 +341,7 @@ export default function News() {
   useEffect(() => {
     if (selectedStory && articleAnchorRef.current) {
       articleAnchorRef.current.scrollIntoView({
-        behavior: "smooth",
+        behavior: "auto",
         block: "start",
       });
     }
@@ -552,13 +552,13 @@ export default function News() {
       </div>
 
       <div ref={articleAnchorRef} className="scroll-mt-28">
-        <AnimatePresence mode="wait">
+        <AnimatePresence initial={false} mode="sync">
           <motion.div
             key={`${activeSectionId}:${selectedStory?.slug ?? "briefs"}`}
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0.98, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0.98, y: -6 }}
+            transition={{ duration: 0.14 }}
           >
             {activeSectionId === "events" || !activeDesk
               ? renderEvents()

@@ -3,19 +3,41 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Redirecting...</title>
+    <title>Yujia Zhang</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #ffffff;
+      }
+    </style>
     <script>
       (function () {
-        var route = window.location.pathname + window.location.search + window.location.hash;
-        try {
-          window.sessionStorage.setItem("gh-route", route);
-        } catch (error) {}
-        window.location.replace("/");
+        function loadApp() {
+          fetch("/index.html", { cache: "no-store" })
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (html) {
+              document.open();
+              document.write(html);
+              document.close();
+            })
+            .catch(function () {
+              window.location.replace("/");
+            });
+        }
+
+        if (location.pathname === "/") {
+          window.location.replace("/");
+          return;
+        }
+
+        loadApp();
       })();
     </script>
-    <noscript>
-      <meta http-equiv="refresh" content="0; url=/" />
-    </noscript>
   </head>
   <body></body>
 </html>
