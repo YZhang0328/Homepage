@@ -190,7 +190,7 @@ export default function Home() {
                 Topic Hubs
               </p>
               <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug">
-                Start with the three clusters that carry the most weight.
+                Topic Clusters
               </h2>
             </div>
             <Link
