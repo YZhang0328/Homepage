@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var route = window.location.pathname + window.location.search + window.location.hash;
+        try {
+          window.sessionStorage.setItem("gh-route", route);
+        } catch (error) {}
+        window.location.replace("/");
+      })();
+    </script>
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=/" />
+    </noscript>
+  </head>
+  <body></body>
+</html>
