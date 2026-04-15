@@ -910,7 +910,7 @@ export default function News() {
     : activeSectionId === "events"
       ? "Practical AI sessions and finance-focused gatherings worth tracking, from Microsoft agent workshops to London capital-markets events."
       : activeDesk?.intro ??
-        "A live board for financial infrastructure, consequential AI, market transmission, and the events worth showing up for.";
+        "A live board for financial infrastructure, AI, market transmission, and London events.";
 
   const canonicalPath = selectedEvent
     ? buildEventPath(routeEventSlug)
@@ -1013,9 +1013,8 @@ export default function News() {
           Finance, AI &amp; Market Briefings
         </h1>
         <p className="mt-4 max-w-[56rem] text-[1.02rem] leading-relaxed text-muted md:text-[1.1rem]">
-          A live board for financial infrastructure, consequential AI, market
-          transmission, and the events worth showing up for. Start with the
-          short brief, then open the lead note for the longer analytical version.
+          A live board for financial infrastructure, AI, market
+          transmission, and London events.
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-2">
           <Link

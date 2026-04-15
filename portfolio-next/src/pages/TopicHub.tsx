@@ -257,11 +257,7 @@ export default function TopicHub() {
         </div>
 
         <aside className="rounded-3xl border border-border bg-card p-6">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">Reading path</p>
-          <p className="mt-3 text-sm leading-relaxed text-muted">
-            Start with the strongest article, then move through the supporting
-            pieces in the order below.
-          </p>
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">Articles</p>
           <div className="mt-6 space-y-4">
             {hubStories.map((story, index) => (
               <Link
