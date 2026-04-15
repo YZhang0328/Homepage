@@ -868,8 +868,8 @@ export const desks: NewsDesk[] = [
         dek:
           "The question is no longer just how much firm capacity PJM needs. It is whether the new load that creates the need should pay for it directly.",
         image:
-          "https://images.unsplash.com/photo-1691643158804-d3f02eb456a3?w=1080&q=80&auto=format&fit=crop",
-        imageAlt: "Computer screen displaying energy market data and price charts",
+          "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1080&q=80&auto=format&fit=crop",
+        imageAlt: "Power lines and grid infrastructure at sunset",
         imageClassName: "object-center",
         paragraphs: [
           "Capacity markets socialise the cost of reliability across all ratepayers. That works when load growth is diffuse and slow. It becomes controversial when the incremental demand comes from a small number of industrial users with enough bargaining power to shape the rules. AI data centres sit exactly in that category.",

@@ -322,48 +322,25 @@ function MarketsGuidePanel({
 
   return (
     <section className="rounded-3xl border border-border bg-card p-6 md:p-8">
-      <div className="max-w-4xl">
-        <p className="text-xs uppercase tracking-[0.18em] text-muted">
-          Reading Path
-        </p>
-        <h2 className="mt-2 font-serif text-2xl font-bold">
-          Start here, then read next
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          These stories are split by editorial layer on purpose: the first is
-          the structural frame, the second explains the pricing mechanism, and
-          the remaining briefs add the policy, infrastructure, and commodity
-          context.
-        </p>
-      </div>
-
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         <BriefCard
           story={pillarStory}
           onOpen={() => onOpenStory(pillarStory.slug)}
           featured
           showCta
-          ctaLabel="Open pillar article"
-          eyebrow="Start here"
+          ctaLabel="Open article"
         />
         <BriefCard
           story={supportStory}
           onOpen={() => onOpenStory(supportStory.slug)}
           featured
           showCta
-          ctaLabel="Open support article"
-          eyebrow="Read next"
+          ctaLabel="Open article"
         />
       </div>
 
       {relatedStories.length > 0 && (
         <div className="mt-6 rounded-2xl border border-dashed border-border bg-accent p-4">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">
-            Related briefs
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            Use these as adjacent reads after the pillar and support pieces.
-          </p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {relatedStories.slice(0, 3).map((story) => (
               <BriefCard
@@ -371,9 +348,8 @@ function MarketsGuidePanel({
                 story={story}
                 onOpen={() => onOpenStory(story.slug)}
                 showCta
-                ctaLabel="Open related brief"
+                ctaLabel="Open article"
                 showArrow={false}
-                eyebrow="Related"
                 showDek={false}
               />
             ))}
@@ -399,49 +375,25 @@ function FinanceGuidePanel({
 
   return (
     <section className="rounded-3xl border border-border bg-card p-6 md:p-8">
-      <div className="max-w-4xl">
-        <p className="text-xs uppercase tracking-[0.18em] text-muted">
-          Reading Path
-        </p>
-        <h2 className="mt-2 font-serif text-2xl font-bold">
-          Start here, then read next
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-muted">
-          This desk is split by layer on purpose: stack ownership, regulatory
-          clarity, balance-sheet control, treasury use, and agentic payments.
-          Read the first two for the core thesis, then use the related briefs to
-          follow the money.
-        </p>
-      </div>
-
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         <BriefCard
           story={pillarStory}
           onOpen={() => onOpenStory(pillarStory.slug)}
           featured
           showCta
-          ctaLabel="Open pillar article"
-          eyebrow="Start here"
+          ctaLabel="Open article"
         />
         <BriefCard
           story={supportStory}
           onOpen={() => onOpenStory(supportStory.slug)}
           featured
           showCta
-          ctaLabel="Open support article"
-          eyebrow="Read next"
+          ctaLabel="Open article"
         />
       </div>
 
       {relatedStories.length > 0 && (
         <div className="mt-6 rounded-2xl border border-dashed border-border bg-accent p-4">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">
-            Related briefs
-          </p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            Use these after the first two pieces to move from infrastructure to
-            treasury and payment control.
-          </p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {relatedStories.slice(0, 3).map((story) => (
               <BriefCard
@@ -449,9 +401,8 @@ function FinanceGuidePanel({
                 story={story}
                 onOpen={() => onOpenStory(story.slug)}
                 showCta
-                ctaLabel="Open related brief"
+                ctaLabel="Open article"
                 showArrow={false}
-                eyebrow="Related"
                 showDek={false}
               />
             ))}
@@ -492,17 +443,16 @@ function RelatedBriefsPanel({
 
       <div className="mt-5 grid gap-5 md:grid-cols-2">
         {relatedStories.slice(0, 2).map((story) => (
-                <BriefCard
-                  key={story.slug}
-                  story={story}
-                  onOpen={() => onOpenStory(story.slug)}
-                  showCta
-                  ctaLabel="Open related brief"
-                  showArrow={false}
-                  eyebrow="Related"
-                  showDek={false}
-                />
-              ))}
+          <BriefCard
+            key={story.slug}
+            story={story}
+            onOpen={() => onOpenStory(story.slug)}
+            showCta
+            ctaLabel="Open article"
+            showArrow={false}
+            showDek={false}
+          />
+        ))}
       </div>
     </section>
   );
@@ -543,9 +493,9 @@ function FinanceRelatedBriefsPanel({
             story={story}
             onOpen={() => onOpenStory(story.slug)}
             showCta
-            ctaLabel="Open related brief"
+            ctaLabel="Open article"
             showArrow={false}
-            eyebrow="Related"
+            showDek={false}
           />
         ))}
       </div>
@@ -725,7 +675,7 @@ export default function News() {
                       story={story}
                       onOpen={() => updateRoute(desk.id, story.slug)}
                       showCta
-                      ctaLabel="Click to display full article above"
+                      ctaLabel="Open article"
                       showArrow={false}
                       showDek={false}
                     />
@@ -780,7 +730,7 @@ export default function News() {
                   story={story}
                   onOpen={() => updateRoute(desk.id, story.slug)}
                   showCta
-                  ctaLabel="Click to display full article above"
+                  ctaLabel="Open article"
                   showArrow={false}
                 />
               ))}
