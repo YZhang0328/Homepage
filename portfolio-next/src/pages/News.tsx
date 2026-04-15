@@ -37,7 +37,6 @@ type NewsRouteParams = {
   event?: string;
 };
 
-type PublishingPacket = NewsStory["packet"];
 
 const defaultSectionId: SectionId = "events";
 const sectionIds: SectionId[] = ["events", "ai", "markets", "finance"];
@@ -586,125 +585,6 @@ function ArticleView({
   );
 }
 
-function PublishingPacketPanel({ packet }: { packet: PublishingPacket }) {
-  return (
-    <section className="rounded-3xl border border-border bg-card p-6 md:p-8">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">
-            Publishing packet
-          </p>
-          <h3 className="mt-2 font-serif text-2xl font-bold leading-tight">
-            Publishing brief
-          </h3>
-        </div>
-        <Link
-          to={packet.backlinkPath}
-          className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
-        >
-          Open canonical article
-        </Link>
-      </div>
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="rounded-2xl border border-border bg-accent p-5">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">Search target</p>
-          <p className="mt-2 text-sm leading-relaxed text-muted">
-            This article was built around the keyword below and the audience that
-            typically searches for it.
-          </p>
-
-          <dl className="mt-5 space-y-4">
-            <div>
-              <dt className="text-xs uppercase tracking-[0.18em] text-muted">
-                Keyword
-              </dt>
-              <dd className="mt-1 text-sm font-medium leading-relaxed">
-                {packet.targetKeyword}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.18em] text-muted">Audience</dt>
-              <dd className="mt-1 text-sm leading-relaxed">{packet.audience}</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.18em] text-muted">Tone</dt>
-              <dd className="mt-1 text-sm leading-relaxed">{packet.tone}</dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.18em] text-muted">
-                Target word count
-              </dt>
-              <dd className="mt-1 text-sm leading-relaxed">
-                {packet.targetWordCount.toLocaleString()} words
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs uppercase tracking-[0.18em] text-muted">
-                Backlink path
-              </dt>
-              <dd className="mt-1 text-sm leading-relaxed">
-                <Link to={packet.backlinkPath} className="underline underline-offset-4">
-                  {packet.backlinkPath}
-                </Link>
-              </dd>
-            </div>
-          </dl>
-
-          <div className="mt-5">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">
-              Publication targets
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {packet.publicationTargets.map((target) => (
-                <span
-                  key={target}
-                  className="rounded-full border border-border bg-white px-3 py-1 text-xs font-mono text-muted"
-                >
-                  {target}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <div className="rounded-2xl border border-border bg-accent p-5">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">Key points</p>
-            <div className="mt-4 space-y-3">
-              {packet.keyPoints.map((point, index) => (
-                <div key={point} className="flex gap-3">
-                  <span className="mt-0.5 text-xs font-mono text-muted">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-sm leading-relaxed">{point}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-border bg-accent p-5">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">Source anchors</p>
-            <div className="mt-4 space-y-3">
-              {packet.sourceAnchors.map((source) => (
-                <a
-                  key={source.url}
-                  href={source.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="block rounded-xl border border-border bg-white p-4 transition-colors hover:border-foreground"
-                >
-                  <p className="text-sm font-medium leading-relaxed">{source.label}</p>
-                  <p className="mt-1 break-all text-xs text-muted">{source.url}</p>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export default function News() {
   const navigate = useNavigate();
@@ -816,7 +696,6 @@ export default function News() {
               onOpenStory={(storySlug) => updateRoute(desk.id, storySlug)}
             />
           )}
-          <PublishingPacketPanel packet={selectedStory.packet} />
         </div>
       );
     }
