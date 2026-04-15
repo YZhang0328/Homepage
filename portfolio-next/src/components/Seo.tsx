@@ -5,7 +5,6 @@ type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
 
 interface ArticleMeta {
   publishedTime?: string;
-  modifiedTime?: string;
   author?: string;
   section?: string;
   tags?: string[];
@@ -103,7 +102,6 @@ function syncArticleMeta(type?: string, articleMeta?: ArticleMeta) {
   };
 
   if (articleMeta.publishedTime) append(articleMeta.publishedTime, "article:published_time");
-  if (articleMeta.modifiedTime) append(articleMeta.modifiedTime, "article:modified_time");
   if (articleMeta.author) append(articleMeta.author, "article:author");
   if (articleMeta.section) append(articleMeta.section, "article:section");
   for (const tag of articleMeta.tags ?? []) {

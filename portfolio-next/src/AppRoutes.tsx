@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import Archive from "@/pages/Archive";
 import Home from "@/pages/Home";
 import News from "@/pages/News";
-import QuestionPage from "@/pages/QuestionPage";
 import Research from "@/pages/Research";
 import TopicHub from "@/pages/TopicHub";
 
@@ -15,8 +14,6 @@ export default function AppRoutes() {
       <Route path="/news/archive" element={<Archive />} />
       <Route path="/news/hub" element={<TopicHub />} />
       <Route path="/news/hub/:hub" element={<TopicHub />} />
-      <Route path="/news/questions" element={<QuestionPage />} />
-      <Route path="/news/questions/:question" element={<QuestionPage />} />
       <Route path="/news/tag/:tag" element={<Archive />} />
       <Route path="/news/event/:event" element={<News />} />
       <Route path="/news" element={<News />} />

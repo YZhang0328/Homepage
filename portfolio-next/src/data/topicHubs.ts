@@ -10,9 +10,6 @@ export interface TopicHubDefinition {
   topicSlugs: string[];
   storySlugs: string[];
   keyQuestions: string[];
-  featuredQuestionSlug?: string;
-  glossary: Array<{ term: string; definition: string }>;
-  faq: Array<{ question: string; answer: string }>;
 }
 
 export interface TopicHubView extends TopicHubDefinition {
@@ -55,35 +52,6 @@ const hubDefinitions: TopicHubDefinition[] = [
       "Why does regulatory clarity compress the window for new entrants?",
       "Where does margin move when treasury and payment workflows go programmable?",
     ],
-    glossary: [
-      {
-        term: "Custody",
-        definition:
-          "The regulated holding of assets on behalf of customers or institutions, usually the layer where trust and compliance sit.",
-      },
-      {
-        term: "Routing",
-        definition:
-          "The logic that decides how value moves across counterparties, chains, or payment rails.",
-      },
-      {
-        term: "Treasury workflow",
-        definition:
-          "The internal process a company uses to manage cash, liquidity, settlement, and working capital.",
-      },
-    ],
-    faq: [
-      {
-        question: "Why does the stack matter more than the coin itself?",
-        answer:
-          "Because the margin sits in custody, routing, compliance, and treasury services, not in minting the token.",
-      },
-      {
-        question: "Who tends to win once regulation becomes clearer?",
-        answer:
-          "The firms with balance-sheet strength, compliance infrastructure, and existing customer relationships usually have the advantage.",
-      },
-    ],
   },
   {
     slug: "agents-governance",
@@ -113,35 +81,6 @@ const hubDefinitions: TopicHubDefinition[] = [
       "What separates a helpful assistant from a production agent?",
       "Why are evals and governance becoming part of the buying decision?",
       "Which enterprise vendors benefit from distribution plus control?",
-    ],
-    glossary: [
-      {
-        term: "MCP",
-        definition:
-          "The Model Context Protocol, used to connect agents to tools and external systems in a standardised way.",
-      },
-      {
-        term: "Evals",
-        definition:
-          "Structured tests that measure how well an AI system behaves under expected and adversarial conditions.",
-      },
-      {
-        term: "Governance",
-        definition:
-          "The permissions, approvals, logging, and auditability that make agent systems usable in enterprise settings.",
-      },
-    ],
-    faq: [
-      {
-        question: "What makes an agent production-ready?",
-        answer:
-          "It needs reliable tool use, clear permissions, test coverage, and an audit trail for failures.",
-      },
-      {
-        question: "Why are evals becoming a buying criterion?",
-        answer:
-          "Because enterprises want proof that failures are measured before systems touch real workflows.",
-      },
     ],
   },
   {
@@ -175,36 +114,6 @@ const hubDefinitions: TopicHubDefinition[] = [
       "Why does capacity pricing matter more than spot pricing for AI load?",
       "How do rate design and interconnection delay change who pays?",
       "When does dedicated generation become the rational answer?",
-    ],
-    featuredQuestionSlug: "pjm-capacity-pricing-explained",
-    glossary: [
-      {
-        term: "Capacity price",
-        definition:
-          "The price paid for being available in advance so the grid can meet future demand reliably.",
-      },
-      {
-        term: "Reserve margin",
-        definition:
-          "The extra amount of capacity the system keeps above forecast demand for reliability.",
-      },
-      {
-        term: "Behind the meter",
-        definition:
-          "Generation that serves a customer directly rather than flowing through the public grid.",
-      },
-    ],
-    faq: [
-      {
-        question: "Why are capacity prices more important than spot prices here?",
-        answer:
-          "Because AI load stresses the system's ability to guarantee future supply, not just the price of current electricity.",
-      },
-      {
-        question: "Why do data centres accelerate this problem?",
-        answer:
-          "They add large blocks of demand quickly and often in places where firm supply and transmission are already constrained.",
-      },
     ],
   },
 ];

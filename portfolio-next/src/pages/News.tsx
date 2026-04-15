@@ -25,7 +25,6 @@ import {
   type NewsStory,
 } from "@/data/newsDesk";
 import { getStoryTopics, getTopicsWithCounts } from "@/data/newsTopics";
-import { getQuestionForStory } from "@/data/searchQuestions";
 import { getTopicHubs } from "@/data/topicHubs";
 import Seo from "@/components/Seo";
 import { absoluteUrl, storyOgImagePath } from "@/lib/site";
@@ -509,11 +508,9 @@ function FinanceRelatedBriefsPanel({
 
 function ArticleView({
   story,
-  relatedQuestion,
   onBack,
 }: {
   story: NewsStory;
-  relatedQuestion: ReturnType<typeof getQuestionForStory>;
   onBack: () => void;
 }) {
   return (
@@ -546,12 +543,6 @@ function ArticleView({
             <span>{story.kicker}</span>
             <span className="h-1 w-1 rounded-full bg-border" />
             <span>{story.date}</span>
-            {story.refreshedAt && (
-              <>
-                <span className="h-1 w-1 rounded-full bg-border" />
-                <span>Updated {story.refreshedAt}</span>
-              </>
-            )}
           </div>
           <h3 className="mt-3 max-w-[34ch] font-serif text-2xl font-bold leading-tight">
             {story.headline}
@@ -569,37 +560,6 @@ function ArticleView({
                 {topic.label}
               </Link>
             ))}
-          </div>
-          {relatedQuestion && (
-            <div className="mt-5 rounded-2xl border border-border bg-card p-5">
-              <p className="text-xs uppercase tracking-[0.18em] text-muted">
-                Related question
-              </p>
-              <Link
-                to={`/news/questions/${relatedQuestion.slug}`}
-                className="mt-2 block text-sm font-medium text-foreground underline underline-offset-4"
-              >
-                {relatedQuestion.question}
-              </Link>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
-                Open the question page for the quick answer, glossary, and related reading.
-              </p>
-            </div>
-          )}
-          <div className="mt-6 rounded-2xl border border-border bg-accent p-5">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">
-              Key takeaways
-            </p>
-            <div className="mt-4 grid gap-4 md:grid-cols-3">
-              {story.packet.keyPoints.map((point, index) => (
-                <div key={point} className="rounded-2xl border border-border bg-white p-4">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">
-                    Point {index + 1}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed">{point}</p>
-                </div>
-              ))}
-            </div>
           </div>
           <div className="mt-5 space-y-[1.1rem]">
             {story.paragraphs.map((paragraph) => (
@@ -812,13 +772,10 @@ export default function News() {
 
   const renderDesk = (desk: NewsDesk) => {
     if (selectedStory) {
-      const relatedQuestion = getQuestionForStory(selectedStory.slug);
-
       return (
         <div className="space-y-8">
           <ArticleView
             story={selectedStory}
-            relatedQuestion={relatedQuestion}
             onBack={() => updateRoute(desk.id)}
           />
 
@@ -973,8 +930,6 @@ export default function News() {
     selectedStory && activeDesk
       ? {
           publishedTime: toIsoDate(selectedStory.date) ?? undefined,
-          modifiedTime:
-            toIsoDate(selectedStory.refreshedAt ?? selectedStory.date) ?? undefined,
           author: "Yujia Zhang",
           section: activeDesk.label,
           tags: getStoryTopics(selectedStory.slug).map((t) => t.label),
@@ -995,11 +950,11 @@ export default function News() {
             name: "Yujia Zhang",
             url: absoluteUrl("/"),
             sameAs: ["https://www.linkedin.com/in/yujia-zhang-94417a295/"],
-          },
-          publisher: { "@type": "Person", name: "Yujia Zhang", url: absoluteUrl("/") },
-          datePublished: toIsoDate(selectedStory.date),
-          dateModified: toIsoDate(selectedStory.refreshedAt ?? selectedStory.date),
-          keywords: getStoryTopics(selectedStory.slug).map((t) => t.label).join(", "),
+            },
+            publisher: { "@type": "Person", name: "Yujia Zhang", url: absoluteUrl("/") },
+            datePublished: toIsoDate(selectedStory.date),
+            dateModified: toIsoDate(selectedStory.date),
+            keywords: getStoryTopics(selectedStory.slug).map((t) => t.label).join(", "),
           wordCount: selectedStory.paragraphs.join(" ").split(/\s+/).length,
           articleSection: activeDesk?.label,
           speakable: {

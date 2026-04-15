@@ -9,7 +9,6 @@ import {
   getTopicHubDefinition,
   getTopicHubs,
 } from "@/data/topicHubs";
-import { getQuestionDefinition } from "@/data/searchQuestions";
 
 type HubParams = {
   hub?: string;
@@ -169,9 +168,6 @@ export default function TopicHub() {
 
   const hubStories = getStoriesForHub(hub.slug);
   const hubTopics = getHubTopics(hub.slug);
-  const featuredQuestion = hub.featuredQuestionSlug
-    ? getQuestionDefinition(hub.featuredQuestionSlug)
-    : null;
   const pageTitle = `${hub.title} | Signal Board`;
   const pageDescription = hub.summary;
   const canonicalPath = `/news/hub/${hub.slug}`;
@@ -228,45 +224,6 @@ export default function TopicHub() {
             </span>
           </div>
 
-          <div className="mt-8 rounded-3xl border border-border bg-card p-6">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">
-              Why this hub exists
-            </p>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              {hub.description}
-            </p>
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
-              {hub.keyQuestions.map((question, index) => (
-                <div key={question} className="rounded-2xl border border-border bg-accent p-4">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted">
-                    Question {index + 1}
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed">{question}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {featuredQuestion && (
-            <Link
-              to={`/news/questions/${featuredQuestion.slug}`}
-              className="mt-8 block rounded-3xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <p className="text-xs uppercase tracking-[0.18em] text-muted">
-                Start here
-              </p>
-              <h2 className="mt-3 font-serif text-2xl font-bold leading-tight">
-                {featuredQuestion.question}
-              </h2>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                {featuredQuestion.summary}
-              </p>
-              <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-foreground">
-                Read the answer
-              </span>
-            </Link>
-          )}
-
           <div className="mt-8 flex flex-wrap gap-2">
             {hubTopics.map((topic) => (
               <Link
@@ -307,37 +264,6 @@ export default function TopicHub() {
           </div>
         </aside>
       </div>
-
-      <section className="mt-12 grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">Glossary</p>
-          <div className="mt-5 space-y-4">
-            {hub.glossary.map((item) => (
-              <div key={item.term} className="rounded-2xl border border-border bg-accent p-4">
-                <p className="font-semibold">{item.term}</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{item.definition}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
-          <p className="text-xs uppercase tracking-[0.18em] text-muted">FAQ</p>
-          <div className="mt-5 space-y-4">
-            {hub.faq.map((item) => (
-              <details
-                key={item.question}
-                className="rounded-2xl border border-border bg-accent p-4"
-              >
-                <summary className="cursor-pointer font-semibold">
-                  {item.question}
-                </summary>
-                <p className="mt-3 text-sm leading-relaxed text-muted">{item.answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="mt-12 space-y-6">
         <div className="flex items-end justify-between gap-4">

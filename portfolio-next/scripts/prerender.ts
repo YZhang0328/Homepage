@@ -18,18 +18,12 @@ import {
   getTopicHubDefinition,
   getTopicHubs,
 } from "../src/data/topicHubs.ts";
-import {
-  getQuestionDefinition,
-  getQuestionStories,
-  getQuestions,
-} from "../src/data/searchQuestions.ts";
 import { SITE_URL, absoluteUrl, storyOgImagePath } from "../src/lib/site.ts";
 
 type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
 
 type ArticleMeta = {
   publishedTime?: string;
-  modifiedTime?: string;
   author: string;
   section?: string;
   tags?: string[];
@@ -316,65 +310,6 @@ function getSeoForPath(pathname: string): SeoSpec {
     };
   }
 
-  if (pathname === "/news/questions") {
-    const questions = getQuestions();
-    return {
-      title: "Search Questions | Signal Board",
-      description:
-        "Direct answers to the search questions that fit Signal Board best: power markets, stablecoins, and enterprise AI governance.",
-      canonicalPath: "/news/questions",
-      imagePath: "/images/background_picture.png",
-      imageAlt: "Signal Board question answers",
-      type: "website",
-      jsonLd: {
-        "@context": "https://schema.org",
-        "@type": "CollectionPage",
-        name: "Search Questions | Signal Board",
-        description:
-          "Direct answers to the search questions that fit Signal Board best: power markets, stablecoins, and enterprise AI governance.",
-        url: absoluteUrl("/news/questions"),
-        mainEntity: {
-          "@type": "ItemList",
-          numberOfItems: questions.length,
-          itemListElement: questions.map((question, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            url: absoluteUrl(`/news/questions/${question.slug}`),
-            name: question.question,
-          })),
-        },
-      },
-    };
-  }
-
-  const questionMatch = pathname.match(/^\/news\/questions\/([^/]+)$/);
-  if (questionMatch) {
-    const question = getQuestionDefinition(questionMatch[1]);
-    if (question) {
-      const stories = getQuestionStories(question.slug);
-      return {
-        title: question.title,
-        description: question.summary,
-        canonicalPath: pathname,
-        imagePath: stories[0]?.image ?? "/images/background_picture.png",
-        imageAlt: stories[0]?.imageAlt ?? question.title,
-        type: "website",
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "QAPage",
-          mainEntity: {
-            "@type": "Question",
-            name: question.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: question.answer,
-            },
-          },
-        },
-      };
-    }
-  }
-
   const articleMatch = pathname.match(/^\/news\/([^/]+)\/([^/]+)$/);
   if (articleMatch) {
     const desk = findDesk(articleMatch[1]);
@@ -383,7 +318,6 @@ function getSeoForPath(pathname: string): SeoSpec {
     if (desk && story) {
       const storyImagePath = storyOgImagePath(desk.id, story.slug);
       const published = parseDateIso(story.date);
-      const modified = parseDateIso(story.refreshedAt ?? story.date);
       const topics = getStoryTopics(story.slug);
       const wordCount = story.paragraphs.join(" ").split(/\s+/).length;
 
@@ -396,7 +330,6 @@ function getSeoForPath(pathname: string): SeoSpec {
         type: "article",
         articleMeta: {
           publishedTime: published,
-          modifiedTime: modified,
           author: "Yujia Zhang",
           section: desk.label,
           tags: topics.map((t) => t.label),
@@ -423,8 +356,7 @@ function getSeoForPath(pathname: string): SeoSpec {
               name: "Yujia Zhang",
               url: absoluteUrl("/"),
             },
-            ...(published ? { datePublished: published } : {}),
-            ...(modified ? { dateModified: modified } : {}),
+            ...(published ? { datePublished: published, dateModified: published } : {}),
             keywords: topics.map((t) => t.label).join(", "),
             wordCount,
             articleSection: desk.label,
@@ -496,9 +428,6 @@ function renderSeoHead(seo: SeoSpec) {
         ? [
             seo.articleMeta.publishedTime
               ? `<meta property="article:published_time" content="${escapeHtml(seo.articleMeta.publishedTime)}" />`
-              : "",
-            seo.articleMeta.modifiedTime
-              ? `<meta property="article:modified_time" content="${escapeHtml(seo.articleMeta.modifiedTime)}" />`
               : "",
             `<meta property="article:author" content="${escapeHtml(seo.articleMeta.author)}" />`,
           seo.articleMeta.section
