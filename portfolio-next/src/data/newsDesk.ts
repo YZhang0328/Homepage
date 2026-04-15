@@ -1,4 +1,4 @@
-﻿export type DeskId = "finance" | "ai" | "markets";
+export type DeskId = "finance" | "ai" | "markets";
 
 export interface SourceAnchor {
   label: string;

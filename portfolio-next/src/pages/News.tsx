@@ -799,24 +799,57 @@ export default function News() {
     : selectedEvent
       ? `${selectedEvent.title} - Signal Board`
     : activeDesk?.feature.imageAlt;
+  const seoArticleMeta =
+    selectedStory && activeDesk
+      ? {
+          publishedTime: toIsoDate(selectedStory.date) ?? undefined,
+          author: "Yujia Zhang",
+          section: activeDesk.label,
+          tags: getStoryTopics(selectedStory.slug).map((t) => t.label),
+        }
+      : undefined;
+
   const seoJsonLd = selectedStory
-    ? {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        headline: selectedStory.headline,
-        description: selectedStory.dek,
-        image: seoImagePath ? [absoluteUrl(seoImagePath)] : undefined,
-        mainEntityOfPage: absoluteUrl(canonicalPath),
-        author: {
-          "@type": "Person",
-          name: "Yujia Zhang",
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: selectedStory.headline,
+          description: selectedStory.dek,
+          image: seoImagePath ? [absoluteUrl(seoImagePath)] : undefined,
+          mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(canonicalPath) },
+          author: {
+            "@type": "Person",
+            name: "Yujia Zhang",
+            url: absoluteUrl("/"),
+            sameAs: ["https://www.linkedin.com/in/yujia-zhang-94417a295/"],
+          },
+          publisher: { "@type": "Person", name: "Yujia Zhang", url: absoluteUrl("/") },
+          datePublished: toIsoDate(selectedStory.date),
+          dateModified: toIsoDate(selectedStory.date),
+          keywords: getStoryTopics(selectedStory.slug).map((t) => t.label).join(", "),
+          wordCount: selectedStory.paragraphs.join(" ").split(/\s+/).length,
+          articleSection: activeDesk?.label,
+          speakable: {
+            "@type": "SpeakableSpecification",
+            xpath: ["/html/head/meta[@name='description']/@content"],
+          },
         },
-        publisher: {
-          "@type": "Person",
-          name: "Yujia Zhang",
-        },
-        datePublished: toIsoDate(selectedStory.date),
-      }
+        ...(activeDesk
+          ? [
+              {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+                  { "@type": "ListItem", position: 2, name: "Signal Board", item: absoluteUrl("/news") },
+                  { "@type": "ListItem", position: 3, name: activeDesk.label, item: absoluteUrl(`/news/${activeDesk.id}`) },
+                  { "@type": "ListItem", position: 4, name: selectedStory.headline, item: absoluteUrl(canonicalPath) },
+                ],
+              },
+            ]
+          : []),
+      ]
     : selectedEvent
       ? {
           "@context": "https://schema.org",
@@ -842,6 +875,7 @@ export default function News() {
         imageAlt={seoImageAlt}
         type={selectedStory ? "article" : "website"}
         jsonLd={seoJsonLd}
+        articleMeta={seoArticleMeta}
       />
       <motion.div
         initial={{ opacity: 0, y: 20 }}

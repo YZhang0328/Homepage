@@ -402,28 +402,46 @@ const feedItems = feedStories
   .join("\n");
 
 const feed = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
+  <atom:link href="${escapeXml(absoluteUrl("/feed.xml"))}" rel="self" type="application/rss+xml" />
   <title>Yujia Zhang - Signal Board</title>
   <link>${escapeXml(absoluteUrl("/news"))}</link>
   <description>AI infrastructure, power markets, and financial systems from the Signal Board desk.</description>
   <language>en-gb</language>
   <lastBuildDate>${new Date(LASTMOD_ISO).toUTCString()}</lastBuildDate>
   <generator>portfolio-next generate-seo.ts</generator>
+  <image>
+    <url>${escapeXml(absoluteUrl("/images/Photo_Yujia.jpg"))}</url>
+    <title>Yujia Zhang - Signal Board</title>
+    <link>${escapeXml(absoluteUrl("/news"))}</link>
+  </image>
 ${feedItems}
 </channel>
 </rss>
 `;
 
+function getSitemapMeta(route: string): { changefreq: string; priority: string } {
+  if (route === "/" || route === "/news") return { changefreq: "weekly", priority: "1.0" };
+  if (route === "/research" || route === "/news/archive") return { changefreq: "monthly", priority: "0.8" };
+  if (/^\/news\/[^/]+\/[^/]+$/.test(route)) return { changefreq: "monthly", priority: "0.8" };
+  if (/^\/news\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.7" };
+  if (/^\/news\/tag\//.test(route)) return { changefreq: "weekly", priority: "0.5" };
+  return { changefreq: "monthly", priority: "0.6" };
+}
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
-  .map(
-    (route) => `  <url>
+  .map((route) => {
+    const { changefreq, priority } = getSitemapMeta(route);
+    return `  <url>
     <loc>${escapeXml(absoluteUrl(route))}</loc>
     <lastmod>${escapeXml(routeLastMods.get(route) ?? LASTMOD_ISO)}</lastmod>
-  </url>`
-  )
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+  })
   .join("\n")}
 </urlset>
 `;

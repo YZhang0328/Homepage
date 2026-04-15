@@ -17,6 +17,13 @@ import { SITE_URL, absoluteUrl, storyOgImagePath } from "../src/lib/site.ts";
 
 type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
 
+type ArticleMeta = {
+  publishedTime?: string;
+  author: string;
+  section?: string;
+  tags?: string[];
+};
+
 type SeoSpec = {
   title: string;
   description: string;
@@ -26,6 +33,7 @@ type SeoSpec = {
   robots?: string;
   type?: "website" | "article";
   jsonLd?: JsonLd;
+  articleMeta?: ArticleMeta;
 };
 
 const __dir = dirname(fileURLToPath(import.meta.url));
@@ -238,6 +246,8 @@ function getSeoForPath(pathname: string): SeoSpec {
     if (desk && story) {
       const storyImagePath = storyOgImagePath(desk.id, story.slug);
       const published = parseDateIso(story.date);
+      const topics = getStoryTopics(story.slug);
+      const wordCount = story.paragraphs.join(" ").split(/\s+/).length;
 
       return {
         title: `${story.headline} | Signal Board`,
@@ -246,23 +256,54 @@ function getSeoForPath(pathname: string): SeoSpec {
         imagePath: storyImagePath,
         imageAlt: `${story.headline} - Signal Board`,
         type: "article",
-        jsonLd: {
-          "@context": "https://schema.org",
-          "@type": "BlogPosting",
-          headline: story.headline,
-          description: story.dek,
-          image: [absoluteUrl(storyImagePath)],
-          mainEntityOfPage: absoluteUrl(pathname),
-          author: {
-            "@type": "Person",
-            name: "Yujia Zhang",
-          },
-          publisher: {
-            "@type": "Person",
-            name: "Yujia Zhang",
-          },
-          ...(published ? { datePublished: published } : {}),
+        articleMeta: {
+          publishedTime: published,
+          author: "Yujia Zhang",
+          section: desk.label,
+          tags: topics.map((t) => t.label),
         },
+        jsonLd: [
+          {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: story.headline,
+            description: story.dek,
+            image: [absoluteUrl(storyImagePath)],
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": absoluteUrl(pathname),
+            },
+            author: {
+              "@type": "Person",
+              name: "Yujia Zhang",
+              url: absoluteUrl("/"),
+              sameAs: ["https://www.linkedin.com/in/yujia-zhang-94417a295/"],
+            },
+            publisher: {
+              "@type": "Person",
+              name: "Yujia Zhang",
+              url: absoluteUrl("/"),
+            },
+            ...(published ? { datePublished: published, dateModified: published } : {}),
+            keywords: topics.map((t) => t.label).join(", "),
+            wordCount,
+            articleSection: desk.label,
+            speakable: {
+              "@type": "SpeakableSpecification",
+              xpath: ["/html/head/meta[@name='description']/@content"],
+            },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
+              { "@type": "ListItem", position: 2, name: "Signal Board", item: absoluteUrl("/news") },
+              { "@type": "ListItem", position: 3, name: desk.label, item: absoluteUrl(`/news/${desk.id}`) },
+              { "@type": "ListItem", position: 4, name: story.headline, item: absoluteUrl(pathname) },
+            ],
+          },
+        ],
       };
     }
   }
@@ -310,6 +351,21 @@ function renderSeoHead(seo: SeoSpec) {
     seo.imageAlt ? `<meta property="og:image:alt" content="${escapeHtml(seo.imageAlt)}" />` : "",
     `<link rel="canonical" href="${escapeHtml(absoluteUrl(seo.canonicalPath))}" />`,
     `<link rel="alternate" type="application/rss+xml" title="Yujia Zhang Feed" href="${escapeHtml(absoluteUrl("/feed.xml"))}" />`,
+    // Article Open Graph tags (Google Discover, social sharing)
+    ...(seo.type === "article" && seo.articleMeta
+      ? [
+          seo.articleMeta.publishedTime
+            ? `<meta property="article:published_time" content="${escapeHtml(seo.articleMeta.publishedTime)}" />`
+            : "",
+          `<meta property="article:author" content="${escapeHtml(seo.articleMeta.author)}" />`,
+          seo.articleMeta.section
+            ? `<meta property="article:section" content="${escapeHtml(seo.articleMeta.section)}" />`
+            : "",
+          ...(seo.articleMeta.tags ?? []).map(
+            (tag) => `<meta property="article:tag" content="${escapeHtml(tag)}" />`
+          ),
+        ]
+      : []),
   ].filter(Boolean);
 
   return tags.join("\n    ");

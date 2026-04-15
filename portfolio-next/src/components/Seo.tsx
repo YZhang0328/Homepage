@@ -3,6 +3,13 @@ import { absoluteUrl, SITE_NAME } from "@/lib/site";
 
 type JsonLd = Record<string, unknown> | Array<Record<string, unknown>>;
 
+interface ArticleMeta {
+  publishedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+}
+
 interface SeoProps {
   title: string;
   description: string;
@@ -12,6 +19,7 @@ interface SeoProps {
   robots?: string;
   type?: "website" | "article";
   jsonLd?: JsonLd;
+  articleMeta?: ArticleMeta;
 }
 
 function upsertMeta(
@@ -78,6 +86,29 @@ function upsertLinkAlternate(type: string, href?: string, title?: string) {
   }
 }
 
+function syncArticleMeta(type?: string, articleMeta?: ArticleMeta) {
+  // Remove any existing article: meta tags
+  for (const el of document.head.querySelectorAll('meta[property^="article:"]')) {
+    el.remove();
+  }
+
+  if (type !== "article" || !articleMeta) return;
+
+  const append = (content: string, property: string) => {
+    const el = document.createElement("meta");
+    el.setAttribute("property", property);
+    el.setAttribute("content", content);
+    document.head.appendChild(el);
+  };
+
+  if (articleMeta.publishedTime) append(articleMeta.publishedTime, "article:published_time");
+  if (articleMeta.author) append(articleMeta.author, "article:author");
+  if (articleMeta.section) append(articleMeta.section, "article:section");
+  for (const tag of articleMeta.tags ?? []) {
+    append(tag, "article:tag");
+  }
+}
+
 function upsertJsonLd(jsonLd?: JsonLd) {
   const selector = 'script[data-seo-jsonld="true"]';
   const existing = document.head.querySelector<HTMLScriptElement>(selector);
@@ -103,6 +134,7 @@ export default function Seo({
   robots = "index,follow",
   type = "website",
   jsonLd,
+  articleMeta,
 }: SeoProps) {
   useEffect(() => {
     document.title = title;
@@ -125,7 +157,8 @@ export default function Seo({
     upsertLinkCanonical(canonicalUrl);
     upsertLinkAlternate("application/rss+xml", absoluteUrl("/feed.xml"), "Yujia Zhang Feed");
     upsertJsonLd(jsonLd);
-  }, [canonicalPath, description, imageAlt, imagePath, jsonLd, robots, title, type]);
+    syncArticleMeta(type, articleMeta);
+  }, [articleMeta, canonicalPath, description, imageAlt, imagePath, jsonLd, robots, title, type]);
 
   return null;
 }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * publish.ts - Cross-platform article publisher
  *
  * Publishes stories from newsDesk.ts to DEV Community, Hashnode, and WordPress.com.

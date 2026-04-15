@@ -54,7 +54,7 @@ export default function Home() {
           },
         ]}
       />
-      {/* ── Hero ── */}
+      {/* Hero */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
         <div className="grid gap-10 items-center md:grid-cols-[340px_minmax(0,1fr)] md:gap-20 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-28">
           <motion.div
@@ -133,10 +133,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Brand Ticker ── */}
+      {/* Brand Ticker */}
       <BrandTicker />
 
-      {/* ── About ── */}
+      {/* About */}
       <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -179,7 +179,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Expertise ── */}
+      {/* Expertise */}
       <section className="bg-foreground text-white">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
           <p className="text-sm text-neutral-400 uppercase tracking-wide mb-3">
@@ -230,7 +230,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── What I Do ── */}
+      {/* What I Do */}
       <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
         <div className="grid md:grid-cols-[1fr_1.2fr] gap-12 items-start">
           <div>
@@ -278,7 +278,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* CTA */}
       <section className="mx-auto max-w-6xl px-6 pb-20">
         <div className="rounded-3xl bg-card border border-border p-10 md:p-16 text-center">
           <h2 className="font-serif text-3xl md:text-4xl font-bold">
