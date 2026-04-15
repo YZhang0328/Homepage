@@ -272,7 +272,7 @@ export default function TopicHub() {
               Core articles
             </p>
             <h2 className="mt-2 font-serif text-2xl font-bold md:text-3xl">
-              The stories that define the hub
+              The stories in the hub
             </h2>
           </div>
           <Link
