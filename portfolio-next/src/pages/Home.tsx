@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
 import BrandTicker from "@/components/BrandTicker";
+import Seo from "@/components/Seo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,6 +22,38 @@ const stats = [
 export default function Home() {
   return (
     <>
+      <Seo
+        title="Yujia Zhang | Industrial Mathematician"
+        description="Industrial mathematician and quantitative researcher building statistical and optimisation models for capital and energy markets."
+        canonicalPath="/"
+        imagePath="/images/Photo_Yujia.jpg"
+        imageAlt="Yujia Zhang portrait"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: "Yujia Zhang",
+            jobTitle: "Industrial Mathematician",
+            url: "https://yujiazhang.co.uk/",
+            image: "https://yujiazhang.co.uk/images/Photo_Yujia.jpg",
+            sameAs: [
+              "https://www.linkedin.com/in/yujia-zhang-94417a295/",
+            ],
+            knowsAbout: [
+              "Energy modelling",
+              "Quantitative research",
+              "Optimization",
+              "Capital markets",
+            ],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Yujia Zhang",
+            url: "https://yujiazhang.co.uk/",
+          },
+        ]}
+      />
       {/* ── Hero ── */}
       <section className="mx-auto max-w-6xl px-6 pt-16 pb-20 md:pt-24 md:pb-28">
         <div className="grid gap-10 items-center md:grid-cols-[340px_minmax(0,1fr)] md:gap-20 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-28">

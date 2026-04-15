@@ -18,6 +18,8 @@ import {
   type NewsDesk,
   type NewsStory,
 } from "@/data/newsDesk";
+import Seo from "@/components/Seo";
+import { absoluteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type SectionId = "events" | DeskId;
@@ -401,8 +403,53 @@ export default function News() {
     { id: "finance", label: "Financial Infrastructure" },
   ];
 
+  const pageTitle = selectedStory
+    ? `${selectedStory.headline} | Signal Board`
+    : activeSectionId === "events"
+      ? "AI & Finance Events | Signal Board"
+      : `${activeDesk?.label ?? "Signal Board"} | Signal Board`;
+
+  const pageDescription = selectedStory
+    ? selectedStory.dek
+    : activeSectionId === "events"
+      ? "Practical AI sessions and finance-focused gatherings worth tracking, from Microsoft agent workshops to London capital-markets events."
+      : activeDesk?.intro ??
+        "A live board for financial infrastructure, consequential AI, market transmission, and the events worth showing up for.";
+
+  const canonicalPath = buildNewsPath(activeSectionId, selectedSlug ?? undefined);
+  const seoImagePath = selectedStory?.image ?? activeDesk?.feature.image;
+  const seoImageAlt = selectedStory?.imageAlt ?? activeDesk?.feature.imageAlt;
+  const seoJsonLd = selectedStory
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: selectedStory.headline,
+        description: selectedStory.dek,
+        image: seoImagePath ? [absoluteUrl(seoImagePath)] : undefined,
+        mainEntityOfPage: absoluteUrl(canonicalPath),
+        author: {
+          "@type": "Person",
+          name: "Yujia Zhang",
+        },
+        publisher: {
+          "@type": "Person",
+          name: "Yujia Zhang",
+        },
+        datePublished: new Date(selectedStory.date).toISOString(),
+      }
+    : undefined;
+
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <Seo
+        title={pageTitle}
+        description={pageDescription}
+        canonicalPath={canonicalPath}
+        imagePath={seoImagePath}
+        imageAlt={seoImageAlt}
+        type={selectedStory ? "article" : "website"}
+        jsonLd={seoJsonLd}
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

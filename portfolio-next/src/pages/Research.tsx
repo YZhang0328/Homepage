@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Seo from "@/components/Seo";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -57,6 +58,13 @@ const publications: Publication[] = [
 export default function Research() {
   return (
     <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
+      <Seo
+        title="Research & Publications | Yujia Zhang"
+        description="Selected publications and research notes spanning model predictive control, machine learning, and remote sensing object detection."
+        canonicalPath="/research"
+        imagePath="/images/background_picture.png"
+        imageAlt="Research background"
+      />
       {/* Intro */}
       <motion.section
         initial="hidden"
