@@ -26,7 +26,7 @@ import {
 } from "@/data/newsDesk";
 import { getStoryTopics, getTopicsWithCounts } from "@/data/newsTopics";
 import Seo from "@/components/Seo";
-import { absoluteUrl } from "@/lib/site";
+import { absoluteUrl, storyOgImagePath } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type SectionId = "events" | DeskId;
@@ -450,8 +450,12 @@ export default function News() {
         "A live board for financial infrastructure, consequential AI, market transmission, and the events worth showing up for.";
 
   const canonicalPath = buildNewsPath(activeSectionId, selectedSlug ?? undefined);
-  const seoImagePath = selectedStory?.image ?? activeDesk?.feature.image;
-  const seoImageAlt = selectedStory?.imageAlt ?? activeDesk?.feature.imageAlt;
+  const seoImagePath = selectedStory
+    ? storyOgImagePath(activeSectionId, selectedStory.slug)
+    : activeDesk?.feature.image;
+  const seoImageAlt = selectedStory
+    ? `${selectedStory.headline} - Signal Board`
+    : activeDesk?.feature.imageAlt;
   const seoJsonLd = selectedStory
     ? {
         "@context": "https://schema.org",

@@ -12,3 +12,7 @@ export function absoluteUrl(path: string) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   return `${SITE_URL}${normalizedPath}`;
 }
+
+export function storyOgImagePath(deskId: string, storySlug: string) {
+  return `/og/${deskId}/${storySlug}.svg`;
+}

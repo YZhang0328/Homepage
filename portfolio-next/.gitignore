@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.vite-cache/
+public/og/
 *.local
 .env.publish
 

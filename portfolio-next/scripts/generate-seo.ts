@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { desks } from "../src/data/newsDesk.ts";
-import { getTopicsWithCounts } from "../src/data/newsTopics.ts";
+import { getStoryTopics, getTopicsWithCounts } from "../src/data/newsTopics.ts";
 
 const SITE_URL = (
   process.env.SITE_URL ?? process.env.VITE_SITE_URL ?? "https://yujiazhang.co.uk"
@@ -21,6 +21,249 @@ function escapeXml(value: string) {
     .replace(/'/g, "&apos;");
 }
 
+function escapeAttr(value: string) {
+  return escapeXml(value).replace(/\n/g, " ");
+}
+
+function hashString(value: string) {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash * 31 + value.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+function wrapText(value: string, maxChars: number, maxLines: number) {
+  const words = value.replace(/\s+/g, " ").trim().split(" ");
+  const lines: string[] = [];
+  let current = "";
+
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length > maxChars && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+  }
+
+  if (current) {
+    lines.push(current);
+  }
+
+  if (lines.length <= maxLines) {
+    return lines.map((line) =>
+      line.length > maxChars ? `${line.slice(0, Math.max(0, maxChars - 3)).trimEnd()}...` : line
+    );
+  }
+
+  const truncated = lines.slice(0, maxLines);
+  const lastIndex = truncated.length - 1;
+  const lastLine = truncated[lastIndex];
+  truncated[lastIndex] =
+    lastLine.length > maxChars
+      ? `${lastLine.slice(0, Math.max(0, maxChars - 3)).trimEnd()}...`
+      : `${lastLine}...`;
+
+  return truncated;
+}
+
+const deskThemes: Record<
+  string,
+  {
+    bgA: string;
+    bgB: string;
+    accent: string;
+    accentSoft: string;
+    highlight: string;
+    foreground: string;
+  }
+> = {
+  finance: {
+    bgA: "#07111d",
+    bgB: "#123258",
+    accent: "#93c5fd",
+    accentSoft: "#2563eb",
+    highlight: "#fbbf24",
+    foreground: "#f8fbff",
+  },
+  ai: {
+    bgA: "#10091f",
+    bgB: "#34114f",
+    accent: "#d8b4fe",
+    accentSoft: "#7c3aed",
+    highlight: "#67e8f9",
+    foreground: "#fbf7ff",
+  },
+  markets: {
+    bgA: "#06131b",
+    bgB: "#173a2a",
+    accent: "#86efac",
+    accentSoft: "#16a34a",
+    highlight: "#fbbf24",
+    foreground: "#f2fff6",
+  },
+};
+
+function buildSignalBars(seed: number) {
+  return Array.from({ length: 7 }, (_, index) => {
+    const value = (seed >> (index * 3)) & 15;
+    return 42 + value * 8;
+  });
+}
+
+function renderOgSvg(args: {
+  deskId: string;
+  deskLabel: string;
+  kicker: string;
+  headline: string;
+  dek: string;
+  image: string;
+  date: string;
+  slug: string;
+}) {
+  const theme = deskThemes[args.deskId] ?? deskThemes.finance;
+  const titleLines = wrapText(args.headline, 19, 4);
+  const dekLines = wrapText(args.dek, 44, 3);
+  const topics = getStoryTopics(args.slug).slice(0, 2);
+  const titleYStart = 188;
+  const titleLineHeight = 58;
+  const dekYStart = titleYStart + titleLines.length * titleLineHeight + 18;
+  const chipY = dekYStart + dekLines.length * 32 + 24;
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">${escapeXml(args.headline)}</title>
+  <desc id="desc">${escapeXml(args.dek)}</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="${theme.bgA}" />
+      <stop offset="100%" stop-color="${theme.bgB}" />
+    </linearGradient>
+    <linearGradient id="photoOverlay" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#02040a" stop-opacity="0.82" />
+      <stop offset="48%" stop-color="#02040a" stop-opacity="0.58" />
+      <stop offset="100%" stop-color="#02040a" stop-opacity="0.16" />
+    </linearGradient>
+    <linearGradient id="photoTint" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${theme.accent}" stop-opacity="0.34" />
+      <stop offset="100%" stop-color="${theme.highlight}" stop-opacity="0.12" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${theme.accent}" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="${theme.accentSoft}" stop-opacity="0.75" />
+    </linearGradient>
+    <linearGradient id="accentLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${theme.highlight}" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="${theme.accent}" stop-opacity="0.65" />
+    </linearGradient>
+    <linearGradient id="titleFade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${theme.foreground}" stop-opacity="1" />
+      <stop offset="100%" stop-color="${theme.foreground}" stop-opacity="0.84" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.11" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05" />
+    </linearGradient>
+    <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="40" />
+    </filter>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
+      <path d="M 36 0 L 0 0 0 36" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1" fill="none" />
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <image href="${escapeAttr(args.image)}" x="0" y="0" width="1200" height="630" preserveAspectRatio="xMidYMid slice" />
+  <rect width="1200" height="630" fill="url(#photoOverlay)" />
+  <rect width="1200" height="630" fill="url(#photoTint)" opacity="0.38" />
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.35" />
+  <circle cx="980" cy="126" r="150" fill="${theme.accent}" fill-opacity="0.16" filter="url(#blur)" />
+  <circle cx="1050" cy="472" r="180" fill="${theme.highlight}" fill-opacity="0.14" filter="url(#blur)" />
+  <circle cx="208" cy="520" r="110" fill="${theme.accentSoft}" fill-opacity="0.24" filter="url(#blur)" />
+  <path d="M760 0H1200V286C1110 216 978 154 760 0Z" fill="#ffffff" fill-opacity="0.04" />
+
+  <rect x="42" y="42" width="1116" height="546" rx="36" fill="#050b14" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.12" filter="url(#softShadow)" />
+  <rect x="64" y="64" width="640" height="502" rx="30" fill="#02040a" fill-opacity="0.42" stroke="#ffffff" stroke-opacity="0.10" />
+  <rect x="64" y="64" width="8" height="502" rx="4" fill="url(#accent)" />
+
+  <g>
+    <text x="92" y="110" fill="${theme.foreground}" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="0.16em">SIGNAL BOARD</text>
+    <text x="92" y="138" fill="${theme.accent}" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="0.22em">${escapeXml(args.deskLabel.toUpperCase())}</text>
+    <rect x="92" y="152" width="144" height="36" rx="18" fill="url(#accent)" />
+    <text x="164" y="176" fill="#ffffff" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="700">${escapeXml(args.kicker.toUpperCase())}</text>
+  </g>
+
+  <text x="92" y="${titleYStart}" fill="url(#titleFade)" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" letter-spacing="-0.045em">
+    ${titleLines
+      .map((line, index) => {
+        const dy = index === 0 ? 0 : titleLineHeight;
+        return `<tspan x="92" dy="${dy}">${escapeXml(line)}</tspan>`;
+      })
+      .join("")}
+  </text>
+
+  <text x="92" y="${dekYStart}" fill="#d7e3f3" fill-opacity="0.96" font-family="Inter, Arial, sans-serif" font-size="21" font-weight="500">
+    ${dekLines
+      .map((line, index) => {
+        const dy = index === 0 ? 0 : 34;
+        return `<tspan x="92" dy="${dy}">${escapeXml(line)}</tspan>`;
+      })
+      .join("")}
+  </text>
+
+  <line x1="92" y1="${chipY - 8}" x2="300" y2="${chipY - 8}" stroke="url(#accentLine)" stroke-width="3" stroke-linecap="round" />
+  <g>
+    ${topics
+      .map((topic, index) => {
+        const x = 92 + index * 188;
+        const fill = index === 0 ? "url(#accent)" : "#ffffff";
+        const fillOpacity = index === 0 ? 1 : 0.08;
+        const strokeOpacity = index === 0 ? 0.1 : 0.28;
+        return `
+        <rect x="${x}" y="${chipY}" width="170" height="36" rx="18" fill="${fill}" fill-opacity="${fillOpacity}" stroke="${theme.accent}" stroke-opacity="${strokeOpacity}" />
+        <text x="${x + 85}" y="${chipY + 24}" fill="${theme.foreground}" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600">${escapeXml(topic.label)}</text>`;
+      })
+      .join("")}
+  </g>
+
+  <g filter="url(#softShadow)">
+    <rect x="736" y="94" width="380" height="430" rx="30" fill="#07111e" fill-opacity="0.44" stroke="#ffffff" stroke-opacity="0.12" />
+    <text x="766" y="142" fill="${theme.foreground}" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="0.16em">SOCIAL COVER</text>
+    <text x="766" y="182" fill="#f8fbff" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">${escapeXml(args.deskLabel)}</text>
+    <text x="766" y="216" fill="#d9e5f7" fill-opacity="0.78" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="500">${escapeXml(args.date)}</text>
+    <rect x="766" y="244" width="320" height="1" fill="#ffffff" fill-opacity="0.12" />
+    <text x="766" y="290" fill="${theme.foreground}" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="0.04em">TOPICS</text>
+    <text x="766" y="324" fill="#d9e5f7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">${escapeXml(topics[0]?.label ?? args.kicker)}</text>
+    <text x="766" y="360" fill="#d9e5f7" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">${escapeXml(topics[1]?.label ?? args.deskLabel)}</text>
+    <circle cx="998" cy="342" r="92" fill="${theme.accent}" fill-opacity="0.12" />
+    <circle cx="998" cy="342" r="62" fill="none" stroke="${theme.highlight}" stroke-opacity="0.34" stroke-width="10" />
+    <circle cx="998" cy="342" r="28" fill="#ffffff" fill-opacity="0.08" stroke="#ffffff" stroke-opacity="0.14" />
+    <circle cx="998" cy="342" r="10" fill="${theme.highlight}" />
+    <g transform="translate(780 404)">
+      ${buildSignalBars(hashString(args.slug))
+        .map((height, index) => {
+          const x = index * 36;
+          const barHeight = Math.max(24, height);
+          const y = 96 - barHeight;
+          const fill = index % 2 === 0 ? theme.accent : theme.highlight;
+          return `<rect x="${x}" y="${y}" width="20" height="${barHeight}" rx="10" fill="${fill}" fill-opacity="${index % 2 === 0 ? 0.72 : 0.58}" />`;
+        })
+        .join("")}
+    </g>
+    <text x="766" y="482" fill="#d9e5f7" fill-opacity="0.82" font-family="Inter, Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="0.08em">DATA / CONTEXT / TIMING</text>
+  </g>
+
+  <text x="92" y="548" fill="#ffffff" fill-opacity="0.72" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="500">${escapeAttr(args.date)}</text>
+  <text x="670" y="548" fill="#ffffff" fill-opacity="0.72" text-anchor="end" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="500">${escapeXml(`/news/${args.deskId}/${args.slug}`)}</text>
+</svg>
+`;
+}
+
 const publicDir = resolve(process.cwd(), "public");
 mkdirSync(publicDir, { recursive: true });
 
@@ -37,6 +280,28 @@ for (const topic of getTopicsWithCounts()) {
 }
 
 const urls = Array.from(routes).sort((a, b) => a.localeCompare(b));
+
+for (const desk of desks) {
+  const ogDir = resolve(publicDir, "og", desk.id);
+  mkdirSync(ogDir, { recursive: true });
+
+  for (const story of desk.stories) {
+    const ogPath = resolve(ogDir, `${story.slug}.svg`);
+    const svg = renderOgSvg({
+      deskId: desk.id,
+      deskLabel: desk.label,
+      kicker: story.kicker,
+      headline: story.headline,
+      dek: story.dek,
+      image: story.image,
+      date: story.date,
+      slug: story.slug,
+    });
+
+    writeFileSync(ogPath, svg, "utf8");
+  }
+}
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
