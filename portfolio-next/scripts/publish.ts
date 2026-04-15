@@ -1,5 +1,5 @@
-/**
- * publish.ts — Cross-platform article publisher
+﻿/**
+ * publish.ts - Cross-platform article publisher
  *
  * Publishes stories from newsDesk.ts to DEV Community, Hashnode, and WordPress.com.
  * Medium: manual import only (API closed Jan 2025). Write.as/Ghost/Tumblr: removed.
@@ -12,8 +12,8 @@
  *   npm run publish -- --all           (publish every story, skipping duplicates)
  *
  * Required env vars (fill in portfolio-next/.env.publish):
- *   DEV_API_KEY           dev.to/settings/account → DEV API Key
- *   HASHNODE_TOKEN        hashnode.com/settings/developer → Personal Access Token
+ *   DEV_API_KEY           dev.to/settings/account -> DEV API Key
+ *   HASHNODE_TOKEN        hashnode.com/settings/developer -> Personal Access Token
  *   HASHNODE_PUB_ID       Hashnode publication ID (from your blog dashboard URL)
  *   WORDPRESS_SITE        yourblog.wordpress.com (no https://)
  *   WORDPRESS_USER        Your WordPress.com username
@@ -29,7 +29,7 @@ import { desks, type NewsStory, type NewsDesk } from "../src/data/newsDesk.js";
 const __dir = dirname(fileURLToPath(import.meta.url));
 const HOMEPAGE = "https://yujiazhang.co.uk";
 
-// ── Env loader ────────────────────────────────────────────────────────────────
+// Env loader
 
 function loadEnv() {
   const envPath = resolve(__dir, "../.env.publish");
@@ -45,11 +45,11 @@ function loadEnv() {
       if (key && !(key in process.env)) process.env[key] = val;
     }
   } catch {
-    // .env.publish not found — rely on shell env vars
+    // .env.publish not found; rely on shell env vars
   }
 }
 
-// ── CLI args ──────────────────────────────────────────────────────────────────
+// CLI args
 
 const ALL_PLATFORMS = ["dev", "hashnode"];
 
@@ -84,7 +84,7 @@ function parseArgs() {
   return { mode: "one", desk, story, platforms, dryRun } as const;
 }
 
-// ── Formatters ────────────────────────────────────────────────────────────────
+// Formatters
 
 function canonicalUrl(story: NewsStory, desk: NewsDesk) {
   return `${HOMEPAGE}/news/${desk.id}/${story.slug}`;
@@ -100,11 +100,14 @@ function boldLeads(paragraphs: string[]): string[] {
 }
 
 
-const AUTHOR_PHOTO = "https://yujiazhang.co.uk/images/Photo_Yujia.jpg";
+const AUTHOR_BIO =
+  "Yujia Zhang — Energy Modeller & Quant Researcher (PhD). I cover AI infrastructure, power markets, and financial systems.";
+const AUTHOR_LINK_TEXT = "live market intelligence at yujiazhang.co.uk/news";
+const AUTHOR_LINK_MD = `🔗 live market intelligence at [yujiazhang.co.uk/news](${HOMEPAGE}/news)`;
 
 /**
- * DEV Community — technical audience, front matter for cover/tags,
- * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ * DEV Community - technical audience, front matter for cover/tags,
+ * expanded paragraphs, short author bio, no Model View / Bottom Line.
  */
 function toMarkdownDev(story: NewsStory, desk: NewsDesk): string {
   const paras = boldLeads(story.paragraphs);
@@ -123,7 +126,7 @@ function toMarkdownDev(story: NewsStory, desk: NewsDesk): string {
   const body = [
     `> ${story.dek}`,
     "",
-    `*${story.kicker} · ${story.date}*`,
+    `*${story.kicker} - ${story.date}*`,
     "",
     "---",
     "",
@@ -131,21 +134,19 @@ function toMarkdownDev(story: NewsStory, desk: NewsDesk): string {
     "",
     "---",
     "",
-    "### About the Author",
+    "### About the author",
     "",
-    `![Yujia Zhang](${AUTHOR_PHOTO})`,
+    AUTHOR_BIO,
     "",
-    "**Yujia Zhang** is an energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She builds optimisation and forecasting models at the intersection of power markets, AI infrastructure, and financial systems. Her work spans electricity market modelling across ERCOT, European, and GB markets, LLM application development, and quantitative research in capital markets. CFA Level I passed.",
-    "",
-    `*Read the full Signal Board — live analytical briefs on AI, energy, and financial markets — at **[yujiazhang.co.uk/news](${HOMEPAGE}/news)**.*`,
+    AUTHOR_LINK_MD,
   ].join("\n");
 
   return frontMatter + body;
 }
 
 /**
- * Hashnode — developer/startup audience, clean markdown,
- * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ * Hashnode - developer/startup audience, clean markdown,
+ * expanded paragraphs, short author bio, no Model View / Bottom Line.
  */
 function toMarkdownHashnode(story: NewsStory, desk: NewsDesk): string {
   const paras = boldLeads(story.paragraphs);
@@ -155,7 +156,7 @@ function toMarkdownHashnode(story: NewsStory, desk: NewsDesk): string {
     `> ${story.dek}`,
     "",
     `![${story.imageAlt}](${story.image})`,
-    `*${story.imageAlt} — ${story.date}*`,
+    `*${story.imageAlt} - ${story.date}*`,
     "",
     "---",
     "",
@@ -163,19 +164,17 @@ function toMarkdownHashnode(story: NewsStory, desk: NewsDesk): string {
     "",
     "---",
     "",
-    "## About the Author",
+    "## About the author",
     "",
-    `![Yujia Zhang](${AUTHOR_PHOTO})`,
+    AUTHOR_BIO,
     "",
-    "**Yujia Zhang** is an energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She specialises in power market optimisation, forecasting models for electricity markets (ERCOT, European, GB), AI infrastructure, and quantitative methods in capital markets. CFA Level I passed.",
-    "",
-    `Follow her analytical work on the **[Signal Board](${HOMEPAGE}/news)** — live market intelligence at the intersection of AI, energy, and financial infrastructure — at [yujiazhang.co.uk](${HOMEPAGE}).`,
+    AUTHOR_LINK_MD,
   ].join("\n");
 }
 
 /**
- * WordPress.com — professional/general audience, clean HTML,
- * expanded paragraphs, photo bio, no Model View / Bottom Line.
+ * WordPress.com - professional/general audience, clean HTML,
+ * expanded paragraphs, short author bio, no Model View / Bottom Line.
  */
 function toHtmlWordPress(story: NewsStory, desk: NewsDesk): string {
   const inline = (t: string) =>
@@ -201,7 +200,7 @@ function toHtmlWordPress(story: NewsStory, desk: NewsDesk): string {
     "",
     `<blockquote style="border-left:3px solid #ccc;padding:0.8em 1.2em;margin:1.5em 0;font-style:italic;color:#555;"><p>${inline(story.dek)}</p></blockquote>`,
     "",
-    `<p style="font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#999;"><strong>${story.kicker}</strong> · ${story.date}</p>`,
+    `<p style="font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:#999;"><strong>${story.kicker}</strong> - ${story.date}</p>`,
     "",
     "<hr>",
     "",
@@ -209,15 +208,9 @@ function toHtmlWordPress(story: NewsStory, desk: NewsDesk): string {
     "",
     "<hr>",
     "",
-    "<h3>About the Author</h3>",
-    `<div style="display:flex;align-items:flex-start;gap:16px;margin-top:1em;">`,
-    `<img src="${AUTHOR_PHOTO}" alt="Yujia Zhang" style="width:72px;height:72px;border-radius:50%;object-fit:cover;flex-shrink:0;">`,
-    `<div>`,
-    `<p style="margin:0 0 0.5em;font-size:15px;"><strong>Yujia Zhang</strong></p>`,
-    `<p style="margin:0 0 0.8em;font-size:14px;line-height:1.7;color:#444;">Energy modeller and quantitative researcher with a PhD in engineering and a postdoctoral background at the University of Manchester. She builds optimisation and forecasting models for power markets (ERCOT, European, GB), works on AI infrastructure and LLM applications, and conducts quantitative research in capital markets. CFA Level I passed.</p>`,
-    `<p style="margin:0;font-size:14px;"><a href="${HOMEPAGE}/news" style="color:#1a73e8;font-weight:600;">Read the Signal Board →</a> — live market intelligence at the intersection of AI, energy, and financial markets.</p>`,
-    `</div>`,
-    `</div>`,
+    "<h3>About the author</h3>",
+    `<p style="margin:0 0 0.6em;font-size:15px;"><strong>${AUTHOR_BIO}</strong></p>`,
+    `<p style="margin:0;font-size:14px;"><a href="${HOMEPAGE}/news" style="color:#1a73e8;font-weight:600;">${AUTHOR_LINK_TEXT}</a></p>`,
   ].join("\n");
 }
 
@@ -269,11 +262,11 @@ function markdownToHtml(md: string): string {
   return out.join("\n");
 }
 
-// ── DEV Community ─────────────────────────────────────────────────────────────
+// DEV Community
 
 async function publishToDev(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const apiKey = process.env.DEV_API_KEY;
-  if (!apiKey) { console.warn("  ⚠  DEV_API_KEY not set — skipping DEV Community"); return; }
+  if (!apiKey) { console.warn("  [DEV] DEV_API_KEY not set - skipping DEV Community"); return; }
 
   const tags = deskTags(desk.id);
   const payload = {
@@ -293,25 +286,25 @@ async function publishToDev(story: NewsStory, desk: NewsDesk, _markdown: string,
     headers: { "Content-Type": "application/json", "api-key": apiKey },
     body: JSON.stringify(payload),
   });
-  if (res.status === 422) { console.log("  ↩  DEV Community  →  already published (skipped)"); return; }
+  if (res.status === 422) { console.log("  [DEV] already published (skipped)"); return; }
   if (res.status === 429) {
-    console.log("  ⏳ DEV rate limited — waiting 5 min then retrying...");
+    console.log("  [DEV] rate limited - waiting 5 min then retrying...");
     await new Promise((r) => setTimeout(r, 310_000));
     return publishToDev(story, desk, _markdown, dryRun);
   }
   if (!res.ok) throw new Error(`DEV ${res.status}: ${await res.text()}`);
   const data = (await res.json()) as { url: string };
-  console.log(`  ✓ DEV Community  →  ${data.url}`);
+  console.log(`  [DEV] ${data.url}`);
 }
 
-// ── Write.as ──────────────────────────────────────────────────────────────────
+// Write.as
 // Medium removed: stopped issuing new API tokens as of Jan 1 2025.
-// Write.as is the replacement: simple REST API, free tier, Google-indexed.
+// Write.as
 
 async function publishToWriteAs(story: NewsStory, desk: NewsDesk, markdown: string, dryRun: boolean) {
   const token = process.env.WRITEAS_TOKEN;
   const collection = process.env.WRITEAS_COLLECTION;
-  if (!token) { console.warn("  ⚠  WRITEAS_TOKEN not set — skipping Write.as"); return; }
+  if (!token) { console.warn("  [Write.as] WRITEAS_TOKEN not set - skipping Write.as"); return; }
 
   // Write.as accepts plain text/markdown. We send the markdown directly.
   const payload: Record<string, string> = {
@@ -343,10 +336,10 @@ async function publishToWriteAs(story: NewsStory, desk: NewsDesk, markdown: stri
   const postUrl = d.collection
     ? `${d.collection.url}${d.slug ?? d.id}`
     : `https://write.as/${d.id}`;
-  console.log(`  ✓ Write.as       →  ${postUrl}`);
+  console.log(`  [Write.as] ${postUrl}`);
 }
 
-// ── Hashnode ──────────────────────────────────────────────────────────────────
+// Hashnode
 
 /**
  * Returns the set of canonical URLs already published to this Hashnode publication.
@@ -398,14 +391,14 @@ async function hashnodePublishedUrls(token: string, pubId: string): Promise<Set<
 async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const token = process.env.HASHNODE_TOKEN;
   const pubId = process.env.HASHNODE_PUB_ID;
-  if (!token || !pubId) { console.warn("  ⚠  HASHNODE_TOKEN/HASHNODE_PUB_ID not set — skipping Hashnode"); return; }
+  if (!token || !pubId) { console.warn("  [Hashnode] HASHNODE_TOKEN/HASHNODE_PUB_ID not set - skipping Hashnode"); return; }
 
   if (dryRun) { console.log("  [Hashnode dry-run]", story.headline); return; }
 
   // Pre-check: skip if already published (avoids relying on error message wording)
   const published = await hashnodePublishedUrls(token, pubId);
   if (published.has(canonicalUrl(story, desk))) {
-    console.log("  ↩  Hashnode       →  already published (skipped)");
+    console.log("  [Hashnode] already published (skipped)");
     return;
   }
 
@@ -433,10 +426,10 @@ async function publishToHashnode(story: NewsStory, desk: NewsDesk, _markdown: st
   if (!res.ok) throw new Error(`Hashnode ${res.status}: ${await res.text()}`);
   const json = (await res.json()) as { data?: { publishPost?: { post?: { url: string } } }; errors?: unknown[] };
   if (json.errors) throw new Error(`Hashnode GraphQL: ${JSON.stringify(json.errors)}`);
-  console.log(`  ✓ Hashnode       →  ${json.data?.publishPost?.post?.url}`);
+  console.log(`  [Hashnode] ${json.data?.publishPost?.post?.url}`);
 }
 
-// ── Ghost ─────────────────────────────────────────────────────────────────────
+// Ghost
 
 /** Generates a signed JWT for the Ghost Admin API (no external library needed). */
 function ghostJWT(adminKey: string): string {
@@ -453,7 +446,7 @@ function ghostJWT(adminKey: string): string {
 async function publishToGhost(story: NewsStory, desk: NewsDesk, markdown: string, dryRun: boolean) {
   const ghostUrl = process.env.GHOST_URL?.replace(/\/$/, "");
   const adminKey = process.env.GHOST_ADMIN_KEY;
-  if (!ghostUrl || !adminKey) { console.warn("  ⚠  GHOST_URL/GHOST_ADMIN_KEY not set — skipping Ghost"); return; }
+  if (!ghostUrl || !adminKey) { console.warn("  [Ghost] GHOST_URL/GHOST_ADMIN_KEY not set - skipping Ghost"); return; }
 
   const html = markdownToHtml(markdown);
   const payload = {
@@ -480,10 +473,10 @@ async function publishToGhost(story: NewsStory, desk: NewsDesk, markdown: string
   });
   if (!res.ok) throw new Error(`Ghost ${res.status}: ${await res.text()}`);
   const json = (await res.json()) as { posts: Array<{ url: string }> };
-  console.log(`  ✓ Ghost          →  ${json.posts[0]?.url}`);
+  console.log(`  [Ghost] ${json.posts[0]?.url}`);
 }
 
-// ── Tumblr ────────────────────────────────────────────────────────────────────
+// Tumblr
 
 /** Builds an OAuth 1.0a Authorization header (HMAC-SHA1, no library). */
 function tumblrAuthHeader(
@@ -535,7 +528,7 @@ async function publishToTumblr(story: NewsStory, desk: NewsDesk, markdown: strin
   const blog = process.env.TUMBLR_BLOG;
 
   if (!consumerKey || !consumerSec || !oauthToken || !oauthSec || !blog) {
-    console.warn("  ⚠  Tumblr credentials not fully set — skipping Tumblr");
+    console.warn("  [Tumblr] credentials not fully set - skipping Tumblr");
     return;
   }
 
@@ -568,10 +561,10 @@ async function publishToTumblr(story: NewsStory, desk: NewsDesk, markdown: strin
   const json = (await res.json()) as { response?: { id: string } };
   const postId = json.response?.id;
   const postUrl = `https://${blog}/post/${postId}`;
-  console.log(`  ✓ Tumblr         →  ${postUrl}`);
+  console.log(`  [Tumblr] ${postUrl}`);
 }
 
-// ── WordPress.com ─────────────────────────────────────────────────────────────
+// WordPress.com
 
 async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: string, dryRun: boolean) {
   const site = process.env.WORDPRESS_SITE;
@@ -579,7 +572,7 @@ async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: s
   const appPass = process.env.WORDPRESS_APP_PASS;
 
   if (!site || !user || !appPass) {
-    console.warn("  ⚠  WordPress credentials not fully set — skipping WordPress.com");
+    console.warn("  [WordPress] credentials not fully set - skipping WordPress.com");
     return;
   }
 
@@ -611,10 +604,10 @@ async function publishToWordPress(story: NewsStory, desk: NewsDesk, _markdown: s
   let json: { link: string };
   try { json = JSON.parse(body) as { link: string }; }
   catch { throw new Error(`WordPress returned non-JSON (${res.status}): ${body.slice(0, 200)}`); }
-  console.log(`  ✓ WordPress.com  →  ${json.link}`);
+  console.log(`  [WordPress] ${json.link}`);
 }
 
-// ── Hashnode pub-id lookup ────────────────────────────────────────────────────
+// Hashnode
 
 async function lookupHashnodePubId() {
   const token = process.env.HASHNODE_TOKEN;
@@ -639,12 +632,12 @@ async function lookupHashnodePubId() {
   for (const { node } of pubs) {
     console.log(`  Title : ${node.title}`);
     console.log(`  URL   : ${node.url}`);
-    console.log(`  ID    : ${node.id}   ← paste this as HASHNODE_PUB_ID`);
+    console.log(`  ID    : ${node.id}   -> paste this as HASHNODE_PUB_ID`);
     console.log();
   }
 }
 
-// ── List command ──────────────────────────────────────────────────────────────
+// List command
 
 function listSlugs() {
   console.log("\nAvailable stories:\n");
@@ -658,13 +651,13 @@ function listSlugs() {
   }
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// Main
 
 async function publishOne(story: NewsStory, desk: NewsDesk, platforms: string[], dryRun: boolean) {
-  console.log(`\n${"─".repeat(60)}`);
+  console.log(`\n${"-".repeat(60)}`);
   console.log(`  "${story.headline}"`);
   console.log(`  ${desk.label}`);
-  console.log(`${"─".repeat(60)}`);
+  console.log(`${"-".repeat(60)}`);
 
   const tasks: Promise<void>[] = [];
   if (platforms.includes("dev"))       tasks.push(publishToDev(story, desk, "", dryRun));
@@ -676,7 +669,7 @@ async function publishOne(story: NewsStory, desk: NewsDesk, platforms: string[],
 
   const results = await Promise.allSettled(tasks);
   for (const r of results) {
-    if (r.status === "rejected") console.error(`  ✗ ${String(r.reason)}`);
+    if (r.status === "rejected") console.error(`  [error] ${String(r.reason)}`);
   }
 }
 
@@ -689,16 +682,16 @@ async function main() {
 
   if (args.mode === "all") {
     const { platforms, dryRun } = args;
-    console.log(`\nPublishing ALL ${desks.reduce((n, d) => n + d.stories.length, 0)} stories → ${platforms.join(", ")}${dryRun ? "  [DRY RUN]" : ""}`);
+    console.log(`\nPublishing ALL ${desks.reduce((n, d) => n + d.stories.length, 0)} stories -> ${platforms.join(", ")}${dryRun ? "  [DRY RUN]" : ""}`);
     for (const desk of desks) {
       for (const story of desk.stories) {
         await publishOne(story, desk, platforms, dryRun);
         if (!dryRun) await new Promise((r) => setTimeout(r, 6000));
       }
     }
-    console.log(`\n${"─".repeat(60)}`);
+    console.log(`\n${"-".repeat(60)}`);
     console.log("  All done. Import each DEV article into Medium manually.");
-    console.log(`${"─".repeat(60)}\n`);
+    console.log(`${"-".repeat(60)}\n`);
     return;
   }
 
@@ -714,3 +707,7 @@ async function main() {
 }
 
 main();
+
+
+
+
