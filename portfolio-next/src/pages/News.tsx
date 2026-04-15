@@ -7,7 +7,13 @@ import {
   ExternalLink,
   MapPin,
 } from "lucide-react";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import {
   aiFinanceEvents,
@@ -18,6 +24,7 @@ import {
   type NewsDesk,
   type NewsStory,
 } from "@/data/newsDesk";
+import { getStoryTopics, getTopicsWithCounts } from "@/data/newsTopics";
 import Seo from "@/components/Seo";
 import { absoluteUrl } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -41,6 +48,11 @@ function buildNewsPath(sectionId: SectionId, storySlug?: string) {
   }
 
   return storySlug ? `/news/${sectionId}/${storySlug}` : `/news/${sectionId}`;
+}
+
+function toIsoDate(dateLabel: string) {
+  const timestamp = Date.parse(dateLabel);
+  return Number.isNaN(timestamp) ? undefined : new Date(timestamp).toISOString();
 }
 
 function EventCard({ event }: { event: EventListing }) {
@@ -186,6 +198,16 @@ function BriefCard({
         <p className="mt-3 max-w-[42rem] text-[1rem] leading-relaxed text-muted">
           {story.dek}
         </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {getStoryTopics(story.slug).map((topic) => (
+            <span
+              key={topic.slug}
+              className="rounded-full border border-border bg-accent px-3 py-1 text-xs font-mono text-muted transition-colors hover:border-foreground hover:text-foreground"
+            >
+              {topic.label}
+            </span>
+          ))}
+        </div>
         {showCta && (
           <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-foreground">
             {ctaLabel}
@@ -241,6 +263,17 @@ function ArticleView({
           <p className="mt-3 max-w-[56rem] text-[0.95rem] leading-[1.75] text-muted">
             {story.dek}
           </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {getStoryTopics(story.slug).map((topic) => (
+              <Link
+                key={topic.slug}
+                to={`/news/tag/${topic.slug}`}
+                className="rounded-full border border-border bg-accent px-3 py-1 text-xs font-mono text-muted transition-colors hover:border-foreground hover:text-foreground"
+              >
+                {topic.label}
+              </Link>
+            ))}
+          </div>
           <div className="mt-5 space-y-[1.1rem]">
             {story.paragraphs.map((paragraph) => (
               <p key={paragraph} className="max-w-[56rem] text-[0.82rem] leading-[1.8] text-foreground/80 md:text-[0.88rem]">
@@ -435,7 +468,7 @@ export default function News() {
           "@type": "Person",
           name: "Yujia Zhang",
         },
-        datePublished: new Date(selectedStory.date).toISOString(),
+        datePublished: toIsoDate(selectedStory.date),
       }
     : undefined;
 
@@ -464,6 +497,25 @@ export default function News() {
           transmission, and the events worth showing up for. Start with the
           short brief, then open the lead note for the longer analytical version.
         </p>
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          <Link
+            to="/news/archive"
+            className="rounded-full bg-foreground px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+          >
+            Browse archive
+          </Link>
+          {getTopicsWithCounts()
+            .slice(0, 6)
+            .map((topic) => (
+              <Link
+                key={topic.slug}
+                to={`/news/tag/${topic.slug}`}
+                className="rounded-full border border-border bg-card px-3 py-1 text-xs font-mono text-muted transition-colors hover:border-foreground hover:text-foreground"
+              >
+                {topic.label}
+              </Link>
+            ))}
+        </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {["financial infrastructure", "agent infrastructure", "energy transmission", "London events"].map(
             (pill) => (

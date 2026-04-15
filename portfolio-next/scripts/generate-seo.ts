@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { desks } from "../src/data/newsDesk.ts";
+import { getTopicsWithCounts } from "../src/data/newsTopics.ts";
 
 const SITE_URL = (
   process.env.SITE_URL ?? process.env.VITE_SITE_URL ?? "https://yujiazhang.co.uk"
@@ -23,12 +24,16 @@ function escapeXml(value: string) {
 const publicDir = resolve(process.cwd(), "public");
 mkdirSync(publicDir, { recursive: true });
 
-const routes = new Set<string>(["/", "/research", "/news"]);
+const routes = new Set<string>(["/", "/research", "/news", "/news/archive"]);
 for (const desk of desks) {
   routes.add(`/news/${desk.id}`);
   for (const story of desk.stories) {
     routes.add(`/news/${desk.id}/${story.slug}`);
   }
+}
+
+for (const topic of getTopicsWithCounts()) {
+  routes.add(`/news/tag/${topic.slug}`);
 }
 
 const urls = Array.from(routes).sort((a, b) => a.localeCompare(b));
