@@ -21,6 +21,7 @@ export default function App() {
             <Route path="/research" element={<Research />} />
             <Route path="/news/archive" element={<Archive />} />
             <Route path="/news/tag/:tag" element={<Archive />} />
+            <Route path="/news/event/:event" element={<News />} />
             <Route path="/news" element={<News />} />
             <Route path="/news/:desk" element={<News />} />
             <Route path="/news/:desk/:story" element={<News />} />

@@ -67,11 +67,23 @@ export const topicDefinitions: Record<string, TopicDefinition> = {
     description:
       "Analysis of electricity markets, capacity pricing, grid economics, and market structure in power systems.",
   },
+  "capacity-pricing": {
+    slug: "capacity-pricing",
+    label: "Capacity Pricing",
+    description:
+      "Coverage of capacity auctions, reserve margins, and how reliability costs are allocated across electricity customers.",
+  },
   "data-centres": {
     slug: "data-centres",
     label: "Data Centres",
     description:
       "Stories on data centre demand, power supply, siting decisions, and the infrastructure behind AI workloads.",
+  },
+  "load-growth": {
+    slug: "load-growth",
+    label: "Load Growth",
+    description:
+      "Articles on data-centre demand, electrification, and the load additions that reshape power markets and grid planning.",
   },
   "energy-islands": {
     slug: "energy-islands",
@@ -125,6 +137,18 @@ export const storyTopicSlugs: Record<string, string[]> = {
     "software-engineering",
   ],
   "pjm-capacity-prices-data-centers-2026": [
+    "capacity-pricing",
+    "power-markets",
+    "data-centres",
+    "electricity",
+  ],
+  "why-pjm-capacity-prices-matter": [
+    "capacity-pricing",
+    "power-markets",
+    "electricity",
+  ],
+  "ai-power-market-reset-2026": [
+    "load-growth",
     "power-markets",
     "data-centres",
     "electricity",

@@ -654,6 +654,112 @@ export const desks: NewsDesk[] = [
     },
     stories: [
       {
+        slug: "ai-power-market-reset-2026",
+        kicker: "Power Markets",
+        date: "April 11, 2026",
+        headline:
+          "AI data centres are turning U.S. electricity into a capacity market",
+        dek:
+          "The grid is no longer being asked only to deliver power. It is being asked to guarantee firm supply at the exact moment AI load is compounding.",
+        image:
+          "https://images.unsplash.com/photo-1604352704611-cce8fe2a4e0d?w=1080&q=80&auto=format&fit=crop",
+        imageAlt: "City skyline and infrastructure at dusk",
+        imageClassName: "object-center",
+        paragraphs: [
+          "Capacity markets exist because electricity systems have to reserve enough reliable supply years before the electrons are actually needed. In PJM's Reliability Pricing Model, that commitment is procured three years ahead so the grid can keep an adequacy margin even when weather, outages, and demand spikes all happen at once. The important part is not the metaphor of an auction. It is the fact that the market is pricing future scarcity rather than present consumption.",
+          "The 2026/27 Base Residual Auction secured 134,311 MW of unforced capacity and cleared at $329.17/MW-day across the PJM footprint, the FERC-approved cap. That is a very clear signal that the system is paying up for firm supply. When the clearing price is anchored at the cap, the market is no longer whispering about scarcity - it is broadcasting it.",
+          "AI data centres are a big reason the signal is getting louder. Their load arrives in large blocks, grows quickly, and has to be served in regions where transmission, queue position, and new firm generation all move slowly. FERC said its 2023 interconnection reforms were needed because more than 2,000 GW of generation and storage were sitting in queues at the end of 2022. That backlog means the supply response is measured in years, while the demand shock is measured in quarters.",
+          "The market response is already visible. Hyperscalers and utilities are moving toward dedicated gas, nuclear PPAs, and behind-the-meter generation because the regulated grid cannot clear new capacity fast enough on its own. That shifts the frame from an energy-market view of electricity to a land-rights and balance-sheet view of electricity. The competitive advantage goes to the firms that can secure firm power before the queue clears, not just to the firms that can sign the biggest headline load contract.",
+          "For investors, the practical conclusion is simple. The most important variables in this market are no longer only fuel prices and load forecasts. They are reserve margin, interconnection delay, and the probability that a data centre buyer will pay for dedicated capacity rather than wait for the grid. If you understand those variables, you understand the new power trade.",
+        ],
+        modelView:
+          "Capacity value = load growth x scarcity x interconnection delay. When load growth is concentrated and supply is time-constrained, the clearing price becomes a function of time as much as of fuel.",
+        bottomLine:
+          "AI load is converting electricity from a utility input into a strategic capacity position.",
+        packet: {
+          audience: defaultAudience,
+          briefing:
+            "Write a 1400-1600 word power markets analysis on how AI data centres are turning U.S. electricity into a capacity market. Lead with PJM's 2026/27 auction, explain why capacity markets price future scarcity, and show how interconnection queues and dedicated generation are reshaping the investment case. Include one compact quantitative frame on capacity value and close with the implications for utilities and infrastructure investors.",
+          targetKeyword: "AI electricity demand power markets 2026",
+          tone: defaultTone,
+          targetWordCount: 1600,
+          backlinkPath: "/news/markets/ai-power-market-reset-2026",
+          publicationTargets,
+          sourceAnchors: [
+            {
+              label: "PJM Learning Center - Capacity Market (RPM)",
+              url: "https://learn.pjm.com/three-priorities/buying-and-selling-energy/capacity-markets",
+            },
+            {
+              label: "PJM 2026/2027 Base Residual Auction results",
+              url: "https://insidelines.pjm.com/pjm-auction-procures-134311-mw-of-generation-resources-supply-responds-to-price-signal/",
+            },
+            {
+              label: "FERC interconnection reform news release",
+              url: "https://www.ferc.gov/news-events/news/ferc-transmission-reform-paves-way-adding-new-energy-resources-grid",
+            },
+          ],
+          keyPoints: [
+            "Why capacity auctions are the right way to read AI-driven scarcity",
+            "How FERC queue reform slows but does not remove the bottleneck",
+            "Why firm power is becoming the key asset in power-market investing",
+          ],
+        },
+      },
+      {
+        slug: "why-pjm-capacity-prices-matter",
+        kicker: "Capacity Pricing",
+        date: "April 10, 2026",
+        headline:
+          "Why PJM capacity prices matter more than spot electricity prices",
+        dek:
+          "Spot prices tell you what electricity costs now. Capacity prices tell you what it costs to guarantee it will still be there when the grid is stressed.",
+        image:
+          "https://images.unsplash.com/photo-1691643158804-d3f02eb456a3?w=1080&q=80&auto=format&fit=crop",
+        imageAlt: "Computer screens displaying energy market data and price charts",
+        imageClassName: "object-center",
+        paragraphs: [
+          "The PJM capacity market is the part of the electricity system that pays for reliability before the power is needed. PJM describes it as a Reliability Pricing Model that secures enough resources three years into the future, with resources paid for the promise to deliver when called upon. That matters because the system is not just buying energy. It is buying the option to avoid shortages at the exact moment the grid is under stress.",
+          "The pricing mechanism is built to reveal scarcity in advance, not after the fact. PJM's 2026/27 auction cleared at $329.17/MW-day, the FERC-approved cap, across the whole footprint. When the auction clears at that level, it is effectively saying that reserve margin is tight enough that the market needs the maximum allowed price to attract and hold adequate supply. That is why capacity auctions are the better signal than spot prices for anyone trying to understand where the system is under pressure.",
+          "The distributional consequence is important. Capacity costs are not just an abstract market number; they are recovered through customers' bills, which means a large incremental load category can reprice everyone else. That is the same mechanism that made data centres such a disruptive force in PJM in the first place. If AI load keeps growing while new firm supply stays slow, households are likely to keep seeing the impact in their retail rates long before most of the new generation is physically online.",
+          "The supply side is constrained by more than just capital. FERC's interconnection reform order was issued because more than 2,000 GW of generation and storage sat in queues at the end of 2022. PJM's own capacity materials show that the market depends on resource adequacy planning, load forecasts, and a three-year auction cycle to keep reliability intact. That means the system can see the problem coming, but it cannot build fast enough to erase it immediately.",
+          "The practical takeaway for readers is that the big story is not only how much electricity AI uses. It is how much firm capacity the market can guarantee before the grid gets stressed. If you want to know whether data-centre demand is real, watch the auction, not the press release.",
+        ],
+        modelView:
+          "Retail bill impact = capacity clearing price x load share x pass-through. The more concentrated the load growth, the more quickly capacity pricing turns into customer cost.",
+        bottomLine:
+          "Capacity markets are where reliability costs stop being abstract and start appearing on bills and balance sheets.",
+        packet: {
+          audience: defaultAudience,
+          briefing:
+            "Write a 1200-1400 word explanatory article on why PJM capacity prices matter more than spot electricity prices. Explain what the capacity market is, why it clears years ahead, how scarcity gets priced, and why those costs matter for households and investors. Include one simple quantitative frame and end with the AI data-centre implication.",
+          targetKeyword: "PJM capacity market explained",
+          tone: defaultTone,
+          targetWordCount: 1300,
+          backlinkPath: "/news/markets/why-pjm-capacity-prices-matter",
+          publicationTargets,
+          sourceAnchors: [
+            {
+              label: "PJM Learning Center - Capacity Market (RPM)",
+              url: "https://learn.pjm.com/three-priorities/buying-and-selling-energy/capacity-markets",
+            },
+            {
+              label: "PJM - Capacity Market (RPM)",
+              url: "https://www.pjm.com/markets-and-operations/rpm.aspx",
+            },
+            {
+              label: "FERC interconnection reform news release",
+              url: "https://www.ferc.gov/news-events/news/ferc-transmission-reform-paves-way-adding-new-energy-resources-grid",
+            },
+          ],
+          keyPoints: [
+            "Why capacity prices are the right metric for reliability stress",
+            "How the three-year auction cycle turns forecasts into commitments",
+            "Why AI load growth makes capacity pricing a better market signal than spot power",
+          ],
+        },
+      },
+      {
         slug: "pjm-capacity-prices-data-centers-2026",
         kicker: "Power Markets",
         date: "April 7, 2026",

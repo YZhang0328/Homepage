@@ -43,6 +43,9 @@
     <loc>https://yujiazhang.co.uk/news/markets</loc>
   </url>
   <url>
+    <loc>https://yujiazhang.co.uk/news/markets/ai-power-market-reset-2026</loc>
+  </url>
+  <url>
     <loc>https://yujiazhang.co.uk/news/markets/energy-islands-shadow-grid-2026</loc>
   </url>
   <url>
@@ -52,10 +55,16 @@
     <loc>https://yujiazhang.co.uk/news/markets/pjm-capacity-prices-data-centers-2026</loc>
   </url>
   <url>
+    <loc>https://yujiazhang.co.uk/news/markets/why-pjm-capacity-prices-matter</loc>
+  </url>
+  <url>
     <loc>https://yujiazhang.co.uk/news/tag/agents</loc>
   </url>
   <url>
     <loc>https://yujiazhang.co.uk/news/tag/ai-governance</loc>
+  </url>
+  <url>
+    <loc>https://yujiazhang.co.uk/news/tag/capacity-pricing</loc>
   </url>
   <url>
     <loc>https://yujiazhang.co.uk/news/tag/data-centres</loc>
@@ -71,6 +80,9 @@
   </url>
   <url>
     <loc>https://yujiazhang.co.uk/news/tag/fintech</loc>
+  </url>
+  <url>
+    <loc>https://yujiazhang.co.uk/news/tag/load-growth</loc>
   </url>
   <url>
     <loc>https://yujiazhang.co.uk/news/tag/macro</loc>

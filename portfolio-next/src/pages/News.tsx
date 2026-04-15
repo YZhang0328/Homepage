@@ -33,6 +33,7 @@ type SectionId = "events" | DeskId;
 type NewsRouteParams = {
   desk?: string;
   story?: string;
+  event?: string;
 };
 
 const defaultSectionId: SectionId = "events";
@@ -50,16 +51,35 @@ function buildNewsPath(sectionId: SectionId, storySlug?: string) {
   return storySlug ? `/news/${sectionId}/${storySlug}` : `/news/${sectionId}`;
 }
 
+function buildEventPath(eventSlug?: string) {
+  return eventSlug ? `/news/event/${eventSlug}` : "/news";
+}
+
+function slugifyEventTitle(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function toIsoDate(dateLabel: string) {
   const timestamp = Date.parse(dateLabel);
   return Number.isNaN(timestamp) ? undefined : new Date(timestamp).toISOString();
 }
 
-function EventCard({ event }: { event: EventListing }) {
+function EventCard({
+  event,
+  onOpen,
+}: {
+  event: EventListing;
+  onOpen: () => void;
+}) {
   return (
-    <a
-      href={event.link}
-      className="group block rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group block w-full rounded-2xl border border-border bg-card p-5 text-left transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
@@ -91,7 +111,66 @@ function EventCard({ event }: { event: EventListing }) {
           className="mt-1 shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100"
         />
       </div>
-    </a>
+    </button>
+  );
+}
+
+function EventDetailView({
+  event,
+  onBack,
+}: {
+  event: EventListing;
+  onBack: () => void;
+}) {
+  return (
+    <article className="rounded-3xl border border-border bg-card p-6 md:p-8 lg:p-10">
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-foreground"
+      >
+        <ArrowLeft size={16} />
+        Back to events
+      </button>
+
+      <div className="mt-6 max-w-3xl">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium">
+            {event.type}
+          </span>
+          <span className="rounded-full border border-border px-2.5 py-0.5 text-xs text-muted">
+            {event.price}
+          </span>
+        </div>
+        <h3 className="font-serif text-3xl font-bold leading-tight md:text-4xl">
+          {event.title}
+        </h3>
+        <p className="mt-4 max-w-2xl text-[1rem] leading-relaxed text-muted">
+          {event.description}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-4 text-sm text-muted">
+          <span className="inline-flex items-center gap-1">
+            <Calendar size={14} /> {event.date}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <MapPin size={14} /> {event.venue}
+          </span>
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => window.location.assign(event.link)}
+            className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-neutral-800"
+          >
+            Open official page
+            <ExternalLink size={16} />
+          </button>
+          <span className="rounded-full border border-border bg-accent px-4 py-2 text-sm text-muted">
+            Source: {event.source}
+          </span>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -310,6 +389,7 @@ export default function News() {
       ? (searchParams.get("desk") as SectionId)
       : defaultSectionId;
   const routeStorySlug = params.story ?? searchParams.get("story") ?? undefined;
+  const routeEventSlug = params.event ?? searchParams.get("event") ?? undefined;
 
   const activeSectionId = routeSectionId;
   const activeDesk =
@@ -319,9 +399,17 @@ export default function News() {
   const selectedSlug = routeStorySlug;
   const selectedStory =
     activeDesk?.stories.find((story) => story.slug === selectedSlug) ?? null;
+  const selectedEvent =
+    routeSectionId === "events" && routeEventSlug
+      ? aiFinanceEvents.find(
+          (event) => slugifyEventTitle(event.title) === routeEventSlug
+        ) ?? null
+      : null;
 
   useEffect(() => {
-    const canonicalPath = buildNewsPath(activeSectionId, selectedSlug ?? undefined);
+    const canonicalPath = selectedEvent
+      ? buildEventPath(routeEventSlug)
+      : buildNewsPath(activeSectionId, selectedSlug ?? undefined);
     const currentPath = `${location.pathname}${location.search}`;
 
     if (location.pathname.startsWith("/news") && currentPath !== canonicalPath) {
@@ -333,7 +421,9 @@ export default function News() {
     location.search,
     navigate,
     searchParams,
+    routeEventSlug,
     selectedSlug,
+    selectedEvent,
   ]);
 
   useEffect(() => {
@@ -413,6 +503,10 @@ export default function News() {
   };
 
   const renderEvents = () => {
+    if (selectedEvent) {
+      return <EventDetailView event={selectedEvent} onBack={() => updateRoute("events")} />;
+    }
+
     return (
       <div className="space-y-4">
         <p className="mb-6 max-w-[58rem] text-sm leading-relaxed text-muted md:text-[0.98rem]">
@@ -421,7 +515,11 @@ export default function News() {
           conferences.
         </p>
         {aiFinanceEvents.map((event) => (
-          <EventCard key={event.title} event={event} />
+          <EventCard
+            key={event.title}
+            event={event}
+            onOpen={() => navigate(buildEventPath(slugifyEventTitle(event.title)))}
+          />
         ))}
       </div>
     );
@@ -436,23 +534,31 @@ export default function News() {
 
   const pageTitle = selectedStory
     ? `${selectedStory.headline} | Signal Board`
+    : selectedEvent
+      ? `${selectedEvent.title} | Signal Board`
     : activeSectionId === "events"
       ? "AI & Finance Events | Signal Board"
       : `${activeDesk?.label ?? "Signal Board"} | Signal Board`;
 
   const pageDescription = selectedStory
     ? selectedStory.dek
+    : selectedEvent
+      ? selectedEvent.description
     : activeSectionId === "events"
       ? "Practical AI sessions and finance-focused gatherings worth tracking, from Microsoft agent workshops to London capital-markets events."
       : activeDesk?.intro ??
         "A live board for financial infrastructure, consequential AI, market transmission, and the events worth showing up for.";
 
-  const canonicalPath = buildNewsPath(activeSectionId, selectedSlug ?? undefined);
+  const canonicalPath = selectedEvent
+    ? buildEventPath(routeEventSlug)
+    : buildNewsPath(activeSectionId, selectedSlug ?? undefined);
   const seoImagePath = selectedStory
     ? storyOgImagePath(activeSectionId, selectedStory.slug)
     : activeDesk?.feature.image;
   const seoImageAlt = selectedStory
     ? `${selectedStory.headline} - Signal Board`
+    : selectedEvent
+      ? `${selectedEvent.title} - Signal Board`
     : activeDesk?.feature.imageAlt;
   const seoJsonLd = selectedStory
     ? {
@@ -472,6 +578,19 @@ export default function News() {
         },
         datePublished: toIsoDate(selectedStory.date),
       }
+    : selectedEvent
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Event",
+          name: selectedEvent.title,
+          description: selectedEvent.description,
+          startDate: selectedEvent.date,
+          location: {
+            "@type": "Place",
+            name: selectedEvent.venue,
+          },
+          url: absoluteUrl(canonicalPath),
+        }
     : undefined;
 
   return (
