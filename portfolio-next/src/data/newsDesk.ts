@@ -815,8 +815,8 @@ export const desks: NewsDesk[] = [
         dek:
           "Spot prices tell you what electricity costs now. Capacity prices tell you what it costs to guarantee it will still be there when the grid is stressed.",
         image:
-          "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1080&q=80&auto=format&fit=crop",
-        imageAlt: "Computer screens displaying energy market data and price charts",
+          "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1080&q=80&auto=format&fit=crop",
+        imageAlt: "Wind turbine blades and transmission lines in open sky",
         imageClassName: "object-center",
         paragraphs: [
           "The PJM capacity market is the part of the electricity system that pays for reliability before the power is needed. PJM describes it as a Reliability Pricing Model that secures enough resources three years into the future, with resources paid for the promise to deliver when called upon. That matters because the system is not just buying energy. It is buying the option to avoid shortages at the exact moment the grid is under stress.",

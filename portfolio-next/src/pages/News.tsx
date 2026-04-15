@@ -328,14 +328,14 @@ function MarketsGuidePanel({
           onOpen={() => onOpenStory(pillarStory.slug)}
           featured
           showCta
-          ctaLabel="Open article"
+          ctaLabel="Read full article"
         />
         <BriefCard
           story={supportStory}
           onOpen={() => onOpenStory(supportStory.slug)}
           featured
           showCta
-          ctaLabel="Open article"
+          ctaLabel="Read full article"
         />
       </div>
 
@@ -348,7 +348,7 @@ function MarketsGuidePanel({
                 story={story}
                 onOpen={() => onOpenStory(story.slug)}
                 showCta
-                ctaLabel="Open article"
+                ctaLabel="Read full article"
                 showArrow={false}
                 showDek={false}
               />
@@ -381,14 +381,14 @@ function FinanceGuidePanel({
           onOpen={() => onOpenStory(pillarStory.slug)}
           featured
           showCta
-          ctaLabel="Open article"
+          ctaLabel="Read full article"
         />
         <BriefCard
           story={supportStory}
           onOpen={() => onOpenStory(supportStory.slug)}
           featured
           showCta
-          ctaLabel="Open article"
+          ctaLabel="Read full article"
         />
       </div>
 
@@ -401,7 +401,7 @@ function FinanceGuidePanel({
                 story={story}
                 onOpen={() => onOpenStory(story.slug)}
                 showCta
-                ctaLabel="Open article"
+                ctaLabel="Read full article"
                 showArrow={false}
                 showDek={false}
               />
@@ -448,7 +448,7 @@ function RelatedBriefsPanel({
             story={story}
             onOpen={() => onOpenStory(story.slug)}
             showCta
-            ctaLabel="Open article"
+            ctaLabel="Read full article"
             showArrow={false}
             showDek={false}
           />
@@ -493,7 +493,7 @@ function FinanceRelatedBriefsPanel({
             story={story}
             onOpen={() => onOpenStory(story.slug)}
             showCta
-            ctaLabel="Open article"
+            ctaLabel="Read full article"
             showArrow={false}
             showDek={false}
           />
@@ -675,7 +675,7 @@ export default function News() {
                       story={story}
                       onOpen={() => updateRoute(desk.id, story.slug)}
                       showCta
-                      ctaLabel="Open article"
+                      ctaLabel="Read full article"
                       showArrow={false}
                       showDek={false}
                     />
@@ -730,7 +730,7 @@ export default function News() {
                   story={story}
                   onOpen={() => updateRoute(desk.id, story.slug)}
                   showCta
-                  ctaLabel="Open article"
+                  ctaLabel="Read full article"
                   showArrow={false}
                 />
               ))}
