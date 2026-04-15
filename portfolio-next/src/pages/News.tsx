@@ -59,8 +59,6 @@ function EventCard({ event }: { event: EventListing }) {
   return (
     <a
       href={event.link}
-      target="_blank"
-      rel="noreferrer"
       className="group block rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
