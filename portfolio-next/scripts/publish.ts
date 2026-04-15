@@ -87,7 +87,7 @@ function parseArgs() {
 // ── Formatters ────────────────────────────────────────────────────────────────
 
 function canonicalUrl(story: NewsStory, desk: NewsDesk) {
-  return `${HOMEPAGE}/news?desk=${desk.id}&story=${story.slug}`;
+  return `${HOMEPAGE}/news/${desk.id}/${story.slug}`;
 }
 
 /** Bold the first sentence of each paragraph for scannability. */

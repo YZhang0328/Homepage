@@ -7,7 +7,7 @@ import {
   ExternalLink,
   MapPin,
 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import {
   aiFinanceEvents,
@@ -21,12 +21,24 @@ import {
 import { cn } from "@/lib/utils";
 
 type SectionId = "events" | DeskId;
+type NewsRouteParams = {
+  desk?: string;
+  story?: string;
+};
 
 const defaultSectionId: SectionId = "events";
 const sectionIds: SectionId[] = ["events", "ai", "markets", "finance"];
 
 function isSectionId(value: string | null): value is SectionId {
   return value !== null && sectionIds.includes(value as SectionId);
+}
+
+function buildNewsPath(sectionId: SectionId, storySlug?: string) {
+  if (sectionId === "events") {
+    return "/news";
+  }
+
+  return storySlug ? `/news/${sectionId}/${storySlug}` : `/news/${sectionId}`;
 }
 
 function EventCard({ event }: { event: EventListing }) {
@@ -253,19 +265,43 @@ function ArticleView({
 }
 
 export default function News() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const params = useParams<NewsRouteParams>();
   const articleAnchorRef = useRef<HTMLDivElement | null>(null);
 
-  const activeSectionId = isSectionId(searchParams.get("desk"))
-    ? (searchParams.get("desk") as SectionId)
-    : defaultSectionId;
+  const routeSectionId = isSectionId(params.desk ?? null)
+    ? (params.desk as SectionId)
+    : isSectionId(searchParams.get("desk"))
+      ? (searchParams.get("desk") as SectionId)
+      : defaultSectionId;
+  const routeStorySlug = params.story ?? searchParams.get("story") ?? undefined;
+
+  const activeSectionId = routeSectionId;
   const activeDesk =
     activeSectionId === "events"
       ? null
       : desks.find((desk) => desk.id === activeSectionId) ?? desks[0];
-  const selectedSlug = searchParams.get("story");
+  const selectedSlug = routeStorySlug;
   const selectedStory =
     activeDesk?.stories.find((story) => story.slug === selectedSlug) ?? null;
+
+  useEffect(() => {
+    const canonicalPath = buildNewsPath(activeSectionId, selectedSlug ?? undefined);
+    const currentPath = `${location.pathname}${location.search}`;
+
+    if (location.pathname.startsWith("/news") && currentPath !== canonicalPath) {
+      navigate(canonicalPath, { replace: true });
+    }
+  }, [
+    activeSectionId,
+    location.pathname,
+    location.search,
+    navigate,
+    searchParams,
+    selectedSlug,
+  ]);
 
   useEffect(() => {
     if (selectedStory && articleAnchorRef.current) {
@@ -277,16 +313,8 @@ export default function News() {
   }, [selectedStory]);
 
   const updateRoute = (sectionId: SectionId, storySlug?: string) => {
-    const nextParams = new URLSearchParams(searchParams);
-    nextParams.set("desk", sectionId);
-
-    if (sectionId !== "events" && storySlug) {
-      nextParams.set("story", storySlug);
-    } else {
-      nextParams.delete("story");
-    }
-
-    setSearchParams(nextParams);
+    const nextPath = buildNewsPath(sectionId, storySlug);
+    navigate(nextPath);
   };
 
   const renderDesk = (desk: NewsDesk) => {

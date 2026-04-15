@@ -242,7 +242,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "stablecoin infrastructure race FinTech banks 2026",
           tone: defaultTone,
           targetWordCount: 1400,
-          backlinkPath: "/news?desk=finance&story=stablecoin-stack-race-2026",
+          backlinkPath: "/news/finance/stablecoin-stack-race-2026",
           publicationTargets,
           sourceAnchors: [
             {
@@ -294,7 +294,7 @@ export const desks: NewsDesk[] = [
           tone: defaultTone,
           targetWordCount: 1400,
           backlinkPath:
-            "/news?desk=finance&story=genius-act-stablecoins-payment-infrastructure",
+            "/news/finance/genius-act-stablecoins-payment-infrastructure",
           publicationTargets,
           sourceAnchors: [
             {
@@ -344,7 +344,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "Revolut U.S. bank charter analysis",
           tone: defaultTone,
           targetWordCount: 1450,
-          backlinkPath: "/news?desk=finance&story=revolut-us-bank-charter",
+          backlinkPath: "/news/finance/revolut-us-bank-charter",
           publicationTargets,
           sourceAnchors: [
             {
@@ -419,7 +419,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "Model Context Protocol MCP enterprise standard 2026",
           tone: defaultTone,
           targetWordCount: 1400,
-          backlinkPath: "/news?desk=ai&story=mcp-97-million-installs-standard",
+          backlinkPath: "/news/ai/mcp-97-million-installs-standard",
           publicationTargets,
           sourceAnchors: [
             {
@@ -470,7 +470,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "Anthropic enterprise AI market share 2026",
           tone: defaultTone,
           targetWordCount: 1400,
-          backlinkPath: "/news?desk=ai&story=anthropic-enterprise-dominance-2026",
+          backlinkPath: "/news/ai/anthropic-enterprise-dominance-2026",
           publicationTargets,
           sourceAnchors: [
             {
@@ -517,7 +517,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "Claude Code autonomous software agent production",
           tone: defaultTone,
           targetWordCount: 1400,
-          backlinkPath: "/news?desk=ai&story=claude-code-autonomous-software-agent",
+          backlinkPath: "/news/ai/claude-code-autonomous-software-agent",
           publicationTargets,
           sourceAnchors: [
             {
@@ -563,7 +563,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "Microsoft Frontier Suite enterprise AI analysis",
           tone: defaultTone,
           targetWordCount: 1450,
-          backlinkPath: "/news?desk=ai&story=microsoft-frontier-suite",
+          backlinkPath: "/news/ai/microsoft-frontier-suite",
           publicationTargets,
           sourceAnchors: [
             {
@@ -610,7 +610,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "OpenAI Promptfoo evals red-teaming enterprise AI",
           tone: defaultTone,
           targetWordCount: 2100,
-          backlinkPath: "/news?desk=ai&story=openai-promptfoo-evals-infrastructure",
+          backlinkPath: "/news/ai/openai-promptfoo-evals-infrastructure",
           publicationTargets,
           sourceAnchors: [
             {
@@ -685,7 +685,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "PJM capacity prices data centres electricity 2026",
           tone: defaultTone,
           targetWordCount: 2200,
-          backlinkPath: "/news?desk=markets&story=pjm-capacity-prices-data-centers-2026",
+          backlinkPath: "/news/markets/pjm-capacity-prices-data-centers-2026",
           publicationTargets,
           sourceAnchors: [
             {
@@ -740,7 +740,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "AI data centre shadow grid dedicated power infrastructure",
           tone: defaultTone,
           targetWordCount: 2300,
-          backlinkPath: "/news?desk=markets&story=energy-islands-shadow-grid-2026",
+          backlinkPath: "/news/markets/energy-islands-shadow-grid-2026",
           publicationTargets,
           sourceAnchors: [
             {
@@ -790,7 +790,7 @@ export const desks: NewsDesk[] = [
           targetKeyword: "oil supply shock portfolio analysis 2026",
           tone: defaultTone,
           targetWordCount: 2000,
-          backlinkPath: "/news?desk=markets&story=oil-supply-shock-math",
+          backlinkPath: "/news/markets/oil-supply-shock-math",
           publicationTargets,
           sourceAnchors: [
             {
