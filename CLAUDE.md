@@ -30,6 +30,13 @@ npm run build      # production build → dist/
 
 **Key pattern:** Content is data-driven. The News page reads from `newsDesk.ts`; updating that file is the only change needed to refresh all four tabs.
 
+**SEO toolchain (runs automatically inside `npm run build`):**
+- `portfolio-next/scripts/generate-seo.ts` — **prebuild.** Generates `public/sitemap.xml` (with `changefreq`/`priority`), `public/feed.xml` (RSS), `public/robots.txt`, and `public/og/{desk}/{slug}.png` OG card images.
+- `portfolio-next/scripts/prerender.ts` — **postbuild.** SSR-renders all routes and bakes SEO meta tags (title, description, OG, `article:` tags, JSON-LD) into every `dist/{route}/index.html`. This is what search bots and social-sharing crawlers read — not the JS bundle.
+- `portfolio-next/src/components/Seo.tsx` — client-side mirror. Uses `useEffect` to keep meta tags in sync during SPA navigation after the page has loaded in a browser.
+
+**Critical rule:** When making any SEO change, update **both** `prerender.ts` (what bots see) and `Seo.tsx` (what live navigation sees). They must stay in sync. The JSON-LD schemas in use are: `Person` + `WebSite` (home), `BlogPosting` + `BreadcrumbList` (articles), `Event` (event detail), `CollectionPage` (archive/tag pages).
+
 ---
 
 ## Market News Page — Content Strategy
@@ -102,6 +109,17 @@ Each story includes a `packet` for potential syndication:
 **Desk composition rule:**
 - Do not place two stories with the same search intent or mechanism on the same desk.
 - If two pieces are related, separate them by editorial layer: one structural pillar, one explainer, one policy/allocation angle, one market response.
+
+---
+
+### GEO (Generative Engine Optimization)
+
+The site is structured for AI search engines (Perplexity, ChatGPT, etc.) that cite sources. These story fields directly drive AI citation signals and must be written with that in mind:
+
+- **`dek`** — becomes the meta description and the `speakable` XPath target. Write it as a self-contained, quotable sentence that stands alone without the article. This is what AI engines extract when summarising.
+- **`bottomLine`** — the most cite-worthy sentence. Write it as a standalone, assertive claim — not a summary. AI engines may lift this verbatim as the key takeaway.
+- **`packet.targetKeyword`** — maps to `keywords` in the `BlogPosting` JSON-LD. Match search intent exactly (3–6 words, noun phrase). This is how the article surfaces in AI-assisted search.
+- **Topic tags** (`newsTopics.ts`) — auto-populate `keywords` and `article:tag` OG meta. Each story's tags should name the mechanism, not the event (e.g. `"Capacity Pricing"` not `"PJM Auction 2026"`).
 
 ## Images
 
@@ -230,3 +248,4 @@ When updating `newsDesk.ts`:
 - [ ] `sourceAnchors` URLs are real and accessible
 - [ ] No paragraph repeats information from a previous paragraph
 - [ ] `bottomLine` is a single sentence, no longer
+- [ ] Run `npm run build` — regenerates sitemap, OG images, RSS feed, and all prerendered HTML. **Never edit `public/sitemap.xml`, `public/feed.xml`, or `public/robots.txt` by hand** — they are overwritten on every build.
