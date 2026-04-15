@@ -2,12 +2,14 @@ import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { Resvg } from "@resvg/resvg-js";
 import { desks } from "../src/data/newsDesk.ts";
+import { getQuestions } from "../src/data/searchQuestions.ts";
 import { getStoryTopics, getTopicsWithCounts } from "../src/data/newsTopics.ts";
 import { getStoriesForHub, getTopicHubs } from "../src/data/topicHubs.ts";
 
 const SITE_URL = (
   process.env.SITE_URL ?? process.env.VITE_SITE_URL ?? "https://yujiazhang.co.uk"
 ).replace(/\/+$/, "");
+const BASE_LASTMOD_ISO = "2026-01-01T00:00:00.000Z";
 
 function absoluteUrl(path: string) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -19,21 +21,26 @@ function getLatestStoryIso() {
 
   for (const desk of desks) {
     for (const story of desk.stories) {
-      const timestamp = Date.parse(story.date);
+      const storyIso = storyLastModIso(story);
+      const timestamp = Date.parse(storyIso);
       if (!Number.isNaN(timestamp) && timestamp > latest) {
         latest = timestamp;
       }
     }
   }
 
-  return latest ? new Date(latest).toISOString() : "2026-01-01T00:00:00.000Z";
+  return latest ? new Date(latest).toISOString() : BASE_LASTMOD_ISO;
 }
 
 const LASTMOD_ISO = getLatestStoryIso();
 
 function parseLastMod(dateLabel: string) {
   const timestamp = Date.parse(dateLabel);
-  return Number.isNaN(timestamp) ? LASTMOD_ISO : new Date(timestamp).toISOString();
+  return Number.isNaN(timestamp) ? BASE_LASTMOD_ISO : new Date(timestamp).toISOString();
+}
+
+function storyLastModIso(story: { date: string; refreshedAt?: string }) {
+  return parseLastMod(story.refreshedAt ?? story.date);
 }
 
 function escapeXml(value: string) {
@@ -318,12 +325,26 @@ routeLastMods.set("/news", LASTMOD_ISO);
 routeLastMods.set("/news/archive", LASTMOD_ISO);
 routes.add("/news/hub");
 routeLastMods.set("/news/hub", LASTMOD_ISO);
+routes.add("/news/questions");
+
+const latestQuestionIso = getQuestions().reduce((latest, question) => {
+  const questionIso = parseLastMod(question.refreshedAt);
+  return questionIso > latest ? questionIso : latest;
+}, LASTMOD_ISO);
+
+routeLastMods.set("/news/questions", latestQuestionIso);
+
+for (const question of getQuestions()) {
+  const route = `/news/questions/${question.slug}`;
+  routes.add(route);
+  routeLastMods.set(route, parseLastMod(question.refreshedAt));
+}
 
 for (const desk of desks) {
   routes.add(`/news/${desk.id}`);
   const deskLastMod =
     desk.stories.reduce((latest, story) => {
-      const storyIso = parseLastMod(story.date);
+      const storyIso = storyLastModIso(story);
       return storyIso > latest ? storyIso : latest;
     }, LASTMOD_ISO);
   routeLastMods.set(`/news/${desk.id}`, deskLastMod);
@@ -331,14 +352,14 @@ for (const desk of desks) {
   for (const story of desk.stories) {
     const storyRoute = `/news/${desk.id}/${story.slug}`;
     routes.add(storyRoute);
-    routeLastMods.set(storyRoute, parseLastMod(story.date));
+    routeLastMods.set(storyRoute, storyLastModIso(story));
   }
 }
 
 const tagLastMods = new Map<string, string>();
 for (const desk of desks) {
   for (const story of desk.stories) {
-    const storyIso = parseLastMod(story.date);
+    const storyIso = storyLastModIso(story);
     for (const topic of getStoryTopics(story.slug)) {
       const current = tagLastMods.get(topic.slug);
       if (!current || storyIso > current) {
@@ -359,7 +380,7 @@ for (const hub of getTopicHubs()) {
   routes.add(route);
 
   const latestHubStory = getStoriesForHub(hub.slug).reduce((latest, story) => {
-    const storyIso = parseLastMod(story.date);
+    const storyIso = storyLastModIso(story);
     return storyIso > latest ? storyIso : latest;
   }, LASTMOD_ISO);
 
@@ -440,6 +461,8 @@ function getSitemapMeta(route: string): { changefreq: string; priority: string }
   if (route === "/" || route === "/news") return { changefreq: "weekly", priority: "1.0" };
   if (route === "/research" || route === "/news/archive") return { changefreq: "monthly", priority: "0.8" };
   if (route === "/news/hub") return { changefreq: "weekly", priority: "0.9" };
+  if (route === "/news/questions") return { changefreq: "weekly", priority: "0.8" };
+  if (/^\/news\/questions\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.8" };
   if (/^\/news\/hub\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.8" };
   if (/^\/news\/[^/]+\/[^/]+$/.test(route)) return { changefreq: "monthly", priority: "0.8" };
   if (/^\/news\/[^/]+$/.test(route)) return { changefreq: "weekly", priority: "0.7" };

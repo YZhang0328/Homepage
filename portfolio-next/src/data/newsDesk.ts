@@ -31,6 +31,7 @@ export interface NewsStory {
   slug: string;
   kicker: string;
   date: string;
+  refreshedAt?: string;
   headline: string;
   dek: string;
   image: string;
@@ -235,6 +236,7 @@ export const desks: NewsDesk[] = [
           "Infrastructure margin = (payment volume x settlement fee advantage) x market share captured. In cross-border flows, the fee advantage of stablecoin settlement over correspondent banking is substantial; market share is the contest.",
         bottomLine:
           "The stablecoin infrastructure race is not about digital assets  - it is about who captures the margin that correspondent banking currently extracts from global payments.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
@@ -512,6 +514,7 @@ export const desks: NewsDesk[] = [
           "Agent system performance = model quality x tool access quality x interface reliability. If the interface layer (MCP) is standardised and stable, overall system performance scales with the model and tooling rather than being bottlenecked by integration fragility.",
         bottomLine:
           "The agent connectivity standard is decided  - the next race is over managed services, marketplace density, and who extracts value from the protocol layer above.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
@@ -776,6 +779,7 @@ export const desks: NewsDesk[] = [
           "Capacity value = load growth x scarcity x interconnection delay. When load growth is concentrated and supply is time-constrained, the clearing price becomes a function of time as much as fuel.",
         bottomLine:
           "AI load is turning electricity from a commodity input into a strategic capacity position.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
@@ -829,6 +833,7 @@ export const desks: NewsDesk[] = [
           "Retail bill impact = capacity clearing price x load share x pass-through. The more concentrated the load growth, the more quickly capacity pricing turns into customer cost.",
         bottomLine:
           "Capacity markets are where reliability costs stop being abstract and start appearing on bills and balance sheets.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
@@ -882,6 +887,7 @@ export const desks: NewsDesk[] = [
           "Capacity cost allocation = market price x tariff rule x customer class. When a small number of industrial users create most of the incremental load, the tariff rule becomes as important as the market price.",
         bottomLine:
           "The real electricity fight is shifting from price discovery to cost allocation.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
@@ -937,6 +943,7 @@ export const desks: NewsDesk[] = [
           "Grid demand D_grid(t) = total AI load L_AI(t) x (1 - shadow grid fraction f(t)). As f(t) approaches 30%, the capacity market clearing and transmission utilisation models that assume full grid dependency produce systematically biased forecasts.",
         bottomLine:
           "The shadow grid is not a future scenario  - it is already changing the economics of the regulated grid for everyone who remains connected to it.",
+        refreshedAt: "2026-04-15",
         packet: {
           audience: defaultAudience,
           briefing:
