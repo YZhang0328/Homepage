@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { Resvg } from "@resvg/resvg-js";
 import { desks } from "../src/data/newsDesk.ts";
 import { getStoryTopics, getTopicsWithCounts } from "../src/data/newsTopics.ts";
 
@@ -12,11 +13,26 @@ function absoluteUrl(path: string) {
   return `${SITE_URL}${normalizedPath}`;
 }
 
-const BUILD_DATE_ISO = new Date().toISOString();
+function getLatestStoryIso() {
+  let latest = 0;
+
+  for (const desk of desks) {
+    for (const story of desk.stories) {
+      const timestamp = Date.parse(story.date);
+      if (!Number.isNaN(timestamp) && timestamp > latest) {
+        latest = timestamp;
+      }
+    }
+  }
+
+  return latest ? new Date(latest).toISOString() : "2026-01-01T00:00:00.000Z";
+}
+
+const LASTMOD_ISO = getLatestStoryIso();
 
 function parseLastMod(dateLabel: string) {
   const timestamp = Date.parse(dateLabel);
-  return Number.isNaN(timestamp) ? BUILD_DATE_ISO : new Date(timestamp).toISOString();
+  return Number.isNaN(timestamp) ? LASTMOD_ISO : new Date(timestamp).toISOString();
 }
 
 function escapeXml(value: string) {
@@ -295,10 +311,10 @@ mkdirSync(publicDir, { recursive: true });
 const routes = new Set<string>(["/", "/research", "/news", "/news/archive"]);
 const routeLastMods = new Map<string, string>();
 
-routeLastMods.set("/", BUILD_DATE_ISO);
-routeLastMods.set("/research", BUILD_DATE_ISO);
-routeLastMods.set("/news", BUILD_DATE_ISO);
-routeLastMods.set("/news/archive", BUILD_DATE_ISO);
+routeLastMods.set("/", LASTMOD_ISO);
+routeLastMods.set("/research", LASTMOD_ISO);
+routeLastMods.set("/news", LASTMOD_ISO);
+routeLastMods.set("/news/archive", LASTMOD_ISO);
 
 for (const desk of desks) {
   routes.add(`/news/${desk.id}`);
@@ -306,7 +322,7 @@ for (const desk of desks) {
     desk.stories.reduce((latest, story) => {
       const storyIso = parseLastMod(story.date);
       return storyIso > latest ? storyIso : latest;
-    }, BUILD_DATE_ISO);
+    }, LASTMOD_ISO);
   routeLastMods.set(`/news/${desk.id}`, deskLastMod);
 
   for (const story of desk.stories) {
@@ -332,7 +348,7 @@ for (const desk of desks) {
 for (const topic of getTopicsWithCounts()) {
   const route = `/news/tag/${topic.slug}`;
   routes.add(route);
-  routeLastMods.set(route, tagLastMods.get(topic.slug) ?? BUILD_DATE_ISO);
+  routeLastMods.set(route, tagLastMods.get(topic.slug) ?? LASTMOD_ISO);
 }
 
 const urls = Array.from(routes).sort((a, b) => a.localeCompare(b));
@@ -342,7 +358,6 @@ for (const desk of desks) {
   mkdirSync(ogDir, { recursive: true });
 
   for (const story of desk.stories) {
-    const ogPath = resolve(ogDir, `${story.slug}.svg`);
     const svg = renderOgSvg({
       deskId: desk.id,
       deskLabel: desk.label,
@@ -354,7 +369,9 @@ for (const desk of desks) {
       slug: story.slug,
     });
 
-    writeFileSync(ogPath, svg, "utf8");
+    const pngPath = resolve(ogDir, `${story.slug}.png`);
+    const resvg = new Resvg(svg, { fitTo: { mode: "width", value: 1200 } });
+    writeFileSync(pngPath, resvg.render().asPng());
   }
 }
 
@@ -391,7 +408,7 @@ const feed = `<?xml version="1.0" encoding="UTF-8"?>
   <link>${escapeXml(absoluteUrl("/news"))}</link>
   <description>AI infrastructure, power markets, and financial systems from the Signal Board desk.</description>
   <language>en-gb</language>
-  <lastBuildDate>${new Date(BUILD_DATE_ISO).toUTCString()}</lastBuildDate>
+  <lastBuildDate>${new Date(LASTMOD_ISO).toUTCString()}</lastBuildDate>
   <generator>portfolio-next generate-seo.ts</generator>
 ${feedItems}
 </channel>
@@ -404,7 +421,7 @@ ${urls
   .map(
     (route) => `  <url>
     <loc>${escapeXml(absoluteUrl(route))}</loc>
-    <lastmod>${escapeXml(routeLastMods.get(route) ?? BUILD_DATE_ISO)}</lastmod>
+    <lastmod>${escapeXml(routeLastMods.get(route) ?? LASTMOD_ISO)}</lastmod>
   </url>`
   )
   .join("\n")}

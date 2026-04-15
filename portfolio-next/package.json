@@ -7,6 +7,7 @@
     "prebuild": "tsx scripts/generate-seo.ts",
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "tsx --tsconfig tsconfig.app.json scripts/prerender.ts",
     "lint": "eslint .",
     "preview": "vite preview",
     "publish": "tsx scripts/publish.ts"
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^24.12.0",
     "@types/react": "^19.2.14",

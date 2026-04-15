@@ -1,5 +1,8 @@
 const rawSiteUrl =
-  import.meta.env.VITE_SITE_URL?.trim() || "https://yujiazhang.co.uk";
+  (typeof import.meta !== "undefined" &&
+  typeof import.meta.env !== "undefined" &&
+  import.meta.env.VITE_SITE_URL?.trim()) ||
+  "https://yujiazhang.co.uk";
 
 export const SITE_URL = rawSiteUrl.replace(/\/+$/, "");
 export const SITE_NAME = "Yujia Zhang";
@@ -14,5 +17,5 @@ export function absoluteUrl(path: string) {
 }
 
 export function storyOgImagePath(deskId: string, storySlug: string) {
-  return `/og/${deskId}/${storySlug}.svg`;
+  return `/og/${deskId}/${storySlug}.png`;
 }
