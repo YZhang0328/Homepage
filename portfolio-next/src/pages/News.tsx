@@ -595,7 +595,7 @@ function PublishingPacketPanel({ packet }: { packet: PublishingPacket }) {
             Publishing packet
           </p>
           <h3 className="mt-2 font-serif text-2xl font-bold leading-tight">
-            The SEO and distribution brief behind the piece
+            Publishing brief
           </h3>
         </div>
         <Link
@@ -617,7 +617,7 @@ function PublishingPacketPanel({ packet }: { packet: PublishingPacket }) {
           <dl className="mt-5 space-y-4">
             <div>
               <dt className="text-xs uppercase tracking-[0.18em] text-muted">
-                Target keyword
+                Keyword
               </dt>
               <dd className="mt-1 text-sm font-medium leading-relaxed">
                 {packet.targetKeyword}

@@ -290,7 +290,7 @@ export default function Home() {
               What I Do
             </h2>
             <p className="mt-4 text-muted leading-relaxed">
-              After transitioning from academia, I now work as an energy modeller
+              After transitioning from academia, I work as an energy modeller
               specializing in energy market optimization.
             </p>
             <img
@@ -335,7 +335,7 @@ export default function Home() {
           </h2>
           <p className="mt-3 text-muted max-w-lg mx-auto">
             Whether it's a question, a collaboration, or just an interesting
-            thought &mdash; I'd love to hear from you.
+            thought &mdash; I'd love to hear from you. 😊
           </p>
           <div className="mt-8 flex justify-center gap-3">
             <a

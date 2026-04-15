@@ -51,7 +51,7 @@ function HubStoryCard({
             {story.dek}
           </p>
           <p className="mt-4 text-xs uppercase tracking-[0.18em] text-muted">
-            Target keyword
+            Keyword
           </p>
           <p className="mt-1 text-sm leading-relaxed text-foreground">
             {story.packet.targetKeyword}
