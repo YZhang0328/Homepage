@@ -12,6 +12,13 @@ function absoluteUrl(path: string) {
   return `${SITE_URL}${normalizedPath}`;
 }
 
+const BUILD_DATE_ISO = new Date().toISOString();
+
+function parseLastMod(dateLabel: string) {
+  const timestamp = Date.parse(dateLabel);
+  return Number.isNaN(timestamp) ? BUILD_DATE_ISO : new Date(timestamp).toISOString();
+}
+
 function escapeXml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -31,6 +38,24 @@ function hashString(value: string) {
     hash = (hash * 31 + value.charCodeAt(i)) >>> 0;
   }
   return hash;
+}
+
+function htmlEscape(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
+function storyHtmlContent(story: { headline: string; dek: string; paragraphs: string[]; image: string; imageAlt: string }) {
+  const body = story.paragraphs.map((paragraph) => `<p>${htmlEscape(paragraph)}</p>`).join("");
+  return [
+    `<p><strong>${htmlEscape(story.dek)}</strong></p>`,
+    `<p><img src="${htmlEscape(story.image)}" alt="${htmlEscape(story.imageAlt)}" style="max-width:100%;height:auto;" /></p>`,
+    body,
+  ].join("");
 }
 
 function wrapText(value: string, maxChars: number, maxLines: number) {
@@ -268,15 +293,46 @@ const publicDir = resolve(process.cwd(), "public");
 mkdirSync(publicDir, { recursive: true });
 
 const routes = new Set<string>(["/", "/research", "/news", "/news/archive"]);
+const routeLastMods = new Map<string, string>();
+
+routeLastMods.set("/", BUILD_DATE_ISO);
+routeLastMods.set("/research", BUILD_DATE_ISO);
+routeLastMods.set("/news", BUILD_DATE_ISO);
+routeLastMods.set("/news/archive", BUILD_DATE_ISO);
+
 for (const desk of desks) {
   routes.add(`/news/${desk.id}`);
+  const deskLastMod =
+    desk.stories.reduce((latest, story) => {
+      const storyIso = parseLastMod(story.date);
+      return storyIso > latest ? storyIso : latest;
+    }, BUILD_DATE_ISO);
+  routeLastMods.set(`/news/${desk.id}`, deskLastMod);
+
   for (const story of desk.stories) {
-    routes.add(`/news/${desk.id}/${story.slug}`);
+    const storyRoute = `/news/${desk.id}/${story.slug}`;
+    routes.add(storyRoute);
+    routeLastMods.set(storyRoute, parseLastMod(story.date));
+  }
+}
+
+const tagLastMods = new Map<string, string>();
+for (const desk of desks) {
+  for (const story of desk.stories) {
+    const storyIso = parseLastMod(story.date);
+    for (const topic of getStoryTopics(story.slug)) {
+      const current = tagLastMods.get(topic.slug);
+      if (!current || storyIso > current) {
+        tagLastMods.set(topic.slug, storyIso);
+      }
+    }
   }
 }
 
 for (const topic of getTopicsWithCounts()) {
-  routes.add(`/news/tag/${topic.slug}`);
+  const route = `/news/tag/${topic.slug}`;
+  routes.add(route);
+  routeLastMods.set(route, tagLastMods.get(topic.slug) ?? BUILD_DATE_ISO);
 }
 
 const urls = Array.from(routes).sort((a, b) => a.localeCompare(b));
@@ -302,12 +358,53 @@ for (const desk of desks) {
   }
 }
 
+const feedStories = desks
+  .flatMap((desk) => desk.stories.map((story) => ({ desk, story })))
+  .sort((a, b) => Date.parse(b.story.date) - Date.parse(a.story.date));
+
+const feedItems = feedStories
+  .slice(0, 24)
+  .map(({ desk, story }) => {
+    const link = absoluteUrl(`/news/${desk.id}/${story.slug}`);
+    const pubDate = parseLastMod(story.date);
+    const categories = getStoryTopics(story.slug)
+      .map((topic) => `<category>${escapeXml(topic.label)}</category>`)
+      .join("\n    ");
+
+    return `  <item>
+    <title>${escapeXml(story.headline)}</title>
+    <link>${escapeXml(link)}</link>
+    <guid isPermaLink="true">${escapeXml(link)}</guid>
+    <pubDate>${new Date(pubDate).toUTCString()}</pubDate>
+    <description>${escapeXml(story.dek)}</description>
+    <author>yujiazhang.co.uk (Yujia Zhang)</author>
+    ${categories}
+    <content:encoded><![CDATA[${storyHtmlContent(story)}]]></content:encoded>
+  </item>`;
+  })
+  .join("\n");
+
+const feed = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Yujia Zhang - Signal Board</title>
+  <link>${escapeXml(absoluteUrl("/news"))}</link>
+  <description>AI infrastructure, power markets, and financial systems from the Signal Board desk.</description>
+  <language>en-gb</language>
+  <lastBuildDate>${new Date(BUILD_DATE_ISO).toUTCString()}</lastBuildDate>
+  <generator>portfolio-next generate-seo.ts</generator>
+${feedItems}
+</channel>
+</rss>
+`;
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls
   .map(
     (route) => `  <url>
     <loc>${escapeXml(absoluteUrl(route))}</loc>
+    <lastmod>${escapeXml(routeLastMods.get(route) ?? BUILD_DATE_ISO)}</lastmod>
   </url>`
   )
   .join("\n")}
@@ -321,6 +418,7 @@ Sitemap: ${absoluteUrl("/sitemap.xml")}
 `;
 
 writeFileSync(resolve(publicDir, "sitemap.xml"), sitemap, "utf8");
+writeFileSync(resolve(publicDir, "feed.xml"), feed, "utf8");
 writeFileSync(resolve(publicDir, "robots.txt"), robots, "utf8");
 
-console.log(`SEO files generated for ${urls.length} URLs.`);
+console.log(`SEO files generated for ${urls.length} URLs and feed.xml.`);

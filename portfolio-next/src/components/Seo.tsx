@@ -54,6 +54,30 @@ function upsertLinkCanonical(href?: string) {
   element.setAttribute("href", href);
 }
 
+function upsertLinkAlternate(type: string, href?: string, title?: string) {
+  const selector = `link[rel="alternate"][type="${type}"]`;
+  let element = document.head.querySelector<HTMLLinkElement>(selector);
+
+  if (!href) {
+    element?.remove();
+    return;
+  }
+
+  if (!element) {
+    element = document.createElement("link");
+    element.setAttribute("rel", "alternate");
+    element.setAttribute("type", type);
+    document.head.appendChild(element);
+  }
+
+  element.setAttribute("href", href);
+  if (title) {
+    element.setAttribute("title", title);
+  } else {
+    element.removeAttribute("title");
+  }
+}
+
 function upsertJsonLd(jsonLd?: JsonLd) {
   const selector = 'script[data-seo-jsonld="true"]';
   const existing = document.head.querySelector<HTMLScriptElement>(selector);
@@ -99,6 +123,7 @@ export default function Seo({
     upsertMeta("property", "og:image", imageUrl);
     upsertMeta("property", "og:image:alt", imageAlt);
     upsertLinkCanonical(canonicalUrl);
+    upsertLinkAlternate("application/rss+xml", absoluteUrl("/feed.xml"), "Yujia Zhang Feed");
     upsertJsonLd(jsonLd);
   }, [canonicalPath, description, imageAlt, imagePath, jsonLd, robots, title, type]);
 
