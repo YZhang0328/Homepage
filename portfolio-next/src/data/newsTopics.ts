@@ -73,6 +73,12 @@ export const topicDefinitions: Record<string, TopicDefinition> = {
     description:
       "Coverage of capacity auctions, reserve margins, and how reliability costs are allocated across electricity customers.",
   },
+  "rate-design": {
+    slug: "rate-design",
+    label: "Rate Design",
+    description:
+      "Coverage of tariff design, cost allocation, bill impacts, and who pays for grid upgrades.",
+  },
   "data-centres": {
     slug: "data-centres",
     label: "Data Centres",
@@ -137,9 +143,8 @@ export const storyTopicSlugs: Record<string, string[]> = {
     "software-engineering",
   ],
   "pjm-capacity-prices-data-centers-2026": [
-    "capacity-pricing",
+    "rate-design",
     "power-markets",
-    "data-centres",
     "electricity",
   ],
   "why-pjm-capacity-prices-matter": [
@@ -150,7 +155,6 @@ export const storyTopicSlugs: Record<string, string[]> = {
   "ai-power-market-reset-2026": [
     "load-growth",
     "power-markets",
-    "data-centres",
     "electricity",
   ],
   "energy-islands-shadow-grid-2026": [

@@ -99,6 +99,10 @@ Each story includes a `packet` for potential syndication:
 
 ---
 
+**Desk composition rule:**
+- Do not place two stories with the same search intent or mechanism on the same desk.
+- If two pieces are related, separate them by editorial layer: one structural pillar, one explainer, one policy/allocation angle, one market response.
+
 ## Images
 
 Images are Unsplash public URLs — **no API key required**.
@@ -221,6 +225,7 @@ When updating `newsDesk.ts`:
 - [ ] All event `link` fields point to real, accessible URLs
 - [ ] Lead story (`stories[0]`) is the most recent and highest-signal item
 - [ ] `feature.title` and `feature.summary` match the current desk angle
+- [ ] No two stories on the same desk repeat the same thesis or explanatory layer
 - [ ] `date` fields on stories reflect the actual publication/event date
 - [ ] `sourceAnchors` URLs are real and accessible
 - [ ] No paragraph repeats information from a previous paragraph

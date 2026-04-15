@@ -226,6 +226,7 @@ function BriefCard({
   showCta = false,
   ctaLabel = "Read full article",
   showArrow = true,
+  eyebrow,
 }: {
   story: NewsStory;
   onOpen: () => void;
@@ -233,6 +234,7 @@ function BriefCard({
   showCta?: boolean;
   ctaLabel?: string;
   showArrow?: boolean;
+  eyebrow?: string;
 }) {
   return (
     <button
@@ -259,6 +261,11 @@ function BriefCard({
       </div>
 
       <div className="p-5 md:p-6">
+        {eyebrow && (
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">
+            {eyebrow}
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs uppercase tracking-[0.16em] text-muted">
           <span>{story.kicker}</span>
           <span className="h-1 w-1 rounded-full bg-border" />
@@ -293,6 +300,127 @@ function BriefCard({
         )}
       </div>
     </button>
+  );
+}
+
+function MarketsGuidePanel({
+  desk,
+  onOpenStory,
+}: {
+  desk: NewsDesk;
+  onOpenStory: (storySlug: string) => void;
+}) {
+  const [pillarStory, supportStory, ...relatedStories] = desk.stories;
+
+  if (!pillarStory || !supportStory) {
+    return null;
+  }
+
+  return (
+    <section className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <div className="max-w-4xl">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">
+          Reading Path
+        </p>
+        <h2 className="mt-2 font-serif text-2xl font-bold">
+          Start here, then read next
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-muted">
+          These stories are split by editorial layer on purpose: the first is
+          the structural frame, the second explains the pricing mechanism, and
+          the remaining briefs add the policy, infrastructure, and commodity
+          context.
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+        <BriefCard
+          story={pillarStory}
+          onOpen={() => onOpenStory(pillarStory.slug)}
+          featured
+          showCta
+          ctaLabel="Open pillar article"
+          eyebrow="Start here"
+        />
+        <BriefCard
+          story={supportStory}
+          onOpen={() => onOpenStory(supportStory.slug)}
+          featured
+          showCta
+          ctaLabel="Open support article"
+          eyebrow="Read next"
+        />
+      </div>
+
+      {relatedStories.length > 0 && (
+        <div className="mt-6 rounded-2xl border border-dashed border-border bg-accent p-4">
+          <p className="text-xs uppercase tracking-[0.18em] text-muted">
+            Related briefs
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            Use these as adjacent reads after the pillar and support pieces.
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            {relatedStories.slice(0, 2).map((story) => (
+              <BriefCard
+                key={story.slug}
+                story={story}
+                onOpen={() => onOpenStory(story.slug)}
+                showCta
+                ctaLabel="Open related brief"
+                showArrow={false}
+                eyebrow="Related"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function RelatedBriefsPanel({
+  desk,
+  currentSlug,
+  onOpenStory,
+}: {
+  desk: NewsDesk;
+  currentSlug: string;
+  onOpenStory: (storySlug: string) => void;
+}) {
+  const relatedStories = desk.stories.filter((story) => story.slug !== currentSlug);
+
+  if (!relatedStories.length) {
+    return null;
+  }
+
+  return (
+    <section className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <div className="max-w-4xl">
+        <p className="text-xs uppercase tracking-[0.18em] text-muted">
+          Related briefs
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-muted">
+          These are the adjacent reads for this market arc. Each one adds a
+          different layer: mechanism, allocation, infrastructure, or commodity
+          backdrop.
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-5 md:grid-cols-2">
+        {relatedStories.slice(0, 2).map((story) => (
+          <BriefCard
+            key={story.slug}
+            story={story}
+            onOpen={() => onOpenStory(story.slug)}
+            showCta
+            ctaLabel="Open related brief"
+            showArrow={false}
+            eyebrow="Related"
+          />
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -446,27 +574,36 @@ export default function News() {
         <div className="space-y-8">
           <ArticleView story={selectedStory} onBack={() => updateRoute(desk.id)} />
 
-          <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
-            <p className="text-xs uppercase tracking-[0.18em] text-muted">More Briefs</p>
-            <p className="mt-2 max-w-[42rem] text-sm leading-relaxed text-muted">
-              The note above is the full article. The briefs below open their own
-              full articles.
-            </p>
-            <div className="mt-5 grid gap-5 md:grid-cols-2">
-              {desk.stories
-                .filter((story) => story.slug !== selectedStory.slug)
-                .map((story) => (
-                  <BriefCard
-                    key={story.slug}
-                    story={story}
-                    onOpen={() => updateRoute(desk.id, story.slug)}
-                    showCta
-                    ctaLabel="Click to display full article above"
-                    showArrow={false}
-                  />
+          {desk.id !== "markets" && (
+            <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+              <p className="text-xs uppercase tracking-[0.18em] text-muted">More Briefs</p>
+              <p className="mt-2 max-w-[42rem] text-sm leading-relaxed text-muted">
+                The note above is the full article. The briefs below open their own
+                full articles.
+              </p>
+              <div className="mt-5 grid gap-5 md:grid-cols-2">
+                {desk.stories
+                  .filter((story) => story.slug !== selectedStory.slug)
+                  .map((story) => (
+                    <BriefCard
+                      key={story.slug}
+                      story={story}
+                      onOpen={() => updateRoute(desk.id, story.slug)}
+                      showCta
+                      ctaLabel="Click to display full article above"
+                      showArrow={false}
+                    />
                 ))}
+              </div>
             </div>
-          </div>
+          )}
+          {desk.id === "markets" && (
+            <RelatedBriefsPanel
+              desk={desk}
+              currentSlug={selectedStory.slug}
+              onOpenStory={(storySlug) => updateRoute(desk.id, storySlug)}
+            />
+          )}
         </div>
       );
     }
@@ -476,6 +613,12 @@ export default function News() {
         <p className="max-w-[58rem] text-sm leading-relaxed text-muted md:text-[0.98rem]">
           {desk.intro}
         </p>
+        {desk.id === "markets" && (
+          <MarketsGuidePanel
+            desk={desk}
+            onOpenStory={(storySlug) => updateRoute(desk.id, storySlug)}
+          />
+        )}
         <FeaturePanel feature={desk.feature} />
         <BriefCard
           story={desk.stories[0]}
