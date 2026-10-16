@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
 import BrandTicker from "@/components/BrandTicker";
 import Seo from "@/components/Seo";
-import { getTopicHubs } from "@/data/topicHubs";
+import { getTopicsWithCounts } from "@/data/newsTopics";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,7 +21,12 @@ const stats = [
 ];
 
 export default function Home() {
-  const topicHubs = getTopicHubs();
+  const topicsBySlug = new Map(
+    getTopicsWithCounts().map((topic) => [topic.slug, topic])
+  );
+  const energyTopics = ["power-markets", "electricity", "data-centres"]
+    .map((slug) => topicsBySlug.get(slug))
+    .filter((topic): topic is NonNullable<typeof topic> => Boolean(topic));
 
   return (
     <>
@@ -115,8 +120,8 @@ export default function Home() {
               animate="visible"
               className="mt-3 max-w-lg text-[1.02rem] text-muted leading-relaxed md:text-[1.12rem]"
             >
-              I build statistical and optimization models for energy markets. I
-              also orchestrate AI agents to support quantitative research.
+              I build statistical and optimisation models for energy markets and
+              orchestrate AI agents to advance quantitative research.
             </motion.p>
 
             <motion.div
@@ -198,39 +203,39 @@ export default function Home() {
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="mb-3 text-sm uppercase tracking-wide text-muted">
-                Topic Hubs
+                Energy Topics
               </p>
               <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug">
-                Topic Clusters
+                Energy Market Topics
               </h2>
             </div>
             <Link
-              to="/news/hub/"
+              to="/news/"
               className="inline-flex items-center gap-2 rounded-full border border-foreground px-5 py-2 text-sm font-medium transition-colors hover:bg-foreground hover:text-white w-fit"
             >
-              Explore all hubs <ArrowRight size={16} />
+              Explore energy news <ArrowRight size={16} />
             </Link>
           </div>
 
           <div className="mt-6 grid gap-5 md:grid-cols-3">
-            {topicHubs.map((hub) => (
+            {energyTopics.map((topic) => (
               <Link
-                key={hub.slug}
-                to={`/news/hub/${hub.slug}/`}
+                key={topic.slug}
+                to={`/news/tag/${topic.slug}/`}
                 className="rounded-2xl border border-border bg-accent p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 <p className="text-xs uppercase tracking-[0.18em] text-muted">
-                  {hub.label}
+                  Energy Markets
                 </p>
                 <h3 className="mt-3 font-serif text-xl font-bold leading-tight">
-                  {hub.title}
+                  {topic.label}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-muted">
-                  {hub.description}
+                  {topic.description}
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <span className="rounded-full bg-foreground px-3 py-1 text-xs font-medium text-white">
-                    {hub.stories.length} stories
+                    {topic.count} stories
                   </span>
                 </div>
               </Link>
@@ -299,7 +304,7 @@ export default function Home() {
           transition={{ duration: 0.5 }}
           className="rounded-3xl border border-border bg-card p-7 md:p-10"
         >
-          <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-4 border-b border-border pb-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted">
                 Energy Quant <span className="px-1.5">·</span> SEFE Marketing &amp; Trading
@@ -308,8 +313,8 @@ export default function Home() {
                 European Power Curve Builder
               </h2>
             </div>
-            <p className="text-sm text-muted sm:max-w-xs sm:text-right">
-              Statistical shaping for European hourly power markets
+            <p className="text-xs text-muted lg:whitespace-nowrap lg:text-right">
+              Statistical shaping of European hourly power prices
             </p>
           </div>
 
@@ -318,7 +323,7 @@ export default function Home() {
               {
                 label: "01 / Algorithm",
                 title: "Built from the ground up",
-                text: "Led development of a statistical shaping algorithm for hourly power curves on SEFE’s in-house platform, with the resulting curves calibrated against market-traded forward prices.",
+                text: "Led development of a statistical shaping algorithm for hourly power curves on SEFE’s in-house platform. The resulting curves are calibrated to exchange-traded forward prices, keeping hourly profiles consistent with listed contracts and preventing arbitrages.",
               },
               {
                 label: "02 / Market remit",
@@ -382,8 +387,8 @@ export default function Home() {
               "Designing statistical shaping algorithms and hourly power curve methodologies for European energy markets.",
               "Building, validating and rolling out production power curves across Germany, France, the Netherlands, Belgium and Austria.",
               "Working with traders, Risk Control and Product Management to translate requirements into validated quantitative products.",
-              "Developing power market analytics, optimization models and cross-commodity scenarios across European and GB markets.",
-              "Developing trader-facing screens that surface prices from historical reference days with similar fundamentals, quantify power price sensitivities to weather, short-run marginal costs (SRMC) and neighbouring market prices, and generate time-evolving scenarios under alternative fundamental assumptions.",
+              "Developing trader-facing screens that identify historical reference days with similar fundamentals and surface their corresponding power prices.",
+              "Analysing power price sensitivities to weather, short-run marginal costs (SRMC) and neighbouring market prices, and generating time-evolving scenarios under alternative fundamental assumptions.",
               "Building software and analytical tools to process large-scale energy datasets and support quantitative research.",
             ].map((item, i) => (
               <motion.div
