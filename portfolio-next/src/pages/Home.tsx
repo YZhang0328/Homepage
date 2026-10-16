@@ -27,7 +27,7 @@ export default function Home() {
     <>
       <Seo
         title="Yujia Zhang | Industrial Mathematician"
-        description="Industrial mathematician and quantitative researcher building statistical and optimisation models for capital and energy markets."
+        description="Industrial mathematician and quantitative researcher building statistical and optimization models for energy markets."
         canonicalPath="/"
         imagePath="/images/Photo_Yujia.jpg"
         imageAlt="Yujia Zhang portrait"
@@ -83,7 +83,7 @@ export default function Home() {
               animate="visible"
               className="mb-4 text-[0.98rem] text-muted tracking-[0.14em] uppercase md:text-[1.06rem]"
             >
-              Quantitative Development &amp; Research
+              Quantitative Research &amp; Development
             </motion.p>
 
             <motion.h1
@@ -105,8 +105,8 @@ export default function Home() {
               animate="visible"
               className="mt-5 max-w-lg text-[1.02rem] text-muted leading-relaxed md:text-[1.12rem]"
             >
-              I build statistical and optimization models for capital and energy
-              markets.
+              I build statistical and optimization models for energy markets,
+              and orchestrate AI agents to support quantitative research.
             </motion.p>
 
             <motion.div
@@ -155,10 +155,11 @@ export default function Home() {
           </h2>
           <p className="mt-6 max-w-[56rem] text-[1.02rem] text-muted leading-relaxed md:text-[1.1rem]">
             I am passionate about applying quantitative methods and statistical
-            modeling to capture the volatility of capital markets, with a strong
+            modeling to capture the volatility of energy markets, with a strong
             intellectual curiosity to explore the mathematics behind data patterns.
             I have a PhD in engineering and subsequently worked as a postdoctoral
-            research scientist at the University of Manchester.
+            research scientist. I then moved into energy consulting before joining
+            a commodity trading house as a quantitative researcher.
           </p>
         </motion.div>
 

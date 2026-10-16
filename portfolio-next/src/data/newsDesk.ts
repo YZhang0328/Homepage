@@ -62,9 +62,9 @@ export interface EventListing {
   type: string;
 }
 
-export const eventsSectionLabel = "AI & Finance & Energy Market Events";
+export const eventsSectionLabel = "AI & Energy market & Finance Events";
 export const eventsSectionDescription =
-  "Upcoming London and online gatherings at the intersection of applied AI, financial infrastructure, quantitative markets, and energy systems.";
+  "Upcoming gatherings at the intersection of applied AI, financial infrastructure, quantitative markets, and energy systems, with a focus on London and relevant international markets.";
 
 const publicationTargets = ["website", "medium", "dev.to", "hashnode"];
 const defaultAudience =
@@ -188,92 +188,26 @@ export function findActiveEventBySlug(
 
 export const aiFinanceEvents: EventListing[] = [
   {
-    title: "Artificial Intelligence in Financial Services Conference 2026",
-    date: "September 8-9, 2026",
-    venue: "Convene, 155 Bishopsgate, London EC2M 3TQ",
+    title: "Future of Utilities: Smart Energy 2026",
+    date: "November 2-3, 2026",
+    venue: "Convene 133 Houndsditch, London",
     price: "Paid",
     description:
-      "A practitioner-focused programme on deploying AI across banking, insurance, risk, operations, and customer services. Useful for tracking how regulated institutions are moving from pilots to governed production systems.",
-    link: "https://aiinfinancesummit.com/live/en/page/home",
-    source: "Arena International",
-    type: "AI in Finance Conference",
+      "A senior energy-sector conference on digitalisation, AI, flexibility, trading, and the operational transition to a modern energy system. The agenda includes utility leaders, regulators, grid operators, and dedicated sessions on energy trading and flexibility markets.",
+    link: "https://futureofutilities.com/events/smart-energy/",
+    source: "Future of Utilities",
+    type: "Energy Markets & Digitalisation",
   },
   {
-    title: "IDC UK AI & Data Summit 2026",
-    date: "September 10, 2026",
-    venue: "London",
-    price: "Registration",
-    description:
-      "A full-day executive forum on AI deployment, data quality, governance, observability, and regulatory compliance. Best suited to data and AI leaders evaluating the operating architecture required to scale models responsibly.",
-    link: "https://event.idc.com/event/ai-data-summit-uk/",
-    source: "IDC",
-    type: "AI & Data Summit",
-  },
-  {
-    title: "AI in Finance Summit London 2026",
-    date: "September 15, 2026",
-    venue: "1 America Square, London EC3N 2LB",
+    title: "CETA Summit & Exhibition 2026",
+    date: "November 4-5, 2026",
+    venue: "MITEC, Kuala Lumpur, Malaysia",
     price: "Paid",
     description:
-      "A finance-specific AI programme featuring practitioners from banks, payments firms, and insurers. The agenda concentrates on applied machine learning, governance, operational security, and measurable deployment outcomes.",
-    link: "https://london-ai-finance.re-work.co/",
-    source: "RE-WORK",
-    type: "AI in Finance Summit",
-  },
-  {
-    title: "Financial Innovation Forum 2026",
-    date: "September 17, 2026",
-    venue: "The Montcalm, Mayfair, London",
-    price: "Paid",
-    description:
-      "A senior payments and RegTech forum covering account-to-account rails, open finance, digital identity, agentic AI, fraud, and cross-border infrastructure. Strong fit for operators following the interaction between automation and regulated payment systems.",
-    link: "https://www.qubevents.com/financial-innovation-forum",
-    source: "QUBE Events",
-    type: "Payments & RegTech Forum",
-  },
-  {
-    title: "AWS Financial Services Symposium London",
-    date: "September 30, 2026",
-    venue: "Town Hall, Bidborough Street, London WC1H 9AU",
-    price: "Free",
-    description:
-      "A complimentary executive event on resilient financial applications, high-performance core systems, modern data platforms, and AI agents. Attendance is aimed at director-level and senior leaders in financial services.",
-    link: "https://aws.amazon.com/events/financial-services-symposium-london/",
-    source: "AWS",
-    type: "Financial Services Technology",
-  },
-  {
-    title: "Advances in Financial Technologies 2026",
-    date: "October 6-9, 2026",
-    venue: "London School of Economics, London",
-    price: "Registration",
-    description:
-      "A research-led conference on financial infrastructure, blockchains, cryptocurrencies, exchanges, and market mechanisms. One of the higher-signal options for technically rigorous work on digital markets and protocol design.",
-    link: "https://aft.acm.org/",
-    source: "ACM AFT",
-    type: "Academic Conference",
-  },
-  {
-    title: "PIMFA AI Summit 2026",
-    date: "October 8, 2026",
-    venue: "Publicis Sapient, 63 Turnmill Street, London EC1M 5NP",
-    price: "Free",
-    description:
-      "A free half-day summit on proving, scaling, and governing AI in wealth management. The programme focuses on decision systems, data readiness, explainability, operating models, and the controls regulators expect.",
-    link: "https://www.pimfa.co.uk/event/pimfa-ai-summit-2026-proving-scaling-and-governing-ai-in-wealth-management/",
-    source: "PIMFA",
-    type: "Wealth Management AI",
-  },
-  {
-    title: "Energy UK Annual Conference 2026",
-    date: "October 14, 2026",
-    venue: "London and online",
-    price: "Registration",
-    description:
-      "Energy UK's annual policy and industry conference, available both in London and by livestream. Relevant for power-market reform, investment, consumer bills, system resilience, and the delivery constraints facing the UK transition.",
-    link: "https://www.energy-uk.org.uk/event/energy-uk-annual-conference-2026/",
-    source: "Energy UK",
-    type: "Energy Policy Conference",
+      "A two-day ASEAN energy-transition summit focused on grid readiness, energy security, data-centre demand, gas and renewables integration, cross-border power trade, and project finance. The programme includes perspectives from the IEA, ASEAN Centre for Energy, utilities, investors, and regional regulators.",
+    link: "https://ceta.asia/summit-2026",
+    source: "CETA",
+    type: "Asian Energy Markets & Investment",
   },
   {
     title: "FTT Fintech Festival 2026",
@@ -285,6 +219,105 @@ export const aiFinanceEvents: EventListing[] = [
     link: "https://www.fintechtalents.com/events/europe/festival-london/",
     source: "Fintech Talents",
     type: "Fintech Conference",
+  },
+  {
+    title: "AI in Finance 2026",
+    date: "November 17, 2026",
+    venue: "Royal Horseguards Hotel, London",
+    price: "Paid",
+    description:
+      "A finance-leadership event on scaling AI across banks, including agentic AI, governance, adoption, and customer-facing applications. Confirmed speakers include senior AI and technology leaders from Standard Chartered, Deutsche Bank, Zopa, and Bank of America.",
+    link: "https://aiinfinance.co.uk/",
+    source: "AI in Finance / LTW365",
+    type: "AI in Finance Conference",
+  },
+  {
+    title: "Africa Investment Exchange: Power & Renewables 2026",
+    date: "November 17-18, 2026",
+    venue: "116 Pall Mall, London",
+    price: "Paid",
+    description:
+      "A two-day, Chatham House Rule meeting for investors, officials, and project developers working across African electricity markets. The programme covers power supply, renewables investment, and gas and infrastructure, with access to the co-located AIX Gas & Infrastructure sessions.",
+    link: "https://www.africa-energy.com/aix/africa-investment-exchange-aix-power-renewables-2026",
+    source: "African Energy",
+    type: "Power Markets & Project Finance",
+  },
+  {
+    title: "AI in Business Conference London 2026",
+    date: "November 19, 2026",
+    venue: "Park Plaza Victoria, London",
+    price: "Paid",
+    description:
+      "An enterprise AI conference focused on implementation, adoption, and measurable business impact. The cross-industry programme includes speakers and case studies from financial services, energy, technology, and other large organisations.",
+    link: "https://www.aibusinessconference.co.uk/",
+    source: "Roar Media",
+    type: "Enterprise AI Conference",
+  },
+  {
+    title: "Electrifying the Economy Conference 2026",
+    date: "November 23, 2026",
+    venue: "1 Basinghall Avenue, London",
+    price: "Registration",
+    description:
+      "An application-based one-day conference on the economics and delivery barriers to UK business electrification. It brings together energy users, system operators, policymakers, investors, and technology providers; qualifying applicants may receive complimentary places, while paid delegate categories are also available.",
+    link: "https://www.innovationzero.com/conferences/electrifying-economy/attend",
+    source: "Innovation Zero",
+    type: "Energy Transition & Electrification",
+  },
+  {
+    title: "AI in Critical Infrastructure 2026",
+    date: "November 24, 2026",
+    venue: "240 Blackfriars Road, London",
+    price: "Registration",
+    description:
+      "A senior-leadership event on applying AI to electricity grids, energy trading, data-centre growth, utilities, and infrastructure resilience. Sessions focus on moving from pilots and copilots toward operational AI systems and real-time energy management.",
+    link: "https://aiincriticalinfrastructure.co.uk/",
+    source: "AI in Critical Infrastructure / LTW365",
+    type: "AI & Energy Infrastructure",
+  },
+  {
+    title: "Aurora Energy Transition Summit London 2026",
+    date: "November 24, 2026",
+    venue: "IET London: Savoy Place, London",
+    price: "Paid",
+    description:
+      "A power-market summit bringing together senior policymakers, utilities, investors, and market participants to examine how Britain can balance clean, affordable, and secure power. The agenda includes market design, storage, investment, data-centre load, and the commercial choices shaping the 2030 system.",
+    link: "https://eu.eventscloud.com/website/20206/home/",
+    source: "Aurora Energy Research",
+    type: "Power Markets & Energy Transition",
+  },
+  {
+    title: "TreasuryTech 2026",
+    date: "November 24, 2026",
+    venue: "Cavendish Venues, 1 Basinghall Avenue, London",
+    price: "Registration",
+    description:
+      "The Association of Corporate Treasurers’ conference on AI, digital assets, and the technologies changing treasury operations. It combines practical case studies and roundtables; ACT members and students can attend free, while other delegates should check the booking page for current rates.",
+    link: "https://www.treasurers.org/events/conferences/treasurytech-2026",
+    source: "Association of Corporate Treasurers",
+    type: "AI & Financial Infrastructure",
+  },
+  {
+    title: "Data Centre Energy Summit 2026",
+    date: "November 25, 2026",
+    venue: "Events @ No 6, 6 Alie Street, London E1 8QT",
+    price: "Registration",
+    description:
+      "A full-day meeting of data-centre operators, energy providers, investors, and policymakers on securing power for digital infrastructure growth. The focus is on grid constraints, investment, reliable supply, and the infrastructure required to support AI and cloud demand.",
+    link: "https://www.datacentreenergysummit.com/",
+    source: "Data Centre Energy Summit",
+    type: "Energy & Digital Infrastructure",
+  },
+  {
+    title: "The Spectator Energy Summit 2026",
+    date: "November 30, 2026",
+    venue: "One Great George Street, London SW1P 3AA",
+    price: "Paid",
+    description:
+      "A policy and industry summit on UK energy security, system resilience, investment, the cost of net zero, and clean-energy innovation. It brings together politicians, policymakers, energy companies, and infrastructure investors; complimentary tickets are available for MPs, diplomats, and civil servants by request.",
+    link: "https://www.eventbrite.co.uk/e/the-spectator-energy-summit-2026-tickets-1975108543823",
+    source: "The Spectator",
+    type: "Energy Policy & Investment",
   },
   {
     title: "FinTech Connect 2026",

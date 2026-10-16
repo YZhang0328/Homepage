@@ -99,7 +99,7 @@ function getSeoForPath(pathname: string): SeoSpec {
     return {
       title: "Yujia Zhang | Industrial Mathematician",
       description:
-        "Industrial mathematician and quantitative researcher building statistical and optimisation models for capital and energy markets.",
+        "Industrial mathematician and quantitative researcher building statistical and optimization models for energy markets.",
       canonicalPath: "/",
       imagePath: "/images/Photo_Yujia.jpg",
       imageAlt: "Yujia Zhang portrait",
