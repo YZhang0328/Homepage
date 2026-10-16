@@ -26,8 +26,8 @@ export default function Home() {
   return (
     <>
       <Seo
-        title="Yujia Zhang | Industrial Mathematician"
-        description="Industrial mathematician and quantitative researcher building statistical and optimization models for energy markets."
+        title="Yujia Zhang | Quantitative Researcher"
+        description="Quantitative researcher and industrial mathematician building statistical and optimization models for energy markets."
         canonicalPath="/"
         imagePath="/images/Photo_Yujia.jpg"
         imageAlt="Yujia Zhang portrait"
@@ -36,7 +36,7 @@ export default function Home() {
             "@context": "https://schema.org",
             "@type": "Person",
             name: "Yujia Zhang",
-            jobTitle: "Industrial Mathematician",
+            jobTitle: "Quantitative Researcher and Industrial Mathematician",
             url: "https://yujiazhang.co.uk/",
             image: "https://yujiazhang.co.uk/images/Photo_Yujia.jpg",
             sameAs: [
@@ -83,7 +83,7 @@ export default function Home() {
               animate="visible"
               className="mb-4 text-[0.98rem] text-muted tracking-[0.14em] uppercase md:text-[1.06rem]"
             >
-              Quantitative Research &amp; Development
+              Energy Markets · Quantitative Research
             </motion.p>
 
             <motion.h1
@@ -91,11 +91,11 @@ export default function Home() {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              className="max-w-[9ch] font-serif text-[1.9rem] md:text-[2.2rem] lg:text-[2.6rem] font-bold leading-[0.93] tracking-tight"
+              className="max-w-[12ch] font-serif text-[1.9rem] md:text-[2.2rem] lg:text-[2.6rem] font-bold leading-[0.93] tracking-tight"
             >
-              Industrial
+              Quantitative
               <br />
-              Mathematician
+              Researcher
             </motion.h1>
 
             <motion.p
@@ -103,14 +103,24 @@ export default function Home() {
               variants={fadeUp}
               initial="hidden"
               animate="visible"
-              className="mt-5 max-w-lg text-[1.02rem] text-muted leading-relaxed md:text-[1.12rem]"
+              className="mt-3 text-[1.02rem] font-medium text-foreground/80 md:text-[1.08rem]"
             >
-              I build statistical and optimization models for energy markets,
-              and orchestrate AI agents to support quantitative research.
+              Industrial Mathematician
+            </motion.p>
+
+            <motion.p
+              custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              className="mt-3 max-w-lg text-[1.02rem] text-muted leading-relaxed md:text-[1.12rem]"
+            >
+              I build statistical and optimization models for energy markets. I
+              also orchestrate AI agents to support quantitative research.
             </motion.p>
 
             <motion.div
-              custom={3}
+              custom={4}
               variants={fadeUp}
               initial="hidden"
               animate="visible"

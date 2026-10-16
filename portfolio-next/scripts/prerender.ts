@@ -97,9 +97,9 @@ function findEvent(eventSlug: string) {
 function getSeoForPath(pathname: string): SeoSpec {
   if (pathname === "/") {
     return {
-      title: "Yujia Zhang | Industrial Mathematician",
+      title: "Yujia Zhang | Quantitative Researcher",
       description:
-        "Industrial mathematician and quantitative researcher building statistical and optimization models for energy markets.",
+        "Quantitative researcher and industrial mathematician building statistical and optimization models for energy markets.",
       canonicalPath: "/",
       imagePath: "/images/Photo_Yujia.jpg",
       imageAlt: "Yujia Zhang portrait",
@@ -109,7 +109,7 @@ function getSeoForPath(pathname: string): SeoSpec {
           "@context": "https://schema.org",
           "@type": "Person",
           name: "Yujia Zhang",
-          jobTitle: "Industrial Mathematician",
+          jobTitle: "Quantitative Researcher and Industrial Mathematician",
           url: absoluteUrl("/"),
           image: absoluteUrl("/images/Photo_Yujia.jpg"),
           sameAs: ["https://www.linkedin.com/in/yujia-zhang-94417a295/"],
