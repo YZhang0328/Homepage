@@ -290,6 +290,71 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Featured SEFE project */}
+      <section className="mx-auto max-w-6xl px-6 pt-16 md:pt-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="rounded-3xl border border-border bg-card p-7 md:p-10"
+        >
+          <div className="flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted">
+                Energy Quant <span className="px-1.5">·</span> SEFE Marketing &amp; Trading
+              </p>
+              <h2 className="mt-2 font-serif text-3xl font-bold md:text-4xl">
+                European Power Curve Builder
+              </h2>
+            </div>
+            <p className="text-sm text-muted sm:max-w-xs sm:text-right">
+              Statistical shaping for European hourly power markets
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              {
+                label: "01 / Algorithm",
+                title: "Built from the ground up",
+                text: "Led development of a statistical shaping algorithm for hourly power curves on SEFE’s in-house platform, with the resulting curves calibrated against market-traded forward prices.",
+              },
+              {
+                label: "02 / Market remit",
+                title: "Five European markets",
+                text: "Responsible for curve methodology in Germany, France, the Netherlands, Belgium and Austria within the Gas, Power and Derivatives Quant team.",
+              },
+              {
+                label: "03 / Product delivery",
+                title: "From model to live use",
+                text: "Lead algorithm design, validation and production rollout. The new curves replaced SEFE’s legacy in-house curves in Germany and France and are used by traders in live workflows.",
+              },
+              {
+                label: "04 / Business impact",
+                title: "Validated for production",
+                text: "Testing by Risk Control and Product Management supported production use. Curve quality materially influences trading decisions and P&L; interest is growing across other trading desks.",
+              },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl border border-border/80 bg-background/70 p-5 md:p-6"
+              >
+                <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted">
+                  {item.label}
+                </p>
+                <h3 className="mt-3 text-base font-semibold tracking-tight">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted">
+                  {item.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
       {/* What I Do */}
       <section className="mx-auto max-w-6xl px-6 pt-20 pb-16 md:pt-28 md:pb-20">
         <div className="grid md:grid-cols-[1fr_1.2fr] gap-12 items-start">
@@ -314,11 +379,12 @@ export default function Home() {
 
           <div className="space-y-4 md:pt-[2.75rem]">
             {[
-              "Developing software packages to analyze and process large-scale energy market datasets, including demand, supply, plant-level, time-resolution, and interconnection flow data.",
-              "Developing an optimization model of electricity distribution across multiple sources (gas, coal, solar, wind, etc), generating short- and long-term price forecasts.",
-              "Reliability check of new features through testing, including unit, integration, behavioural, and regression tests.",
-              "Building power forward curves and running cross-commodity scenario analyses across European and GB markets.",
-              'Continuously enhancing models and optimizing platform data structures: "There has to be a better way."',
+              "Designing statistical shaping algorithms and hourly power curve methodologies for European energy markets.",
+              "Building, validating and rolling out production power curves across Germany, France, the Netherlands, Belgium and Austria.",
+              "Working with traders, Risk Control and Product Management to translate requirements into validated quantitative products.",
+              "Developing power market analytics, optimization models and cross-commodity scenarios across European and GB markets.",
+              "Developing trader-facing screens that surface prices from historical reference days with similar fundamentals, quantify power price sensitivities to weather, short-run marginal costs (SRMC) and neighbouring market prices, and generate time-evolving scenarios under alternative fundamental assumptions.",
+              "Building software and analytical tools to process large-scale energy datasets and support quantitative research.",
             ].map((item, i) => (
               <motion.div
                 key={i}
