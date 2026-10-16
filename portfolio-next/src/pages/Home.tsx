@@ -155,7 +155,7 @@ export default function Home() {
       <BrandTicker />
 
       {/* About */}
-      <section className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <section className="mx-auto max-w-6xl px-6 pt-14 pb-6 md:pt-18 md:pb-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -179,7 +179,7 @@ export default function Home() {
         </motion.div>
 
         {/* Stats */}
-        <div className="mt-16 grid grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-3 gap-4 md:gap-5">
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
@@ -187,19 +187,23 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
-              className="rounded-2xl border border-border bg-card p-6"
+              className="flex min-h-24 items-center rounded-2xl border border-border bg-card px-4 py-4 md:px-5"
             >
-              <p className="text-3xl md:text-4xl font-bold tracking-tight">
-                {s.value}
-              </p>
-              <p className="text-sm text-muted mt-1">{s.label}</p>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <p className="font-serif text-3xl font-semibold leading-none tracking-tight md:text-4xl">
+                  {s.value}
+                </p>
+                <p className="text-xs uppercase tracking-[0.1em] text-muted md:text-sm">
+                  {s.label}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 pb-20 md:pb-28">
-        <div className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
+        <div className="rounded-3xl border border-border bg-card p-5 md:p-6">
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="mb-3 text-sm uppercase tracking-wide text-muted">
@@ -213,16 +217,16 @@ export default function Home() {
               to="/news/"
               className="inline-flex items-center gap-2 rounded-full border border-foreground px-5 py-2 text-sm font-medium transition-colors hover:bg-foreground hover:text-white w-fit"
             >
-              Explore energy news <ArrowRight size={16} />
+              Explore news <ArrowRight size={16} />
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-3">
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
             {energyTopics.map((topic) => (
               <Link
                 key={topic.slug}
                 to={`/news/tag/${topic.slug}/`}
-                className="rounded-2xl border border-border bg-accent p-5 transition-all hover:-translate-y-0.5 hover:shadow-md"
+                className="rounded-2xl border border-border bg-accent p-4 transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 <p className="text-xs uppercase tracking-[0.18em] text-muted">
                   Energy Markets
@@ -246,11 +250,11 @@ export default function Home() {
 
       {/* Expertise */}
       <section className="bg-foreground text-white">
-        <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6 py-14 md:py-18">
           <p className="text-sm text-neutral-400 uppercase tracking-wide mb-3">
             Expertise
           </p>
-          <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug max-w-xl mb-12">
+          <h2 className="font-sans text-xl md:text-2xl font-semibold leading-snug max-w-xl mb-8">
             My expertise lies in optimization and prediction.
           </h2>
 
@@ -296,7 +300,7 @@ export default function Home() {
       </section>
 
       {/* Featured SEFE project */}
-      <section className="mx-auto max-w-6xl px-6 pt-16 md:pt-20">
+      <section className="mx-auto max-w-6xl px-6 pt-10 md:pt-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -361,8 +365,8 @@ export default function Home() {
       </section>
 
       {/* What I Do */}
-      <section className="mx-auto max-w-6xl px-6 pt-20 pb-16 md:pt-28 md:pb-20">
-        <div className="grid md:grid-cols-[1fr_1.2fr] gap-12 items-start">
+      <section className="mx-auto max-w-6xl px-6 pt-12 pb-12 md:pt-16 md:pb-16">
+        <div className="grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-10 items-start">
           <div>
             <p className="text-sm text-muted uppercase tracking-wide mb-3">
               Day-to-Day
@@ -424,7 +428,7 @@ export default function Home() {
               <h2 className="font-serif text-3xl font-bold md:text-4xl">
                 AtlasNotes AI
               </h2>
-              <p className="mt-4 max-w-3xl leading-relaxed text-muted">
+              <p className="mt-4 max-w-3xl font-serif text-base leading-[1.8] text-muted md:text-lg">
                 I am the founder of AtlasNotes AI, a knowledge platform for
                 professionals who want their research and best thinking to compound.
                 It turns everyday work into an organised, reusable knowledge base,
