@@ -221,6 +221,17 @@ export const aiFinanceEvents: EventListing[] = [
     type: "Fintech Conference",
   },
   {
+    title: "Powering Asia: AI for Project Finance Modelling",
+    date: "November 16, 2026",
+    venue: "Forvis Mazars, 30 Old Bailey, London",
+    price: "Registration",
+    description:
+      "A hands-on learning session with Forvis Mazars’ modelling team on using AI to build project-finance models. The working session will examine real models, where AI can accelerate the build, and where human review remains essential; places are limited and subject to approval.",
+    link: "https://lnkd.in/p/euNXkAkZ",
+    source: "Powering Asia / Forvis Mazars",
+    type: "AI & Project Finance Modelling",
+  },
+  {
     title: "AI in Finance 2026",
     date: "November 17, 2026",
     venue: "Royal Horseguards Hotel, London",
