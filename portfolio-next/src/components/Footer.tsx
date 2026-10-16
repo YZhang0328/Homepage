@@ -18,7 +18,7 @@ export default function Footer() {
           <div>
             <p className="text-lg font-semibold">Yujia Zhang</p>
             <p className="text-sm text-muted mt-1">
-              Industrial mathematician &middot; CFA Level I
+              Quantitative Researcher &middot; Industrial Mathematician &middot; AI Agent Orchestration
             </p>
           </div>
           <div className="flex items-center gap-4">
