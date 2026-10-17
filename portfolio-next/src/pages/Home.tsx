@@ -98,23 +98,13 @@ export default function Home() {
               animate="visible"
               className="max-w-[12ch] font-serif text-[1.9rem] md:text-[2.2rem] lg:text-[2.6rem] font-bold leading-[0.93] tracking-tight"
             >
-              Quantitative
+              Industrial
               <br />
-              Researcher
+              Mathematician
             </motion.h1>
 
             <motion.p
               custom={2}
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-3 text-[1.02rem] font-medium text-foreground/80 md:text-[1.08rem]"
-            >
-              Industrial Mathematician
-            </motion.p>
-
-            <motion.p
-              custom={3}
               variants={fadeUp}
               initial="hidden"
               animate="visible"
@@ -125,7 +115,7 @@ export default function Home() {
             </motion.p>
 
             <motion.div
-              custom={4}
+              custom={3}
               variants={fadeUp}
               initial="hidden"
               animate="visible"
